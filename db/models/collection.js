@@ -5,9 +5,9 @@ const Collection = db.define(
   'collection',
   {
     id: {
-      allowNull: false,
+      allowNull: true,
       primaryKey: true,
-      type: DataTypes.STRING
+      type: DataTypes.NUMBER
     },
     name: {
       allowNull: false,
