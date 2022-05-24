@@ -14,7 +14,8 @@ export default (sequelize) => {
 				type: DataTypes.STRING
 			},
 			productId: {
-				type: DataTypes.INTEGER,
+				allowNull: false,
+				type: DataTypes.STRING,
 				references: {
 					model: 'product',
 					key: 'id'

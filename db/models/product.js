@@ -1,13 +1,14 @@
 import { DataTypes } from 'sequelize';
+import { uid } from 'uid';
 
 export default (sequelize) => {
 	const Product = sequelize.define(
 		'product',
 		{
 			id: {
-				allowNull: true,
+				allowNull: false,
 				primaryKey: true,
-				type: DataTypes.NUMBER
+				type: DataTypes.STRING
 			},
 			name: {
 				allowNull: false,
@@ -43,6 +44,11 @@ export default (sequelize) => {
 			tableName: 'product'
 		}
 	);
+
+  Product.beforeValidate(async (product) => {
+    if (product.id) return
+    product.id = uid()
+  })
 
 	Product.associate = function (models) {
 		Product.hasMany(models.image, {
