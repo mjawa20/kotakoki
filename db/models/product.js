@@ -13,6 +13,10 @@ export default (sequelize) => {
 				allowNull: false,
 				type: DataTypes.STRING
 			},
+			price: {
+				allowNull: false,
+				type: DataTypes.NUMBER
+			},
 			description: {
 				allowNull: false,
 				type: DataTypes.STRING
@@ -41,11 +45,12 @@ export default (sequelize) => {
 	);
 
 	Product.associate = function (models) {
-		Product.hasMany(models.productImage, {
+		Product.hasMany(models.image, {
 			as: 'images',
 			foreignKey: 'productId',
 			hooks: true,
-			onDelete: 'CASCADE'
+			onDelete: 'CASCADE',
+      
 		});
 	};
 

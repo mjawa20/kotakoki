@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 import categoryModel from './models/category';
 import collectionModel from './models/collection';
 import productModel from './models/product';
-import productImageModel from './models/productImage';
+import imageModel from './models/image';
 
 const { host, port, username, password, database, dialect } = config[process.env.NODE_ENV];
 
@@ -16,7 +16,7 @@ const db = new Sequelize(database, username, password, {
 categoryModel(db);
 collectionModel(db);
 productModel(db);
-productImageModel(db);
+imageModel(db);
 
 Object.keys(db.models).forEach((modelName) => {
 	if (db.models[modelName].associate) {
