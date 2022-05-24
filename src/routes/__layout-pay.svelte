@@ -1,5 +1,5 @@
 <script>
-	import '../app.css'
+	import '../app.css';
 	import Summary from '$lib/checkout/Summary.svelte';
 </script>
 

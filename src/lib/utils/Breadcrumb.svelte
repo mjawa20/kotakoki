@@ -1,5 +1,5 @@
 <script>
-	export let color = "text-amber-900";
+	export let color = 'text-amber-900';
 </script>
 
 <p class="text-xs {color} font-semibold">

@@ -7,7 +7,7 @@
 		</div>
 		<div class="w-1/3">
 			<h3 class="font-bold text-sm mb-4">Account Detail</h3>
-			<a href="/" class="text-base">Confirm the address (0)</a >
+			<a href="/" class="text-base">Confirm the address (0)</a>
 		</div>
 	</div>
 </div>

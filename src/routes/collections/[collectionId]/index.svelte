@@ -1,5 +1,6 @@
 <script context="module">
 	export async function load({ params }) {
+  try {
 		const { collectionId } = params;
 		let collection;
 		try {

@@ -1,12 +1,20 @@
-import Category from "../../../../db/models/category";
-import { responseBuilder } from "../_api";
+import db from '../../../../db';
+import { responseBuilder } from '../_api';
 
 export async function get({ params }) {
-  const category = await Category.findOne({ where: { id: params.id } })
-  return responseBuilder(200, 'success', category)
+	try {
+		const category = await db.models.category.findOne({ where: { id: params.id } });
+		return responseBuilder(200, 'success', category);
+	} catch (error) {
+		return responseBuilder(400, error);
+	}
 }
 
 export async function del({ params }) {
-  await Category.destroy({ where: { id: params.id } })
-  return responseBuilder(200, 'category has ben deleted')
+	try {
+		await db.models.category.destroy({ where: { id: params.id } });
+		return responseBuilder(200, 'category has ben deleted');
+	} catch (error) {
+		return responseBuilder(400, error);
+	}
 }

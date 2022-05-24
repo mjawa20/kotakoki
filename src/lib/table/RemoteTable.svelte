@@ -50,7 +50,7 @@
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
-  <h3 class="font-semibold text-lg text-gray-700">Card Tables</h3>
+	<h3 class="font-semibold text-lg text-gray-700">Card Tables</h3>
 	<Table {loading} {rows} {pageIndex} {pageSize} let:rows={rows2}>
 		<div slot="top" class="mb-8">
 			<Search on:search={onSearch} />

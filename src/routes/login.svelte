@@ -16,6 +16,8 @@
 	<button class="mb-4 p-3 rounded-sm bg-amber-900 text-white w-fit font-semibold text-sm"
 		>create</button
 	>
-	<a href="/" class="mb-4 rounded-sm  text-amber-900 w-fit font-semibold text-sm ">Create an Account?</a>
+	<a href="/" class="mb-4 rounded-sm  text-amber-900 w-fit font-semibold text-sm "
+		>Create an Account?</a
+	>
 	<a href="/" class=" rounded-sm  text-amber-900 w-fit font-semibold text-sm ">Return the store</a>
 </div>

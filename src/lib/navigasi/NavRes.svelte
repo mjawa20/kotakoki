@@ -1,13 +1,10 @@
 <script>
-    import {slide} from 'svelte/transition'
+	import { slide } from 'svelte/transition';
 	export let isShow;
 </script>
 
 {#if isShow}
-	<div
-		transition:slide
-		class=" mt-3 flex flex-col text-xs text-amber-900  font-semibold"
-	>
+	<div transition:slide class=" mt-3 flex flex-col text-xs text-amber-900  font-semibold">
 		<a href="/" class="border-t px-8 py-4">HOME</a>
 		<a href="/collections" class="border-t px-8 py-4">PRODUCT</a>
 		<a href="/our-story" class="border-t px-8 py-4">WHAT IS KOTAKOKI?</a>

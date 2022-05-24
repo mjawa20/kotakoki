@@ -19,7 +19,7 @@
 	<div class="bg-black w-full h-full absolute opacity-50" />
 	<!-- <img src={image} alt="" width="100%" /> -->
 	{#each [carouselPhotos[index]] as src (index)}
-		<img transition:slide={{easing:"x"}} {src} alt="" width="100%" />
+		<img transition:slide={{ easing: 'x' }} {src} alt="" width="100%" />
 	{/each}
 </div>
 <div class="mb-10 text-center">

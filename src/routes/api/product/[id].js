@@ -1,12 +1,20 @@
-import Product from "../../../../db/models/product";
-import { responseBuilder } from "../_api";
+import db from '../../../../db';
+import { responseBuilder } from '../_api';
 
 export async function get({ params }) {
-  const product = await Product.findOne({ where: { id: params.id } })
-  return responseBuilder(200, 'success', product)
+	try {
+		const product = await db.models.product.findOne({ where: { id: params.id } });
+		return responseBuilder(200, 'success', product);
+	} catch (error) {
+		return responseBuilder(400, error);
+	}
 }
 
 export async function del({ params }) {
-  await Product.destroy({ where: { id: params.id } })
-  return responseBuilder(200, 'product has ben deleted')
+	try {
+		await db.models.product.destroy({ where: { id: params.id } });
+		return responseBuilder(200, 'product has ben deleted');
+	} catch (error) {
+		return responseBuilder(400, error);
+	}
 }

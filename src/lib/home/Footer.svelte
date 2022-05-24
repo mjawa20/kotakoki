@@ -25,10 +25,14 @@
 	<div>
 		<h3 class="font-bold text-sm">Newsletter</h3>
 		<div class="mt-3">
-            <p>E-mail newsletter</p>
-            <input type="text" placeholder="Your email address" class="p-1 border border-gray-300 placeholder:text-gray-500 placeholder:text-sm my-3">
-            <button class="bg-amber-900 text-white p-3 rounded-sm">to register</button>
-        </div>
+			<p>E-mail newsletter</p>
+			<input
+				type="text"
+				placeholder="Your email address"
+				class="p-1 border border-gray-300 placeholder:text-gray-500 placeholder:text-sm my-3"
+			/>
+			<button class="bg-amber-900 text-white p-3 rounded-sm">to register</button>
+		</div>
 	</div>
 </div>
 <p class="text-center text-sm my-7">Copyright © 2022, Kotakoki . Powered by Shopify</p>

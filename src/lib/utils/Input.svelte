@@ -1,7 +1,7 @@
 <script>
 	export let name;
 	export let placeholder;
-    export let style = 'mb-5';
+	export let style = 'mb-5';
 </script>
 
 <label class="block w-full {style}">
@@ -13,6 +13,6 @@
 	<input
 		type="text"
 		class="mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm  "
-        placeholder={placeholder ? placeholder:""}
+		placeholder={placeholder ? placeholder : ''}
 	/>
 </label>

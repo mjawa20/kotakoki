@@ -4,7 +4,7 @@
 		<p>Quantity</p>
 		<p>Total</p>
 	</div>
-	<hr class="mt-8"/>
+	<hr class="mt-8" />
 	<slot />
 	<div class="text-right mt-8">
 		<p class="text-sm">Subtotal <span class="font-bold ml-2">¥ 1,124</span></p>

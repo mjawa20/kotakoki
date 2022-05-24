@@ -25,6 +25,6 @@
 		>
 		<p>Return to cart</p>
 	</div>
-    <hr class="mt-10">
-    <p class="py-5">Notation based on the Specified Commercial Transactions Law</p>
+	<hr class="mt-10" />
+	<p class="py-5">Notation based on the Specified Commercial Transactions Law</p>
 </div>
