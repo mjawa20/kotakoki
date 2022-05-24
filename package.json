@@ -28,6 +28,7 @@
 	"type": "module",
 	"dependencies": {
 		"@popperjs/core": "^2.11.5",
+		"axios": "^0.27.2",
 		"dotenv": "^16.0.1",
 		"mysql2": "^2.3.3",
 		"pg": "^8.7.3",
