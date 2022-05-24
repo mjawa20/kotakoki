@@ -9,7 +9,7 @@
 	{#if $collection.length}
 		<div class="grid md:grid-cols-4 grid-cols-2 justify-between gap-6">
 			{#each $collection as collection}
-				<CollectionItem {...collection} />
+				<CollectionItem {collection} />
 			{/each}
 		</div>
 	{:else}

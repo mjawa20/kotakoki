@@ -1,6 +1,5 @@
 <script context="module">
 	export async function load({ params }) {
-  try {
 		const { collectionId } = params;
 		let collection;
 		try {
@@ -9,7 +8,7 @@
 		} catch (error) {
 			console.log(error);
 		}
-		return { props: { collection } };
+		return { props: { collection, collectionId } };
 	}
 </script>
 
@@ -17,13 +16,17 @@
 	import axios from 'axios';
 
 	import Breadcrumb from '$lib/utils/Breadcrumb.svelte';
-	import CollectionItem from '$lib/collection/CollectionItem.svelte';
 	import SelectItem from '$lib/utils/SelectItem.svelte';
 	import CollectionSkel from '$lib/skeleton/CollectionSkel.svelte';
 	import Product from '$lib/collection/Product.svelte';
-
+	import { product } from '../../../store/productstore';
+	export let collectionId;
 	export let collection;
+	let filteredProduct = [];
 	console.log(collection);
+
+	filteredProduct = $product.filter((item) => item.collectionId == collectionId);
+	console.log(filteredProduct);
 </script>
 
 <div class="mt-10">
@@ -37,10 +40,9 @@
 			</div>
 		</div>
 		<div class="grid md:grid-cols-4 grid-cols-2 gap-6">
-			<Product />
-			<Product />
-			<Product />
-			<Product />
+			{#each filteredProduct as product }				
+				<Product {product} />
+			{/each}
 		</div>
 	{:else}
 		<CollectionSkel />
