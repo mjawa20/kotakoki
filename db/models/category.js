@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { db } from '..';
 
-const Collection = db.define(
-  'collection',
+const Category = db.define(
+  'category',
   {
     id: {
       allowNull: true,
@@ -13,24 +13,13 @@ const Collection = db.define(
       allowNull: false,
       type: DataTypes.STRING
     },
-    imageUrl: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    categoryId: {
-      type: DataTypes.NUMBER,
-      validate: {
-        notEmpty: false
-      },
-      allowNull: true
-    },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   },
   {
     freezeTableName: true,
-    tableName: 'collection'
+    tableName: 'category'
   }
 )
 
-export default Collection
+export default Category
