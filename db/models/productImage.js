@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
-  sequelize.define(
-    'collection',
+  const ProductImage = sequelize.define(
+    'productImage',
     {
       id: {
         allowNull: true,
@@ -13,16 +13,23 @@ export default (sequelize) => {
         allowNull: false,
         type: DataTypes.STRING
       },
-      imageUrl: {
-        allowNull: false,
-        type: DataTypes.STRING
+      productId: {
+        type: DataTypes.NUMBER,
+        validate: {
+          notEmpty: false
+        },
+        allowNull: true
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE
     },
     {
       freezeTableName: true,
-      tableName: 'collection'
+      tableName: 'productImage'
     }
   )
+  ProductImage.associate = function (models) {
+    ProductImage.belongsTo(models.product, { as: 'product', foreignKey: 'productId' })
+  }
+  return ProductImage
 }

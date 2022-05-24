@@ -17,15 +17,6 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING
         },
-        categoryId: {
-          allowNull: true,
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'category',
-            key: 'id'
-          },
-          onDelete: 'NO ACTION'
-        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE
