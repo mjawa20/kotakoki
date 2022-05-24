@@ -1,17 +1,22 @@
 import { DataTypes } from 'sequelize';
+import { uid } from 'uid';
 
 export default (sequelize) => {
 	const Product = sequelize.define(
 		'product',
 		{
 			id: {
-				allowNull: true,
+				allowNull: false,
 				primaryKey: true,
-				type: DataTypes.NUMBER
+				type: DataTypes.STRING
 			},
 			name: {
 				allowNull: false,
 				type: DataTypes.STRING
+			},
+			price: {
+				allowNull: false,
+				type: DataTypes.NUMBER
 			},
 			description: {
 				allowNull: false,
@@ -40,12 +45,18 @@ export default (sequelize) => {
 		}
 	);
 
+  Product.beforeValidate(async (product) => {
+    if (product.id) return
+    product.id = uid()
+  })
+
 	Product.associate = function (models) {
-		Product.hasMany(models.productImage, {
+		Product.hasMany(models.image, {
 			as: 'images',
 			foreignKey: 'productId',
 			hooks: true,
-			onDelete: 'CASCADE'
+			onDelete: 'CASCADE',
+      
 		});
 	};
 
