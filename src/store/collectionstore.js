@@ -13,3 +13,15 @@ export const fetchCollections = async (query) => {
 		console.error(error.response);
 	}
 };
+
+export const postCollection = async (newCollections) => {
+	axios
+		.post('/api/collection', newCollections)
+		.then(function (response) {
+			console.log(response);
+			 fetchCollections();
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+}

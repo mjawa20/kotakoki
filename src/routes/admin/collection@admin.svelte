@@ -5,7 +5,9 @@
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
-	import { fetchCollections, collections } from "./../../store/collectionstore";
+	import { fetchCollections, collections, postCollection } from './../../store/collectionstore';
+	import Modal from '$lib/utils/Modal.svelte';
+	import Input from '$lib/utils/Input.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -16,6 +18,9 @@
 	let rowsCount = 0;
 	let text;
 	let sorting;
+	let show;
+	let nameValue = '';
+	let imageValue = '';
 
 	let filteredCollections = [];
 
@@ -26,15 +31,14 @@
 			filteredCollections = [...$collections];
 		}
 	}
-	
+
 	onMount(async () => {
 		filteredCollections = [...$collections];
 		await load(page);
 	});
-	
+
 	async function load(_page) {
-		await fetchCollections()
-		console.log('==================================================');
+		await fetchCollections();
 		console.log(filteredCollections);
 		loading = true;
 		rows = filteredCollections;
@@ -62,10 +66,28 @@
 		sorting = { dir: event.detail.dir, key: event.detail.key };
 		await load(page);
 	}
+
+	const handlePost = () => {
+		let newCollection = {
+			name: nameValue,
+			imageUrl: imageValue
+		};
+		console.log(newCollection);
+		postCollection(newCollection);
+		show = false;
+	};
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
-	<h3 class="font-semibold text-lg text-gray-700">Card Tables</h3>
+	<div class="flex justify-between items-center mb-5">
+		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
+		<Modal on:submit={handlePost} bind:show>
+			<div class="px-5">
+				<Input type="text" placeholder="Name" bind:value={nameValue} />
+				<Input type="text" placeholder="Image" bind:value={imageValue} />
+			</div>
+		</Modal>
+	</div>
 	<Table {loading} {rows} {pageIndex} {pageSize} let:rows={rows2}>
 		<div slot="top" class="mb-8">
 			<Search on:search={onSearch} />
@@ -76,9 +98,7 @@
 					Name
 					<Sort key="name" on:sort={onSort} />
 				</th>
-				<th width="50%">
-					Image
-				</th>
+				<th width="50%"> Image </th>
 			</tr>
 		</thead>
 		<tbody>

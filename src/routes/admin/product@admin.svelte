@@ -7,10 +7,10 @@
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import Modal from '../../lib/utils/Modal.svelte';
-	import { product, fetchProduct } from '../../store/productstore';
+	import { product, fetchProduct, postProduct } from '../../store/productstore';
 	import Input from '../../lib/utils/Input.svelte';
 	import SelectItem from '../../lib/utils/SelectItem.svelte';
-	import axios from 'axios';
+	import { collections, fetchCollections } from '../../store/collectionstore';
 
 	let rows = [];
 	let page = 0; //first page
@@ -19,12 +19,11 @@
 
 	let loading = true;
 	let rowsCount = 0;
-	let text;
-	let sorting;
 	let filteredProducts = [];
 	let nameValue = '';
-	let priceValue = 0;
+	let priceValue;
 	let descValue = '';
+	let collectionId;
 	$: show = false;
 
 	$: {
@@ -32,11 +31,12 @@
 	}
 
 	onMount(async () => {
-		fetchProduct();
 		await load(page);
 	});
 
 	async function load(_page) {
+		await fetchCollections();
+		await fetchProduct();
 		loading = true;
 		rows = filteredProducts;
 		rowsCount = filteredProducts.length;
@@ -64,21 +64,13 @@
 	}
 
 	const handlePost = () => {
-		axios
-			.post('/api/product', {
-				name: nameValue,
-				price: priceValue,
-				categoryId: null,
-				collectionId: 2,
-				description: descValue
-			})
-			.then(function (response) {
-				console.log(response);
-				console.log('==========success');
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
+		let newProduct = {
+			name: nameValue,
+			price: priceValue,
+			description: descValue,
+			collectionId: collectionId
+		};
+		postProduct(newProduct);
 		show = false;
 	};
 </script>
@@ -88,12 +80,21 @@
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
 		<Modal on:submit={handlePost} bind:show>
 			<div class="px-5">
-				<Input type="text" name="Name" bind:value={nameValue} />
-				<Input type="textarea" name="Price" bind:value={priceValue} />
-				<Input type="text" name="Description" bind:value={descValue} />
+				<Input type="text" placeholder="Name" bind:value={nameValue} />
+				<input
+					placeholder="Price"
+					type="number"
+					class="mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
+					bind:value={priceValue}
+				/>
+				<textarea
+					placeholder="Description"
+					class="mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
+					bind:value={descValue}
+				/>
 				<div class="inline-flex justify-between w-full gap-3 ">
-					<SelectItem option="Collection" />
-					<SelectItem option="Category" /> 
+					<SelectItem options={$collections} title="Collection" bind:value={collectionId} />
+					<SelectItem title="Category" />
 				</div>
 			</div>
 		</Modal>
