@@ -3,9 +3,9 @@
 	//Sort component is optional
 	import { onMount } from 'svelte';
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
-	import { getData } from '$lib/table/server.js';
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
+	import { fetchCollections, collections } from "./../../store/collectionstore";
 
 	let rows = [];
 	let page = 0; //first page
@@ -17,20 +17,34 @@
 	let text;
 	let sorting;
 
+	let filteredCollections = [];
+
+	$: {
+		if (false) {
+			// filteredCollections = $collections.filter((collection) => collection.name.toLowerCase().includes(searchTerm.toLowerCase()));
+		} else {
+			filteredCollections = [...$collections];
+		}
+	}
+	
 	onMount(async () => {
+		filteredCollections = [...$collections];
 		await load(page);
 	});
-
+	
 	async function load(_page) {
+		await fetchCollections()
+		console.log('==================================================');
+		console.log(filteredCollections);
 		loading = true;
-		const data = await getData(_page, pageSize, text, sorting);
-		rows = data.rows;
-		rowsCount = data.rowsCount;
+		rows = filteredCollections;
+		rowsCount = filteredCollections.length;
 		loading = false;
 	}
 
-	function onCellClick(row) {
+	async function onCellClick(row) {
 		alert(JSON.stringify(row));
+		console.log(filteredCollections);
 	}
 
 	function onPageChange(event) {
@@ -58,26 +72,20 @@
 		</div>
 		<thead slot="head">
 			<tr>
-				<th width="33%">
+				<th width="50%">
 					Name
 					<Sort key="name" on:sort={onSort} />
 				</th>
-				<th width="33%">
-					Lastname
-					<Sort key="lastName" on:sort={onSort} />
-				</th>
-				<th width="33%">
-					Age
-					<Sort key="age" on:sort={onSort} />
+				<th width="50%">
+					Image
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			{#each rows2 as row, index (row)}
-				<Row {index}>
+				<Row {index} on:click={() => onCellClick(row)}>
 					<td data-label="Name">{row.name}</td>
-					<td data-label="Lastname">{row.lastName}</td>
-					<td data-label="Age">{row.age}</td>
+					<td data-label="Image">{row.imageUrl}</td>
 					<td>
 						<TableDropdown />
 					</td>
