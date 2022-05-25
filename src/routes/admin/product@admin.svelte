@@ -7,9 +7,10 @@
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import Modal from '../../lib/utils/Modal.svelte';
-	import { product } from '../../store/productstore';
+	import { product, fetchProduct } from '../../store/productstore';
 	import Input from '../../lib/utils/Input.svelte';
 	import SelectItem from '../../lib/utils/SelectItem.svelte';
+	import axios from 'axios';
 
 	let rows = [];
 	let page = 0; //first page
@@ -21,13 +22,17 @@
 	let text;
 	let sorting;
 	let filteredProducts = [];
+	let nameValue = '';
+	let priceValue = 0;
+	let descValue = '';
+	$: show = false;
 
 	$: {
 		filteredProducts = [...$product];
 	}
 
 	onMount(async () => {
-		filteredProducts = [...$product];
+		fetchProduct();
 		await load(page);
 	});
 
@@ -57,23 +62,38 @@
 		sorting = { dir: event.detail.dir, key: event.detail.key };
 		await load(page);
 	}
-	$: newProduct = {
-		name
+
+	const handlePost = () => {
+		axios
+			.post('/api/product', {
+				name: nameValue,
+				price: priceValue,
+				categoryId: null,
+				collectionId: 2,
+				description: descValue
+			})
+			.then(function (response) {
+				console.log(response);
+				console.log('==========success');
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		show = false;
 	};
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
-		<Modal>
-			{newProduct.name}
+		<Modal on:submit={handlePost} bind:show>
 			<div class="px-5">
-				<Input type="text" name="Name" value={newProduct.name} />
-				<Input type="textarea" name="Price" />
-				<Input type="text" name="Description" />
+				<Input type="text" name="Name" bind:value={nameValue} />
+				<Input type="textarea" name="Price" bind:value={priceValue} />
+				<Input type="text" name="Description" bind:value={descValue} />
 				<div class="inline-flex justify-between w-full gap-3 ">
 					<SelectItem option="Collection" />
-					<SelectItem option="Category" />
+					<SelectItem option="Category" /> 
 				</div>
 			</div>
 		</Modal>
