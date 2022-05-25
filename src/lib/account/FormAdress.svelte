@@ -1,6 +1,6 @@
 <script>
-	import Input from './utils/Input.svelte';
 	import { slide } from 'svelte/transition';
+import Input from '../utils/Input.svelte';
 	export let handleShow;
 </script>
 

@@ -5,7 +5,7 @@ import collectionModel from './models/collection';
 import productModel from './models/product';
 import imageModel from './models/image';
 
-const { host, port, username, password, database, dialect } = config[process.env.NODE_ENV];
+const { host, port, username, password, database, dialect } = config.development;
 
 const db = new Sequelize(database, username, password, {
 	host,
