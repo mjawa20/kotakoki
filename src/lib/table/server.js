@@ -22,7 +22,6 @@ export function getAll(text) {
 
 export function getData(page, pageSize, text, sorting) {
 	let originalData = generateData();
-
 	if (sorting) {
 		if (sorting.key === 'age') {
 			originalData = sortNumber(originalData, sorting.dir, sorting.key);
