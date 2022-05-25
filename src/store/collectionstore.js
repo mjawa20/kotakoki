@@ -9,7 +9,7 @@ const fetchCollection = async () => {
 		const data = await res.data.data;
 		collection.set(data);
 	} catch (error) {
-		console.error(error);
+		console.error(error.response);
 	}
 };
 

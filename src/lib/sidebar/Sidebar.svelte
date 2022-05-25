@@ -83,11 +83,29 @@
 			<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
 				<li class="inline-flex">
 					<a
+						href="/admin/"
+						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
+					>
+						<i class="fas fa-tv mr-2 text-gray-300 text-base" />
+						Dashboard
+					</a>
+				</li>
+				<li class="inline-flex">
+					<a
 						href="/admin/collection"
 						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
 					>
 						<i class="fas fa-inbox mr-2 text-gray-300 text-base" />
 						Collection
+					</a>
+				</li>
+				<li class="inline-flex">
+					<a
+						href="/admin/product"
+						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
+					>
+						<i class="fas fa-inbox mr-2 text-gray-300 text-base" />
+						Product
 					</a>
 				</li>
 			</ul>

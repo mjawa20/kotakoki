@@ -2,6 +2,8 @@
 	import { collection } from '../../store/collectionstore';
 	import CollectionItem from '$lib/collection/CollectionItem.svelte';
 	import CollectionsListSkel from '../../lib/skeleton/CollectionsListSkel.svelte';
+
+	console.log($collection);
 </script>
 
 <div class="mt-10">

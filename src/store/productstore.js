@@ -9,7 +9,7 @@ const fetchProduct = async () => {
         const data = await res.data.data;
         product.set(data);
     } catch (error) {
-        console.log(error);
+        console.log(error.response);
     }
 }
 
