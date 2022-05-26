@@ -75,6 +75,11 @@
 		await load(page);
 	}
 
+	const clear = () => {
+		nameValue = '';
+		croppedImage = null;
+	};
+
 	const handlePost = async () => {
 		let newCollection = {
 			name: nameValue,
@@ -88,7 +93,7 @@
 	const handleUpdate = async () => {};
 	const handleDelete = async (id) => {
 		await deleteCollection(id);
-		await load()
+		await load();
 	};
 
 	const rowActions = [
@@ -96,7 +101,8 @@
 			name: 'Delete',
 			function: async (id) => {
 				// add confirmation dialog, delete when ok
-				await handleDelete(id)}
+				await handleDelete(id);
+			}
 		}
 	];
 </script>
@@ -104,7 +110,7 @@
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Collections</h3>
-		<Modal on:submit={handlePost} bind:show title="Collection">
+		<Modal on:submit={handlePost} bind:show title="Collection" {clear}>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={nameValue} />
 				<ImageCropper bind:croppedImage />
@@ -129,7 +135,7 @@
 				<Row {index}>
 					<td data-label="Name">{row.name}</td>
 					<td data-label="Image">
-						<ImageModal src={row.imageUrl}/>
+						<ImageModal src={row.imageUrl} />
 					</td>
 					<td>
 						<Actions key={row.id} actions={rowActions} />

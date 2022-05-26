@@ -65,6 +65,14 @@
 		await load(page);
 	}
 
+	const clear = () => {
+		nameValue = "";
+		 priceValue  = "";
+		 descValue = "";
+		 collectionId = null;
+		 categoryId = null;
+	}
+
 	const handlePost = async () => {
 		let newProduct = {
 			name: nameValue,
@@ -75,14 +83,15 @@
 		};
 		await postProduct(newProduct);
 		show = false;
-		await load()
+		await load();
+		clear();
 	};
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
-		<Modal on:submit={handlePost} bind:show title="Product">
+		<Modal on:submit={handlePost} bind:show title="Product" {clear}>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={nameValue} />
 				<input
@@ -143,8 +152,16 @@
 					<td data-label="Name">{row.name}</td>
 					<td data-label="Age">{row.price}</td>
 					<td data-label="Description">{row.description}</td>
-					<td data-label="Category">{$categories.find(x => x.id === row.categoryId).name}</td>
-					<td data-label="Collection">{$collections.find(x => x.id === row.collectionId).name}</td>
+					<td data-label="Category">
+						{row.categoryId
+							? $categories.find((x) => x.id === row.categoryId).name
+							: 'Not register'}
+					</td>
+					<td data-label="Collection"
+						>{row.collectionId
+							? $collections.find((x) => x.id === row.collectionId).name
+							: 'Not register'}</td
+					>
 					<td>
 						<TableDropdown />
 					</td>

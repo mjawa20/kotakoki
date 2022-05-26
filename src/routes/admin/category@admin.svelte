@@ -48,7 +48,7 @@
 	async function onCellClick(row) {
 		alert(JSON.stringify(row));
 		console.log(filteredCollections);
-		await load()
+		await load();
 	}
 
 	function onPageChange(event) {
@@ -66,7 +66,9 @@
 		sorting = { dir: event.detail.dir, key: event.detail.key };
 		await load(page);
 	}
-
+	const clear = () => {
+		nameValue = '';
+	};
 	const handlePost = async () => {
 		let newCategory = {
 			name: nameValue
@@ -74,13 +76,14 @@
 		await postCategory(newCategory);
 		show = false;
 		await load(page, 'created');
+		clear();
 	};
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Category</h3>
-		<Modal on:submit={handlePost} bind:show title="Category">
+		<Modal on:submit={handlePost} bind:show title="Category" {clear}>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={nameValue} />
 			</div>

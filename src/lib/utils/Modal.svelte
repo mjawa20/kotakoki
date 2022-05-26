@@ -5,12 +5,14 @@
 
 	export let show = false;
 	export let title;
+	export let clear;
 	const handleShow = () => {
 		show = true;
 	};
 
 	const close = () => {
 		show = false;
+		clear();
 	};
 
 	const dispatch = createEventDispatcher();
