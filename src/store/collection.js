@@ -21,3 +21,11 @@ export const postCollection = async (newCollections) => {
 		console.error(error.response);
 	}
 }
+
+export const deleteCollection = async (id) => {
+	try {
+		await axios.delete('/api/collection/' + id)
+	} catch (error) {
+		console.error(error.response);
+	}
+}

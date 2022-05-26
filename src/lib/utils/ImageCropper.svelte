@@ -75,7 +75,6 @@
 				type="button"
 				on:click={async () => {
 					croppedImage = await getCroppedImg(image, pixelCrop, true);
-					console.log(croppedImage);
 				}}
 			>
 				<i class="fas fa-crop" /> Crop

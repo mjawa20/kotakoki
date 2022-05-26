@@ -4,12 +4,17 @@
 	import { onMount } from 'svelte';
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
-	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
-	import { fetchCollections, collections, postCollection } from '../../store/collection';
+	import {
+		fetchCollections,
+		collections,
+		postCollection,
+		deleteCollection
+	} from '../../store/collection';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
 	import ImageCropper from '$lib/utils/ImageCropper.svelte';
 	import ImageModal from '$lib/utils/ImageModal.svelte';
+	import Actions from '../../lib/dropdowns/Actions.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -77,8 +82,23 @@
 		};
 		await postCollection(newCollection);
 		show = false;
+		await load();
+	};
+
+	const handleUpdate = async () => {};
+	const handleDelete = async (id) => {
+		await deleteCollection(id);
 		await load()
 	};
+
+	const rowActions = [
+		{
+			name: 'Delete',
+			function: async (id) => {
+				// add confirmation dialog, delete when ok
+				await handleDelete(id)}
+		}
+	];
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
@@ -106,13 +126,13 @@
 		</thead>
 		<tbody>
 			{#each rows2 as row, index (row)}
-				<Row {index} on:click={() => onCellClick(row)}>
+				<Row {index}>
 					<td data-label="Name">{row.name}</td>
 					<td data-label="Image">
 						<ImageModal src={row.imageUrl}/>
 					</td>
 					<td>
-						<TableDropdown />
+						<Actions key={row.id} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}
