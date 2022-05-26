@@ -20,3 +20,18 @@ export const postCategory = async (newCategory) => {
 		console.error(error.response);
 	}
 }
+
+export const deleteCategory = async (id) => {
+	try {
+		await axios.delete('/api/category/' + id)
+	} catch (error) {
+		console.error(error.response);
+	}
+}
+export const updateCategory = async (newCategory) => {
+	try {
+		await axios.put('/api/category/', newCategory)
+	} catch (error) {
+		console.error(error.response);
+	}
+}

@@ -6,9 +6,17 @@
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import { fetchCollections, collections } from '../../store/collection';
-	import { fetchCategories, categories, postCategory } from '../../store/category';
+	import {
+		fetchCategories,
+		categories,
+		postCategory,
+		deleteCategory,
+		updateCategory
+	} from '../../store/category';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
+	import Alert from '../../lib/utils/Alert.svelte';
+	import Actions from '../../lib/dropdowns/Actions.svelte';
 
 	let rows = [];
 	let page = 0;
@@ -21,6 +29,11 @@
 	let sorting;
 	let show;
 	let nameValue = '';
+
+	let typeAlert = '';
+	let messageAlert = '';
+	let isShowAlert = false;
+	let methodType = '';
 
 	let filteredCategories = [];
 
@@ -69,6 +82,15 @@
 	const clear = () => {
 		nameValue = '';
 	};
+	const showAlert = (message, type) => {
+		isShowAlert = true;
+		messageAlert = message;
+		typeAlert = type;
+
+		setTimeout(() => {
+			isShowAlert = false;
+		}, 3000);
+	};
 	const handlePost = async () => {
 		let newCategory = {
 			name: nameValue
@@ -77,13 +99,58 @@
 		show = false;
 		await load(page, 'created');
 		clear();
+		showAlert('Added Data has Successfully', 'success');
 	};
+
+	const handleDelete = async (id) => {
+		await deleteCategory(id);
+		await load();
+		showAlert('Delete Data Successfully', 'success');
+	};
+	const handleUpdate = async (id) => {
+		let newCategory = {
+			id: id,
+			name: nameValue
+		};
+
+		await updateCategory(newCategory);
+		show = false;
+		await load();
+
+		showAlert('update Data has Successfully', 'success');
+	};
+
+	const rowActions = [
+		{
+			name: 'Delete',
+			function: async (id) => {
+				// add confirmation dialog, delete when ok
+				await handleDelete(id);
+			}
+		},
+		{
+			name: 'Update',
+			function: (id) => {
+				show = true;
+				methodType = 'update';
+				const selectCollection = $categories.find((x) => x.id === id);
+				nameValue = selectCollection.name;
+			}
+		}
+	];
 </script>
+
+<Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Category</h3>
-		<Modal on:submit={handlePost} bind:show title="Category" {clear}>
+		<Modal
+			on:submit={methodType === 'post' ? handlePost : handleUpdate}
+			bind:show
+			title="Category"
+			{clear}
+		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={nameValue} />
 			</div>
@@ -104,11 +171,11 @@
 		</thead>
 		<tbody>
 			{#each rows2 as row, index (row)}
-				<Row {index} on:click={() => onCellClick(row)}>
+				<Row {index}>
 					<td data-label="Id">{row.id}</td>
 					<td data-label="Name">{row.name}</td>
 					<td>
-						<TableDropdown />
+						<Actions key={row.id} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}

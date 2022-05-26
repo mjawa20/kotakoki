@@ -22,3 +22,11 @@ export const postProduct = async (newProduct) => {
 		console.log(error.response);
 	}
 }
+
+export const deleteProduct = async (id) => {
+	try {
+		await axios.delete('/api/product/' + id)
+	} catch (error) {
+		console.error(error.response);
+	}
+}

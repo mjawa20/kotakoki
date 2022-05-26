@@ -6,11 +6,13 @@
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import Modal from '../../lib/utils/Modal.svelte';
-	import { products, fetchProduct, postProduct } from '../../store/product';
+	import { products, fetchProduct, postProduct, deleteProduct } from '../../store/product';
 	import Input from '../../lib/utils/Input.svelte';
 	import SelectItem from '../../lib/utils/SelectItem.svelte';
 	import { collections, fetchCollections } from '../../store/collection';
 	import { categories, fetchCategories } from '../../store/category';
+	import Alert from '../../lib/utils/Alert.svelte';
+	import Actions from '../../lib/dropdowns/Actions.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -25,6 +27,11 @@
 	let descValue = '';
 	let collectionId;
 	let categoryId;
+
+	let typeAlert = '';
+	let messageAlert = '';
+	let isShowAlert = false;
+
 	$: show = false;
 
 	$: {
@@ -66,12 +73,22 @@
 	}
 
 	const clear = () => {
-		nameValue = "";
-		 priceValue  = "";
-		 descValue = "";
-		 collectionId = null;
-		 categoryId = null;
-	}
+		nameValue = '';
+		priceValue = '';
+		descValue = '';
+		collectionId = null;
+		categoryId = null;
+	};
+
+	const showAlert = (message, type) => {
+		isShowAlert = true;
+		messageAlert = message;
+		typeAlert = type;
+
+		setTimeout(() => {
+			isShowAlert = false;
+		}, 3000);
+	};
 
 	const handlePost = async () => {
 		let newProduct = {
@@ -81,13 +98,34 @@
 			collectionId: collectionId,
 			categoryId: categoryId
 		};
+
 		await postProduct(newProduct);
 		show = false;
+
 		await load();
 		clear();
+
+		showAlert('Added Data has Successfully', 'success');
 	};
+
+	const handleDelete = async (id) => {
+		await deleteProduct(id);
+		await load();
+		showAlert('Delete Data Successfully', 'success');
+	};
+
+	const rowActions = [
+		{
+			name: 'Delete',
+			function: async (id) => {
+				// add confirmation dialog, delete when ok
+				await handleDelete(id);
+			}
+		}
+	];
 </script>
 
+<Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
@@ -163,7 +201,7 @@
 							: 'Not register'}</td
 					>
 					<td>
-						<TableDropdown />
+						<Actions key={row.id} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}

@@ -1,4 +1,4 @@
-	<script>
+<script>
 	import { createEventDispatcher } from 'svelte';
 
 	import { fly } from 'svelte/transition';
@@ -6,8 +6,11 @@
 	export let show = false;
 	export let title;
 	export let clear;
+	export let methodType;
+
 	const handleShow = () => {
 		show = true;
+		methodType = 'post';
 	};
 
 	const close = () => {
@@ -41,6 +44,7 @@
 					class="inline-block px-6 py-1.5 border-2 border-gray-400 text-gray-400 font-medium text-xs leading-tight uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
 					>cancel</button
 				>
+
 				<button
 					on:click={() => dispatch('submit')}
 					type="button"

@@ -8,13 +8,15 @@
 		fetchCollections,
 		collections,
 		postCollection,
-		deleteCollection
+		deleteCollection,
+		updateCollection
 	} from '../../store/collection';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
 	import ImageCropper from '$lib/utils/ImageCropper.svelte';
 	import ImageModal from '$lib/utils/ImageModal.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
+	import Alert from '../../lib/utils/Alert.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -28,6 +30,12 @@
 	let show;
 	let nameValue = '';
 	let imageValue = '';
+
+	let typeAlert = '';
+	let messageAlert = '';
+	let isShowAlert = false;
+
+	let methodType = '';
 
 	let filteredCollections = [];
 
@@ -80,6 +88,16 @@
 		croppedImage = null;
 	};
 
+	const showAlert = (message, type) => {
+		isShowAlert = true;
+		messageAlert = message;
+		typeAlert = type;
+
+		setTimeout(() => {
+			isShowAlert = false;
+		}, 3000);
+	};
+
 	const handlePost = async () => {
 		let newCollection = {
 			name: nameValue,
@@ -88,12 +106,31 @@
 		await postCollection(newCollection);
 		show = false;
 		await load();
+
+		showAlert('Added Data has Successfully', 'success');
 	};
 
-	const handleUpdate = async () => {};
+	// const handleUpdate = async (id) => {
+	// 	const selectCollection = $collections.find((x) => x.id === id);
+	// 	nameValue = selectCollection.name;
+	// 	// imageUrl = 
+	// 	let newCollection = {
+	// 		id: id,
+	// 		name: nameValue,
+	// 		imageUrl: croppedImage
+	// 	};
+
+	// 	await updateCollection(newCollection);
+	// 	show = false;
+	// 	await load();
+
+	// 	showAlert('update Data has Successfully', 'success');
+	// };
+
 	const handleDelete = async (id) => {
 		await deleteCollection(id);
 		await load();
+		showAlert('Delete Data Successfully', 'success');
 	};
 
 	const rowActions = [
@@ -103,14 +140,31 @@
 				// add confirmation dialog, delete when ok
 				await handleDelete(id);
 			}
+		},
+		{
+			name: 'Update',
+			function: () => {
+				show = true;
+				methodType = 'update';
+			}
 		}
 	];
+
+	$: console.log(methodType);
 </script>
+
+<Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Collections</h3>
-		<Modal on:submit={handlePost} bind:show title="Collection" {clear}>
+		<Modal
+			on:submit={methodType === 'post' ? handlePost : handleUpdate}
+			bind:show
+			title="Collection"
+			{clear}
+			bind:methodType
+		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={nameValue} />
 				<ImageCropper bind:croppedImage />

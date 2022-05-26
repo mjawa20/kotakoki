@@ -29,3 +29,11 @@ export const deleteCollection = async (id) => {
 		console.error(error.response);
 	}
 }
+
+export const updateCollection = async (newCollection) => {
+	try {
+		await axios.put('/api/collection/',newCollection)
+	} catch (error) {
+		console.error(error.response);
+	}
+}
