@@ -28,8 +28,11 @@ export const filterBuilder = (url) => {
 	const limit = +url.searchParams.get('limit')
 	const keyword = url.searchParams.get('keyword')
 	const selectors = url.searchParams.get('selectors')
+	const dir = url.searchParams.get('dir')
+	const key = url.searchParams.get('key')
 	
 	if ((offset || offset === 0) && limit) filter = { offset, limit }
 	if (keyword && selectors) filter = { where: whereBuilder(selectors, keyword), ...filter }
+	if (dir && key) filter = { order: [[key, dir]] }
 	return filter
 }

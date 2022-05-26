@@ -56,7 +56,7 @@
 	});
 
 	async function load(_page) {
-		await fetchCollections({ offset: _page * pageSize, limit: pageSize, selectors, keyword: text });
+		await fetchCollections({ offset: _page * pageSize, limit: pageSize, selectors, keyword: text, ...sorting });
 		loading = true;
 		rows = [...filteredCollections.rows];
 		rowsCount = filteredCollections.count;
@@ -151,7 +151,10 @@
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={collection.name} />
-				<ImageCropper bind:croppedImage={collection.imageUrl} bind:status={collection.updateImage}/>
+				<ImageCropper
+					bind:croppedImage={collection.imageUrl}
+					bind:status={collection.updateImage}
+				/>
 			</div>
 		</Modal>
 	</div>

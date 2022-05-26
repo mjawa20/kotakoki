@@ -43,16 +43,19 @@
 	$: {
 		filteredCategories = $categories;
 	}
-	$: {
-		showAlert(methodType);
-	}
 
 	onMount(async () => {
 		await load(page);
 	});
 
 	async function load(_page) {
-		await fetchCategories({ offset: _page * pageSize, limit: pageSize, selectors, keyword: text });
+		await fetchCategories({
+			offset: _page * pageSize,
+			limit: pageSize,
+			selectors,
+			keyword: text,
+			...sorting
+		});
 		loading = true;
 		rows = [...filteredCategories.rows];
 		rowsCount = filteredCategories.count;
@@ -167,9 +170,12 @@
 			<tr>
 				<th width="50%">
 					Id
+					<Sort key="id" on:sort={onSort} />
+				</th>
+				<th width="50%">
+					Name
 					<Sort key="name" on:sort={onSort} />
 				</th>
-				<th width="50%"> Name </th>
 			</tr>
 		</thead>
 		<tbody>
