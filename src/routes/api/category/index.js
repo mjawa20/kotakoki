@@ -1,9 +1,9 @@
 import db from '../../../../db';
-import { responseBuilder } from '../_api';
+import { filterBuilder, responseBuilder } from '../_api';
 
-export async function get() {
+export async function get({ url }) {
 	try {
-		const categories = await db.models.category.findAll();
+		const categories = await db.models.category.findAndCountAll({ ...filterBuilder(url) });
 		return responseBuilder(200, 'success', categories);
 	} catch (error) {
 		return responseBuilder(400, error);

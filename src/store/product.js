@@ -1,13 +1,14 @@
 import axios from "axios";
 import { writable } from "svelte/store";
+import { objectToQueryParam } from "../utils";
 
 const url = '/api/product';
 
 export const products = writable([]);
 
-export const fetchProduct = async () => {
+export const fetchProduct = async (query) => {
 	try {
-		const res = await axios.get(url);
+		const res = await axios.get(`${url}?${objectToQueryParam(query)}`);
 		const body = await res.data;
 		products.set(body.data);
 	} catch (error) {

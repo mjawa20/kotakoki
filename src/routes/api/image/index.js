@@ -1,9 +1,9 @@
 import db from '../../../../db';
-import { responseBuilder } from '../_api';
+import { filterBuilder, responseBuilder } from '../_api';
 
-export async function get() {
+export async function get(url) {
 	try {
-		const products = await db.models.image.findAll();
+		const products = await db.models.image.findAndCountAll({ ...filterBuilder(url) });
 		return responseBuilder(200, 'success', products);
 	} catch (error) {
 		return responseBuilder(400, error);

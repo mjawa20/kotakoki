@@ -1,13 +1,14 @@
 import db from '../../../../db';
-import { responseBuilder } from '../_api';
+import { filterBuilder, responseBuilder } from '../_api';
 import { uid } from 'uid';
 import { uploadBase64 } from '../../../utils';
 
-export async function get() {
+export async function get({ url }) {
 	try {
-		const collections = await db.models.collection.findAll();
+		const collections = await db.models.collection.findAndCountAll({ ...filterBuilder(url) });
 		return responseBuilder(200, 'success', collections);
 	} catch (error) {
+		console.log(error);
 		return responseBuilder(400, error);
 	}
 }

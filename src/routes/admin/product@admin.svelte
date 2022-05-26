@@ -28,7 +28,7 @@
 	$: show = false;
 
 	$: {
-		filteredProducts = [...$products];
+		filteredProducts = $products;
 	}
 
 	onMount(async () => {
@@ -40,8 +40,8 @@
 		await fetchCategories();
 		await fetchProduct();
 		loading = true;
-		rows = filteredProducts;
-		rowsCount = filteredProducts.length;
+		rows = [...filteredProducts.rows];
+		rowsCount = filteredProducts.count;
 		loading = false;
 	}
 
