@@ -46,6 +46,9 @@ export const clearData = (data) => {
         case 'number':
           data[key] = 0
           break;
+        case 'boolean':
+          data[key] = false
+          break;
       }
     }
   })
