@@ -19,7 +19,7 @@
 	let rows = [];
 	let page = 0; //first page
 	let pageIndex = 0; //first row
-	let pageSize = 1000; //optional, 10 by default
+	let pageSize = 10; //optional, 10 by default
 
 	let loading = true;
 	let rowsCount = 0;
@@ -27,30 +27,25 @@
 	let sorting;
 	let show;
 	let nameValue = '';
-	let imageValue = '';
+	const selectors = 'name';
 
-	let filteredCollections = [];
+	let filteredCollections = { rows: [], count: 0 };
 
 	let croppedImage;
 
 	$: {
-		if (false) {
-			// filteredCollections = $collections.filter((collection) => collection.name.toLowerCase().includes(searchTerm.toLowerCase()));
-		} else {
-			filteredCollections = [...$collections];
-		}
+		filteredCollections = $collections;
 	}
 
 	onMount(async () => {
-		filteredCollections = [...$collections];
 		await load(page);
 	});
 
 	async function load(_page) {
-		await fetchCollections();
+		await fetchCollections({ offset: _page * pageSize, limit: pageSize, selectors, keyword: text });
 		loading = true;
-		rows = filteredCollections;
-		rowsCount = filteredCollections.length;
+		rows = [...filteredCollections.rows];
+		rowsCount = filteredCollections.count;
 		loading = false;
 	}
 
