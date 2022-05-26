@@ -8,6 +8,7 @@
 	import { fetchCollections, collections, postCollection } from './../../store/collectionstore';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
+	import ImageCropper from '../../lib/utils/ImageCropper.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -24,12 +25,18 @@
 
 	let filteredCollections = [];
 
+	let croppedImage;
+
 	$: {
 		if (false) {
 			// filteredCollections = $collections.filter((collection) => collection.name.toLowerCase().includes(searchTerm.toLowerCase()));
 		} else {
 			filteredCollections = [...$collections];
 		}
+	}
+
+	$: {
+		
 	}
 
 	onMount(async () => {
@@ -70,7 +77,7 @@
 	const handlePost = () => {
 		let newCollection = {
 			name: nameValue,
-			imageUrl: imageValue
+			imageUrl: croppedImage
 		};
 		console.log(newCollection);
 		postCollection(newCollection);
@@ -84,7 +91,7 @@
 		<Modal on:submit={handlePost} bind:show title="Collection">
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={nameValue} />
-				<Input type="text" placeholder="Image" bind:value={imageValue} />
+				<ImageCropper bind:croppedImage />
 			</div>
 		</Modal>
 	</div>
@@ -105,7 +112,7 @@
 			{#each rows2 as row, index (row)}
 				<Row {index} on:click={() => onCellClick(row)}>
 					<td data-label="Name">{row.name}</td>
-					<td data-label="Image">{row.imageUrl}</td>
+					<td data-label="Image"><img src="{row.imageUrl}" alt="" srcset=""></td>
 					<td>
 						<TableDropdown />
 					</td>

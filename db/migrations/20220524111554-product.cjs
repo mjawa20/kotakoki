@@ -32,7 +32,7 @@ module.exports = {
 						model: 'category',
 						key: 'id'
 					},
-					onDelete: 'NO ACTION'
+					onDelete: 'SET NULL'
 				},
 				collectionId: {
 					allowNull: true,
@@ -41,7 +41,7 @@ module.exports = {
 						model: 'collection',
 						key: 'id'
 					},
-					onDelete: 'NO ACTION'
+					onDelete: 'SET NULL'
 				},
 				createdAt: {
 					allowNull: false,
