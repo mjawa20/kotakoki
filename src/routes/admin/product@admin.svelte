@@ -66,12 +66,12 @@
 	}
 
 	const clear = () => {
-		nameValue = "";
-		 priceValue  = "";
-		 descValue = "";
-		 collectionId = null;
-		 categoryId = null;
-	}
+		nameValue = '';
+		priceValue = '';
+		descValue = '';
+		collectionId = null;
+		categoryId = null;
+	};
 
 	const handlePost = async () => {
 		let newProduct = {
@@ -154,13 +154,13 @@
 					<td data-label="Description">{row.description}</td>
 					<td data-label="Category">
 						{row.categoryId
-							? $categories.find((x) => x.id === row.categoryId).name
-							: 'Not register'}
+							? $categories?.rows.find((x) => x.id === row.categoryId).name
+							: '-'}
 					</td>
 					<td data-label="Collection"
 						>{row.collectionId
-							? $collections.find((x) => x.id === row.collectionId).name
-							: 'Not register'}</td
+							? $collections?.rows.find((x) => x.id === row.collectionId).name
+							: '-'}</td
 					>
 					<td>
 						<TableDropdown />
