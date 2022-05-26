@@ -17,6 +17,7 @@
 	import Input from '$lib/utils/Input.svelte';
 	import Alert from '../../lib/utils/Alert.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
+	import Confirm from '../../lib/utils/Confirm.svelte';
 
 	let rows = [];
 	let page = 0;
@@ -35,6 +36,8 @@
 	let messageAlert = '';
 	let isShowAlert = false;
 	let methodType = '';
+	let confirm = false;
+	let showConfirm = false;
 
 	let selectedCategory;
 
@@ -42,9 +45,6 @@
 
 	$: {
 		filteredCategories = $categories;
-	}
-	$: {
-		showAlert(methodType);
 	}
 
 	onMount(async () => {
@@ -126,8 +126,8 @@
 		{
 			name: 'Delete',
 			function: async (id) => {
-				// add confirmation dialog, delete when ok
-				await handleDelete(id);
+				showConfirm = true;
+				if (confirm) await handleDelete(id);
 			}
 		},
 		{
@@ -143,6 +143,7 @@
 </script>
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
+<Confirm bind:showConfirm bind:confirm />
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">

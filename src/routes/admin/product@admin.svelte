@@ -6,13 +6,20 @@
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import Modal from '../../lib/utils/Modal.svelte';
-	import { products, fetchProduct, postProduct, deleteProduct } from '../../store/product';
+	import {
+		products,
+		fetchProduct,
+		postProduct,
+		deleteProduct,
+		updateProduct
+	} from '../../store/product';
 	import Input from '../../lib/utils/Input.svelte';
 	import SelectItem from '../../lib/utils/SelectItem.svelte';
 	import { collections, fetchCollections } from '../../store/collection';
 	import { categories, fetchCategories } from '../../store/category';
 	import Alert from '../../lib/utils/Alert.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
+	import Confirm from '../../lib/utils/Confirm.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -22,15 +29,23 @@
 	let loading = true;
 	let rowsCount = 0;
 	let filteredProducts = [];
-	let nameValue = '';
-	let priceValue;
-	let descValue = '';
-	let collectionId;
-	let categoryId;
 
 	let typeAlert = '';
 	let messageAlert = '';
 	let isShowAlert = false;
+
+	let confirm = false;
+	let showConfirm = false;
+
+	let methodType = '';
+	let product = {
+		id: '',
+		name: '',
+		price: '',
+		description: '',
+		collectionId: null,
+		categoryId: null
+	};
 
 	$: show = false;
 
@@ -81,15 +96,7 @@
 	};
 
 	const handlePost = async () => {
-		let newProduct = {
-			name: nameValue,
-			price: priceValue,
-			description: descValue,
-			collectionId: collectionId,
-			categoryId: categoryId
-		};
-
-		await postProduct(newProduct);
+		await postProduct(product);
 		show = false;
 
 		await load();
@@ -104,38 +111,65 @@
 		showAlert('Delete Data Successfully', 'success');
 	};
 
+	const handleUpdate = async (id) => {
+		await updateProduct(product);
+		show = false;
+		await load();
+
+		showAlert('update Data has Successfully', 'success');
+	};
+
 	const rowActions = [
 		{
 			name: 'Delete',
 			function: async (id) => {
-				// add confirmation dialog, delete when ok
-				await handleDelete(id);
+				showConfirm = true;
+				if(confirm) await handleDelete(id);
+			}
+		},
+		{
+			name: 'Update',
+			function: async (selectedProduct) => {
+				methodType = 'update';
+				product = { ...selectedProduct };
+				show = true;
+				console.log(product);
 			}
 		}
 	];
 </script>
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
+<Confirm bind:showConfirm bind:confirm />
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
-		<Modal on:submit={handlePost} bind:show title="Product" {clear}>
+		<Modal
+			on:submit={methodType === 'post' ? handlePost : handleUpdate}
+			bind:show
+			title="Product"
+			{clear}
+		>
 			<div class="px-5">
-				<Input type="text" placeholder="Name" bind:value={nameValue} />
+				<Input type="text" placeholder="Name" bind:value={product.name} />
 				<input
 					placeholder="Price"
 					type="number"
 					class="mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
-					bind:value={priceValue}
+					bind:value={product.price}
 				/>
 				<textarea
 					placeholder="Description"
 					class="mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
-					bind:value={descValue}
+					bind:value={product.description}
 				/>
 				<div class="inline-flex justify-between w-full gap-3 ">
-					<SelectItem options={$collections} title="Collection" bind:value={collectionId} />
-					<SelectItem options={$categories} title="Category" bind:value={categoryId} />
+					<SelectItem
+						options={$collections.rows}
+						title="Collection"
+						bind:value={product.collectionId}
+					/>
+					<SelectItem options={$categories.rows} title="Category" bind:value={product.categoryId} />
 				</div>
 			</div>
 		</Modal>
@@ -181,9 +215,7 @@
 					<td data-label="Age">{row.price}</td>
 					<td data-label="Description">{row.description}</td>
 					<td data-label="Category">
-						{row.categoryId
-							? $categories?.rows.find((x) => x.id === row.categoryId).name
-							: '-'}
+						{row.categoryId ? $categories?.rows.find((x) => x.id === row.categoryId).name : '-'}
 					</td>
 					<td data-label="Collection"
 						>{row.collectionId
@@ -191,7 +223,7 @@
 							: '-'}</td
 					>
 					<td>
-						<Actions key={row.id} actions={rowActions} />
+						<Actions key={row} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}

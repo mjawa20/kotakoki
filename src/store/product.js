@@ -31,3 +31,11 @@ export const deleteProduct = async (id) => {
 		console.error(error.response);
 	}
 }
+
+export const updateProduct = async (newProduct) => {
+	try {
+		await axios.put('/api/product/',newProduct)
+	} catch (error) {
+		console.error(error.response);
+	}
+}
