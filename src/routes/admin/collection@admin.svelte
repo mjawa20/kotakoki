@@ -109,7 +109,7 @@
 				<Row {index} on:click={() => onCellClick(row)}>
 					<td data-label="Name">{row.name}</td>
 					<td data-label="Image">
-						<ImageModal />
+						<ImageModal src={row.imageUrl}/>
 					</td>
 					<td>
 						<TableDropdown />

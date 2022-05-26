@@ -2,6 +2,7 @@
 	import { fly } from 'svelte/transition';
 
 	let show = false;
+	export let src;
 	const handleShow = () => {
 		show = true;
 	};
@@ -11,11 +12,15 @@
 	};
 </script>
 
-<div class="relative">
-	<p class="absolute -left-5 top-10 z-30 bg-slate-500">click to show</p>
+<div class="group relative w-fit">
+	<p
+		class="rounded text-white group-hover:block hidden absolute -left-5 top-10 z-30 bg-slate-500 text-xs w-max px-2 py-1"
+	>
+		click to show
+	</p>
 	<img
 		on:click={handleShow}
-		src="/assets/img/a.jpg"
+		src={src}
 		alt="..."
 		class="cursor-pointer w-12 h-12 rounded-full border-2 border-gray-50 shadow"
 	/>
@@ -30,6 +35,10 @@
 			<div class="border-b flex justify-between font-bold p-5 ">
 				<h2>Image List</h2>
 				<p class="cursor-pointer" on:click={close}>&#x2715</p>
+			</div>
+			<div class="p-5">
+
+				<img src={src} alt="" class="bg-black">
 			</div>
 		</div>
 	</div>
