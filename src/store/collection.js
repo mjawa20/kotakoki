@@ -15,13 +15,9 @@ export const fetchCollections = async (query) => {
 };
 
 export const postCollection = async (newCollections) => {
-	axios
-		.post('/api/collection', newCollections)
-		.then(function (response) {
-			console.log(response.data);
-			 fetchCollections();
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
+	try {
+		await axios.post('/api/collection', newCollections)
+	} catch (error) {
+		console.error(error.response);
+	}
 }

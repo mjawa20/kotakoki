@@ -5,15 +5,15 @@
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
-	import { fetchCollections, collections } from './../../store/collectionstore';
-	import { fetchCategories, categories, postCategory } from './../../store/categorystore';
+	import { fetchCollections, collections } from '../../store/collection';
+	import { fetchCategories, categories, postCategory } from '../../store/category';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
 
 	let rows = [];
 	let page = 0;
 	let pageIndex = 0;
-	let pageSize = 10;
+	let pageSize = 100;
 
 	let loading = true;
 	let rowsCount = 0;
@@ -25,7 +25,9 @@
 	let filteredCategories = [];
 
 	$: {
-		if (loading) {
+		if (false) {
+			// filteredCollections = $collections.filter((collection) => collection.name.toLowerCase().includes(searchTerm.toLowerCase()));
+		} else {
 			filteredCategories = [...$categories];
 		}
 	}
@@ -37,7 +39,6 @@
 
 	async function load(_page) {
 		await fetchCategories();
-		console.log(filteredCategories);
 		loading = true;
 		rows = filteredCategories;
 		rowsCount = filteredCategories.length;
@@ -47,6 +48,7 @@
 	async function onCellClick(row) {
 		alert(JSON.stringify(row));
 		console.log(filteredCollections);
+		await load()
 	}
 
 	function onPageChange(event) {
@@ -69,9 +71,9 @@
 		let newCategory = {
 			name: nameValue
 		};
-		postCategory(newCategory);
+		await postCategory(newCategory);
 		show = false;
-		await load(page);
+		await load(page, 'created');
 	};
 </script>
 

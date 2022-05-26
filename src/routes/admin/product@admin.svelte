@@ -3,14 +3,14 @@
 	//Sort component is optional
 	import { onMount } from 'svelte';
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
-	import { getData } from '$lib/table/server.js';
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import Modal from '../../lib/utils/Modal.svelte';
-	import { product, fetchProduct, postProduct } from '../../store/productstore';
+	import { products, fetchProduct, postProduct } from '../../store/product';
 	import Input from '../../lib/utils/Input.svelte';
 	import SelectItem from '../../lib/utils/SelectItem.svelte';
-	import { collections, fetchCollections } from '../../store/collectionstore';
+	import { collections, fetchCollections } from '../../store/collection';
+	import { categories, fetchCategories } from '../../store/category';
 
 	let rows = [];
 	let page = 0; //first page
@@ -24,10 +24,11 @@
 	let priceValue;
 	let descValue = '';
 	let collectionId;
+	let categoryId;
 	$: show = false;
 
 	$: {
-		filteredProducts = [...$product];
+		filteredProducts = [...$products];
 	}
 
 	onMount(async () => {
@@ -36,6 +37,7 @@
 
 	async function load(_page) {
 		await fetchCollections();
+		await fetchCategories();
 		await fetchProduct();
 		loading = true;
 		rows = filteredProducts;
@@ -63,15 +65,17 @@
 		await load(page);
 	}
 
-	const handlePost = () => {
+	const handlePost = async () => {
 		let newProduct = {
 			name: nameValue,
 			price: priceValue,
 			description: descValue,
-			collectionId: collectionId
+			collectionId: collectionId,
+			categoryId: categoryId
 		};
-		postProduct(newProduct);
+		await postProduct(newProduct);
 		show = false;
+		await load()
 	};
 </script>
 
@@ -94,7 +98,7 @@
 				/>
 				<div class="inline-flex justify-between w-full gap-3 ">
 					<SelectItem options={$collections} title="Collection" bind:value={collectionId} />
-					<SelectItem title="Category" />
+					<SelectItem options={$categories} title="Category" bind:value={categoryId} />
 				</div>
 			</div>
 		</Modal>
@@ -139,8 +143,8 @@
 					<td data-label="Name">{row.name}</td>
 					<td data-label="Age">{row.price}</td>
 					<td data-label="Description">{row.description}</td>
-					<td data-label="Category">{row.category}</td>
-					<td data-label="Collection">{row.collection}</td>
+					<td data-label="Category">{$categories.find(x => x.id === row.categoryId).name}</td>
+					<td data-label="Collection">{$collections.find(x => x.id === row.collectionId).name}</td>
 					<td>
 						<TableDropdown />
 					</td>
