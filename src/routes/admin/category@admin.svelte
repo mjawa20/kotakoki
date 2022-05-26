@@ -36,10 +36,15 @@
 	let isShowAlert = false;
 	let methodType = '';
 
+	let selectedCategory;
+
 	let filteredCategories = { rows: [], count: 0 };
 
 	$: {
 		filteredCategories = $categories;
+	}
+	$: {
+		showAlert(methodType);
 	}
 
 	onMount(async () => {
@@ -103,9 +108,10 @@
 		await load();
 		showAlert('Delete Data Successfully', 'success');
 	};
+
 	const handleUpdate = async (id) => {
 		let newCategory = {
-			id: id,
+			id: selectedCategory.id,
 			name: nameValue
 		};
 
@@ -129,8 +135,8 @@
 			function: (id) => {
 				show = true;
 				methodType = 'update';
-				const selectCollection = $categories.find((x) => x.id === id);
-				nameValue = selectCollection.name;
+				selectedCategory = $categories.rows.find((x) => x.id === id);
+				nameValue = selectedCategory.name;
 			}
 		}
 	];
@@ -144,6 +150,7 @@
 		<Modal
 			on:submit={methodType === 'post' ? handlePost : handleUpdate}
 			bind:show
+			bind:methodType
 			title="Category"
 			{clear}
 		>

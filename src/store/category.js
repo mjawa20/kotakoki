@@ -31,7 +31,7 @@ export const deleteCategory = async (id) => {
 }
 export const updateCategory = async (newCategory) => {
 	try {
-		await axios.put('/api/category/', newCategory)
+		await axios.put('/api/category', newCategory)
 	} catch (error) {
 		console.error(error.response);
 	}
