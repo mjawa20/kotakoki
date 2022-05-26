@@ -9,6 +9,7 @@
 	let image, fileinput, pixelCrop;
 	export let placeHolder = 'Select a photo';
 	export let croppedImage;
+	export let status = false;
 
 	onMount(async () => {
 		if (croppedImage) {
@@ -42,6 +43,7 @@
 	function reset() {
 		croppedImage = null;
 		image = null;
+		status = false
 	}
 </script>
 
@@ -89,6 +91,7 @@
 				type="button"
 				on:click={async () => {
 					croppedImage = await getCroppedImg(image, pixelCrop, true);
+					status = true
 				}}
 			>
 				<i class="fas fa-crop" /> Crop
