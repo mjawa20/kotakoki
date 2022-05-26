@@ -1,5 +1,7 @@
 import db from '../../../../db';
 import { responseBuilder } from '../_api';
+import { uid } from 'uid';
+import { uploadBase64 } from '../../../utils';
 
 export async function get() {
 	try {
@@ -13,6 +15,11 @@ export async function get() {
 export async function post({ request }) {
 	try {
 		const collection = await request.json();
+		const dir = 'static/assets/upload/img/collection';
+		const name = uid()
+		const base64 = collection.imageUrl
+		uploadBase64(dir, name, base64)
+		collection.imageUrl = `${dir.replace('static', '')}/${name}.png`
 		await db.models.collection.create(collection);
 		return responseBuilder(200, 'collection has been created', collection);
 	} catch (error) {

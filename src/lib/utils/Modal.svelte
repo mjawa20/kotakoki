@@ -1,4 +1,4 @@
-<script>
+	<script>
 	import { createEventDispatcher } from 'svelte';
 
 	import { fly } from 'svelte/transition';
@@ -26,7 +26,7 @@
 			transition:fly={{ y: 200, duration: 400 }}
 			class="absolute bg-white w-screen left-0 top-0 h-screen z-50 min-w-max sm:w-96 sm:h-fit sm:shadow-md sm:mb-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2 backdrop-blur-xl "
 		>
-			<div class="border-b flex justify-between font-bold p-5 ">
+			<div class="border-b flex justify-between font-bold p-5  mb-5">
 				<h2>Add Project</h2>
 				<p class="cursor-pointer" on:click={close}>&#x2715</p>
 			</div>
