@@ -35,7 +35,7 @@
 	$: show = false;
 
 	$: {
-		filteredProducts = [...$products];
+		filteredProducts = $products;
 	}
 
 	onMount(async () => {
@@ -47,8 +47,8 @@
 		await fetchCategories();
 		await fetchProduct();
 		loading = true;
-		rows = filteredProducts;
-		rowsCount = filteredProducts.length;
+		rows = [...filteredProducts.rows];
+		rowsCount = filteredProducts.count;
 		loading = false;
 	}
 
@@ -78,16 +78,6 @@
 		descValue = '';
 		collectionId = null;
 		categoryId = null;
-	};
-
-	const showAlert = (message, type) => {
-		isShowAlert = true;
-		messageAlert = message;
-		typeAlert = type;
-
-		setTimeout(() => {
-			isShowAlert = false;
-		}, 3000);
 	};
 
 	const handlePost = async () => {
@@ -192,13 +182,13 @@
 					<td data-label="Description">{row.description}</td>
 					<td data-label="Category">
 						{row.categoryId
-							? $categories.find((x) => x.id === row.categoryId).name
-							: 'Not register'}
+							? $categories?.rows.find((x) => x.id === row.categoryId).name
+							: '-'}
 					</td>
 					<td data-label="Collection"
 						>{row.collectionId
-							? $collections.find((x) => x.id === row.collectionId).name
-							: 'Not register'}</td
+							? $collections?.rows.find((x) => x.id === row.collectionId).name
+							: '-'}</td
 					>
 					<td>
 						<Actions key={row.id} actions={rowActions} />

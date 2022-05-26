@@ -29,32 +29,28 @@
 	let sorting;
 	let show;
 	let nameValue = '';
+	const selectors = 'name';
 
 	let typeAlert = '';
 	let messageAlert = '';
 	let isShowAlert = false;
 	let methodType = '';
 
-	let filteredCategories = [];
+	let filteredCategories = { rows: [], count: 0 };
 
 	$: {
-		if (false) {
-			// filteredCollections = $collections.filter((collection) => collection.name.toLowerCase().includes(searchTerm.toLowerCase()));
-		} else {
-			filteredCategories = [...$categories];
-		}
+		filteredCategories = $categories;
 	}
 
 	onMount(async () => {
-		filteredCategories = [...$categories];
 		await load(page);
 	});
 
 	async function load(_page) {
-		await fetchCategories();
+		await fetchCategories({ offset: _page * pageSize, limit: pageSize, selectors, keyword: text });
 		loading = true;
-		rows = filteredCategories;
-		rowsCount = filteredCategories.length;
+		rows = [...filteredCategories.rows];
+		rowsCount = filteredCategories.count;
 		loading = false;
 	}
 
