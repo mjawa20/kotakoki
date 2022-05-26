@@ -29,14 +29,17 @@
 	let text;
 	let sorting;
 	let show;
-	let nameValue = '';
 	const selectors = 'name';
+
+	let category = {
+		id: 0,
+		name: ''
+	};
 
 	let typeAlert = '';
 	let messageAlert = '';
 	let isShowAlert = false;
 	let methodType = '';
-	let confirm = false;
 	let showConfirm = false;
 
 	let selectedCategory;
@@ -109,8 +112,8 @@
 		showAlert('Added Data has Successfully', 'success');
 	};
 
-	const handleDelete = async (id) => {
-		await deleteCategory(id);
+	const handleDelete = async () => {
+		await deleteCategory(category.id);
 		await load();
 		showAlert('Delete Data Successfully', 'success');
 	};
@@ -131,9 +134,9 @@
 	const rowActions = [
 		{
 			name: 'Delete',
-			function: async (id) => {
+			function: async (selectedCategory) => {
+				category = selectedCategory;
 				showConfirm = true;
-				if (confirm) await handleDelete(id);
 			}
 		},
 		{
@@ -149,7 +152,7 @@
 </script>
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
-<Confirm bind:showConfirm bind:confirm />
+<Confirm bind:showConfirm onDelete={handleDelete} />
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
@@ -162,7 +165,7 @@
 			{clear}
 		>
 			<div class="px-5">
-				<Input type="text" placeholder="Name" bind:value={nameValue} />
+				<Input type="text" placeholder="Name" bind:value={category.name} />
 			</div>
 		</Modal>
 	</div>

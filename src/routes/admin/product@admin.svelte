@@ -122,9 +122,9 @@
 	const rowActions = [
 		{
 			name: 'Delete',
-			function: async (id) => {
+			function: async (selectedProduct) => {
+				product = selectedProduct
 				showConfirm = true;
-				if(confirm) await handleDelete(id);
 			}
 		},
 		{
@@ -140,7 +140,7 @@
 </script>
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
-<Confirm bind:showConfirm bind:confirm />
+<Confirm bind:showConfirm onDelete={handleDelete} />
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
