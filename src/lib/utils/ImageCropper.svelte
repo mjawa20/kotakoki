@@ -1,4 +1,6 @@
 <script>
+	import { onMount } from 'svelte';
+
 	import Cropper from 'svelte-easy-crop';
 	import getCroppedImg from './canvasUtils';
 
@@ -7,6 +9,18 @@
 	let image, fileinput, pixelCrop;
 	export let placeHolder = 'Select a photo';
 	export let croppedImage;
+
+	onMount(async () => {
+		if (croppedImage) {
+			const res = await fetch(croppedImage);
+			const blob = await res.blob();
+			let reader = new FileReader();
+			reader.onload = (e) => {
+				image = blob;
+			};
+			reader.readAsDataURL(blob);
+		}
+	});
 
 	function onFileSelected(e) {
 		let imageFile = e.target.files[0];
@@ -63,9 +77,9 @@
 {:else}
 	<div class="d-flex ">
 		{#if croppedImage}
-		<div class="w-full mb-2">
-			<img src={croppedImage} alt="Cropped profile" class="object-cover" />
-		</div>
+			<div class="w-full mb-2">
+				<img src={croppedImage} alt="Cropped profile" class="object-cover" />
+			</div>
 		{:else}
 			<div class="relative w-full h-80 mb-2">
 				<Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} aspect={1} />

@@ -17,6 +17,7 @@
 	import ImageModal from '$lib/utils/ImageModal.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
 	import Alert from '../../lib/utils/Alert.svelte';
+	import { clearData } from '../../utils';
 
 	let rows = [];
 	let page = 0; //first page
@@ -28,7 +29,6 @@
 	let text;
 	let sorting;
 	let show;
-	let nameValue = '';
 	const selectors = 'name';
 
 	let typeAlert = '';
@@ -39,7 +39,11 @@
 
 	let filteredCollections = { rows: [], count: 0 };
 
-	let croppedImage;
+	let collection = {
+		id: 0,
+		name: '',
+		imageUrl: ''
+	};
 
 	$: {
 		filteredCollections = $collections;
@@ -78,11 +82,6 @@
 		await load(page);
 	}
 
-	const clear = () => {
-		nameValue = '';
-		croppedImage = null;
-	};
-
 	const showAlert = (message, type) => {
 		isShowAlert = true;
 		messageAlert = message;
@@ -94,11 +93,7 @@
 	};
 
 	const handlePost = async () => {
-		let newCollection = {
-			name: nameValue,
-			imageUrl: croppedImage
-		};
-		await postCollection(newCollection);
+		await postCollection(collection);
 		show = false;
 		await load();
 
@@ -106,20 +101,11 @@
 	};
 
 	const handleUpdate = async (id) => {
-	// 	const selectCollection = $collections.find((x) => x.id === id);
-	// 	nameValue = selectCollection.name;
-	// 	// imageUrl = 
-	// 	let newCollection = {
-	// 		id: id,
-	// 		name: nameValue,
-	// 		imageUrl: croppedImage
-	// 	};
+		await updateCollection(collection);
+		show = false;
+		await load();
 
-	// 	await updateCollection(newCollection);
-	// 	show = false;
-	// 	await load();
-
-	// 	showAlert('update Data has Successfully', 'success');
+		showAlert('update Data has Successfully', 'success');
 	};
 
 	const handleDelete = async (id) => {
@@ -138,9 +124,10 @@
 		},
 		{
 			name: 'Update',
-			function: () => {
-				show = true;
+			function: (selectedCollection) => {
 				methodType = 'update';
+				collection = { ...selectedCollection };
+				show = true;
 			}
 		}
 	];
@@ -157,12 +144,12 @@
 			on:submit={methodType === 'post' ? handlePost : handleUpdate}
 			bind:show
 			title="Collection"
-			{clear}
+			clear={() => clearData(collection)}
 			bind:methodType
 		>
 			<div class="px-5">
-				<Input type="text" placeholder="Name" bind:value={nameValue} />
-				<ImageCropper bind:croppedImage />
+				<Input type="text" placeholder="Name" bind:value={collection.name} />
+				<ImageCropper bind:croppedImage={collection.imageUrl} />
 			</div>
 		</Modal>
 	</div>
@@ -187,7 +174,7 @@
 						<ImageModal src={row.imageUrl} />
 					</td>
 					<td>
-						<Actions key={row.id} actions={rowActions} />
+						<Actions key={row} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}

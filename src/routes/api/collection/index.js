@@ -1,6 +1,5 @@
 import db from '../../../../db';
 import { filterBuilder, responseBuilder } from '../_api';
-import { uid } from 'uid';
 import { uploadBase64 } from '../../../utils';
 
 export async function get({ url }) {
@@ -18,10 +17,7 @@ export async function post({ request }) {
 		const collection = await request.json();
 		if (collection.imageUrl) {
 			const dir = 'static/assets/upload/img/collection';
-			const name = uid()
-			const base64 = collection.imageUrl
-			uploadBase64(dir, name, base64)
-			collection.imageUrl = `${dir.replace('static', '')}/${name}.png`
+			collection.imageUrl = uploadBase64(dir, collection.imageUrl)
 		}
 		await db.models.collection.create(collection);
 		return responseBuilder(200, 'collection has been created', collection);
