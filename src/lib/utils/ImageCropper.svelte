@@ -3,10 +3,12 @@
 
 	import Cropper from 'svelte-easy-crop';
 	import getCroppedImg from './canvasUtils';
-
+	import { clearData } from "./../../utils/index";
+	
 	let crop = { x: 0, y: 0 };
 	let zoom = 1;
 	let image, fileinput, pixelCrop;
+
 	export let placeHolder = 'Select a photo';
 	export let croppedImage;
 	export let status = false;
@@ -43,7 +45,9 @@
 	function reset() {
 		croppedImage = null;
 		image = null;
-		status = false
+		status = false;
+		zoom = 1;
+		clearData(crop)
 	}
 </script>
 
@@ -80,7 +84,7 @@
 	<div class="d-flex ">
 		{#if croppedImage}
 			<div class="w-full mb-2">
-				<img src={croppedImage} alt="Cropped profile" class="object-cover" />
+				<img src={croppedImage} alt="Cropped profile" class="object-cover min-w-full" />
 			</div>
 		{:else}
 			<div class="relative w-full h-80 mb-2">
@@ -91,7 +95,7 @@
 				type="button"
 				on:click={async () => {
 					croppedImage = await getCroppedImg(image, pixelCrop, true);
-					status = true
+					status = true;
 				}}
 			>
 				<i class="fas fa-crop" /> Crop
