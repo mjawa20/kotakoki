@@ -42,7 +42,9 @@
 	let collection = {
 		id: 0,
 		name: '',
-		imageUrl: ''
+		imageUrl: '',
+		updateImage: false,
+		oldImage: ''
 	};
 
 	$: {
@@ -126,7 +128,7 @@
 			name: 'Update',
 			function: (selectedCollection) => {
 				methodType = 'update';
-				collection = { ...selectedCollection };
+				collection = { ...selectedCollection, oldImage: selectedCollection.imageUrl };
 				show = true;
 			}
 		}
@@ -149,7 +151,7 @@
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={collection.name} />
-				<ImageCropper bind:croppedImage={collection.imageUrl} />
+				<ImageCropper bind:croppedImage={collection.imageUrl} bind:status={collection.updateImage}/>
 			</div>
 		</Modal>
 	</div>
