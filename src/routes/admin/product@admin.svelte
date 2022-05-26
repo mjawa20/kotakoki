@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
-	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
 	import Modal from '../../lib/utils/Modal.svelte';
 	import {
 		products,
@@ -20,6 +19,7 @@
 	import Alert from '../../lib/utils/Alert.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
 	import Confirm from '../../lib/utils/Confirm.svelte';
+	import { clearData } from '../../utils';
 
 	let rows = [];
 	let page = 0; //first page
@@ -87,12 +87,14 @@
 		await load(page);
 	}
 
-	const clear = () => {
-		nameValue = '';
-		priceValue = '';
-		descValue = '';
-		collectionId = null;
-		categoryId = null;
+	const showAlert = (message, type) => {
+		isShowAlert = true;
+		messageAlert = message;
+		typeAlert = type;
+
+		setTimeout(() => {
+			isShowAlert = false;
+		}, 3000);
 	};
 
 	const handlePost = async () => {
@@ -100,13 +102,12 @@
 		show = false;
 
 		await load();
-		clear();
 
 		showAlert('Added Data has Successfully', 'success');
 	};
 
-	const handleDelete = async (id) => {
-		await deleteProduct(id);
+	const handleDelete = async () => {
+		await deleteProduct(product.id);
 		await load();
 		showAlert('Delete Data Successfully', 'success');
 	};
@@ -123,7 +124,7 @@
 		{
 			name: 'Delete',
 			function: async (selectedProduct) => {
-				product = selectedProduct
+				product = selectedProduct;
 				showConfirm = true;
 			}
 		},
@@ -148,7 +149,7 @@
 			on:submit={methodType === 'post' ? handlePost : handleUpdate}
 			bind:show
 			title="Product"
-			{clear}
+			clear={() => clearData(product)}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={product.name} />

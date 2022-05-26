@@ -4,8 +4,6 @@
 	import { onMount } from 'svelte';
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
-	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
-	import { fetchCollections, collections } from '../../store/collection';
 	import {
 		fetchCategories,
 		categories,
@@ -191,7 +189,7 @@
 					<td data-label="Id">{row.id}</td>
 					<td data-label="Name">{row.name}</td>
 					<td>
-						<Actions data={row.id} actions={rowActions} />
+						<Actions data={row} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}
