@@ -18,7 +18,7 @@ export const postCollection = async (newCollections) => {
 	axios
 		.post('/api/collection', newCollections)
 		.then(function (response) {
-			console.log(response);
+			console.log(response.data);
 			 fetchCollections();
 		})
 		.catch(function (error) {

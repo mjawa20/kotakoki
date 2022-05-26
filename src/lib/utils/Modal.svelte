@@ -4,6 +4,7 @@
 	import { fly } from 'svelte/transition';
 
 	export let show = false;
+	export let title;
 	const handleShow = () => {
 		show = true;
 	};
@@ -18,7 +19,7 @@
 <button
 	on:click={handleShow}
 	class="bg-blue-400 px-5 py-2 text-sm ml-3 text-white rounded font-medium active:bg-blue-800 active:shadow-lg hover:bg-blue-500 hover:shadow-lg"
-	>Add Project</button
+	>Add {title}</button
 >
 {#if show}
 	<div class=" bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40 ">
@@ -27,7 +28,7 @@
 			class="absolute bg-white w-screen left-0 top-0 h-screen z-50 min-w-max sm:w-96 sm:h-fit sm:shadow-md sm:mb-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2 backdrop-blur-xl "
 		>
 			<div class="border-b flex justify-between font-bold p-5 ">
-				<h2>Add Project</h2>
+				<h2>Add {title}</h2>
 				<p class="cursor-pointer" on:click={close}>&#x2715</p>
 			</div>
 			<slot />

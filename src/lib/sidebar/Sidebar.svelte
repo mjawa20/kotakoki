@@ -92,6 +92,15 @@
 				</li>
 				<li class="inline-flex">
 					<a
+						href="/admin/category"
+						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
+					>
+						<i class="fas fa-tv mr-2 text-gray-300 text-base" />
+						Category
+					</a>
+				</li>
+				<li class="inline-flex">
+					<a
 						href="/admin/collection"
 						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
 					>
