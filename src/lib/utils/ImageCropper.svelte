@@ -29,18 +29,6 @@
 		croppedImage = null;
 		image = null;
 	}
-
-	function blobToBase64(blob) {
-		return new Promise((resolve, _) => {
-			var reader = new FileReader();
-			reader.readAsDataURL(blob);
-			reader.onloadend = function () {
-				var base64data = reader.result;
-				console.log(base64data);
-				return;
-			};
-		});
-	}
 </script>
 
 {#if !image}
@@ -86,7 +74,6 @@
 			type="button"
 			on:click={async () => {
 				croppedImage = await getCroppedImg(image, pixelCrop, true);
-				console.log(croppedImage);
 			}}
 		>
 			<i class="fas fa-crop" /> Crop

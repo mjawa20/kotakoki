@@ -5,7 +5,7 @@
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
 	import TableDropdown from '$lib/dropdowns/TableDropdown.svelte';
-	import { fetchCollections, collections, postCollection } from './../../store/collectionstore';
+	import { fetchCollections, collections, postCollection } from '../../store/collection';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
 	import ImageCropper from '../../lib/utils/ImageCropper.svelte';
@@ -13,7 +13,7 @@
 	let rows = [];
 	let page = 0; //first page
 	let pageIndex = 0; //first row
-	let pageSize = 3; //optional, 10 by default
+	let pageSize = 1000; //optional, 10 by default
 
 	let loading = true;
 	let rowsCount = 0;
@@ -35,10 +35,6 @@
 		}
 	}
 
-	$: {
-		
-	}
-
 	onMount(async () => {
 		filteredCollections = [...$collections];
 		await load(page);
@@ -46,7 +42,6 @@
 
 	async function load(_page) {
 		await fetchCollections();
-		console.log(filteredCollections);
 		loading = true;
 		rows = filteredCollections;
 		rowsCount = filteredCollections.length;
@@ -74,14 +69,14 @@
 		await load(page);
 	}
 
-	const handlePost = () => {
+	const handlePost = async () => {
 		let newCollection = {
 			name: nameValue,
 			imageUrl: croppedImage
 		};
-		console.log(newCollection);
-		postCollection(newCollection);
+		await postCollection(newCollection);
 		show = false;
+		await load()
 	};
 </script>
 
