@@ -188,7 +188,7 @@
 					<td data-label="Id">{row.id}</td>
 					<td data-label="Name">{row.name}</td>
 					<td>
-						<Actions key={row.id} actions={rowActions} />
+						<Actions data={row.id} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}

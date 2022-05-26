@@ -22,7 +22,7 @@
 	};
 
 	export let actions = [];
-	export let key;
+	export let data;
 </script>
 
 <div>
@@ -45,7 +45,7 @@
 				href="#pablo"
 				on:click={(e) => {
 					e.preventDefault();
-					action.function(key);
+					action.function(data);
 					dropdownPopoverShow = false;
 				}}
 				class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700"
