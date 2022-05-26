@@ -183,7 +183,7 @@
 						<ImageModal src={row.imageUrl} />
 					</td>
 					<td>
-						<Actions key={row} actions={rowActions} />
+						<Actions data={row} actions={rowActions} />
 					</td>
 				</Row>
 			{/each}
