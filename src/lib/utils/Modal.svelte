@@ -25,7 +25,7 @@
 	<div class=" bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40 ">
 		<div
 			transition:fly={{ y: 200, duration: 400 }}
-			class="absolute bg-white w-screen left-0 top-0 h-screen z-50 min-w-max sm:w-96 sm:h-fit sm:shadow-md sm:mb-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2 backdrop-blur-xl "
+			class="absolute bg-white w-screen left-0 top-0 h-screen z-50 max-w-lg sm:w-96 sm:h-fit sm:shadow-md sm:mb-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2 backdrop-blur-xl "
 		>
 			<div class="border-b flex justify-between font-bold p-5 ">
 				<h2>Add {title}</h2>

@@ -8,7 +8,8 @@
 	import { fetchCollections, collections, postCollection } from './../../store/collectionstore';
 	import Modal from '$lib/utils/Modal.svelte';
 	import Input from '$lib/utils/Input.svelte';
-	import ImageCropper from '../../lib/utils/ImageCropper.svelte';
+	import ImageCropper from '$lib/utils/ImageCropper.svelte';
+	import ImageModal from '$lib/utils/ImageModal.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -36,7 +37,6 @@
 	}
 
 	$: {
-		
 	}
 
 	onMount(async () => {
@@ -112,7 +112,9 @@
 			{#each rows2 as row, index (row)}
 				<Row {index} on:click={() => onCellClick(row)}>
 					<td data-label="Name">{row.name}</td>
-					<td data-label="Image"><img src="{row.imageUrl}" alt="" srcset=""></td>
+					<td data-label="Image">
+						<ImageModal />
+					</td>
 					<td>
 						<TableDropdown />
 					</td>

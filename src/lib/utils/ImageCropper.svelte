@@ -73,30 +73,32 @@
 		/>
 	</label>
 {:else}
-	{#if croppedImage}
-		<div class="justify-center max-w-full mb-2">
-			<img src={croppedImage} alt="Cropped profile" class="object-contain" />
+	<div class="d-flex ">
+		{#if croppedImage}
+		<div class="w-full mb-2">
+			<img src={croppedImage} alt="Cropped profile" class="object-cover" />
 		</div>
-	{:else}
-		<div class="relative w-full h-80 mb-2">
-			<Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} aspect={1} />
-		</div>
+		{:else}
+			<div class="relative w-full h-80 mb-2">
+				<Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} aspect={1} />
+			</div>
+			<button
+				class="text-green-500 bg-transparent border border-solid border-green-500 hover:bg-green-500 hover:text-white active:bg-green	-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+				type="button"
+				on:click={async () => {
+					croppedImage = await getCroppedImg(image, pixelCrop, true);
+					console.log(croppedImage);
+				}}
+			>
+				<i class="fas fa-crop" /> Crop
+			</button>
+		{/if}
 		<button
-			class="text-green-500 bg-transparent border border-solid border-green-500 hover:bg-green-500 hover:text-white active:bg-green	-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+			class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red	-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 			type="button"
-			on:click={async () => {
-				croppedImage = await getCroppedImg(image, pixelCrop, true);
-				console.log(croppedImage);
-			}}
+			on:click={reset}
 		>
-			<i class="fas fa-crop" /> Crop
+			<i class="fas fa-repeat" /> Reset
 		</button>
-	{/if}
-	<button
-		class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red	-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-		type="button"
-		on:click={reset}
-	>
-		<i class="fas fa-repeat" /> Reset
-	</button>
+	</div>
 {/if}
