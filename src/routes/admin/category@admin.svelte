@@ -16,6 +16,7 @@
 	import Alert from '../../lib/utils/Alert.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
 	import Confirm from '../../lib/utils/Confirm.svelte';
+	import { clearData, validate } from '../../utils';
 
 	let rows = [];
 	let page = 0;
@@ -28,6 +29,7 @@
 	let sorting;
 	let show;
 	const selectors = 'name';
+	let isUpload = false;
 
 	let category = {
 		id: 0,
@@ -40,12 +42,16 @@
 	let methodType = '';
 	let showConfirm = false;
 
-	let selectedCategory;
-
 	let filteredCategories = { rows: [], count: 0 };
+
+	let submitDisable;
 
 	$: {
 		filteredCategories = $categories;
+	}
+
+	$: {
+		submitDisable = validate(category);
 	}
 
 	onMount(async () => {
@@ -87,9 +93,6 @@
 		sorting = { dir: event.detail.dir, key: event.detail.key };
 		await load(page);
 	}
-	const clear = () => {
-		nameValue = '';
-	};
 	const showAlert = (message, type) => {
 		isShowAlert = true;
 		messageAlert = message;
@@ -100,13 +103,13 @@
 		}, 3000);
 	};
 	const handlePost = async () => {
-		let newCategory = {
-			name: nameValue
-		};
-		await postCategory(newCategory);
+		isUpload = true;
+
+		await postCategory(category);
 		show = false;
 		await load(page, 'created');
-		clear();
+
+		isUpload = false;
 		showAlert('Added Data has Successfully', 'success');
 	};
 
@@ -116,16 +119,14 @@
 		showAlert('Delete Data Successfully', 'success');
 	};
 
-	const handleUpdate = async (id) => {
-		let newCategory = {
-			id: selectedCategory.id,
-			name: nameValue
-		};
+	const handleUpdate = async () => {
+		isUpload = true;
 
-		await updateCategory(newCategory);
+		await updateCategory(category);
 		show = false;
 		await load();
 
+		isUpload = false;
 		showAlert('update Data has Successfully', 'success');
 	};
 
@@ -139,11 +140,10 @@
 		},
 		{
 			name: 'Update',
-			function: (id) => {
+			function: (selectedCategory) => {
 				show = true;
 				methodType = 'update';
-				selectedCategory = $categories.rows.find((x) => x.id === id);
-				nameValue = selectedCategory.name;
+				category = { ...selectedCategory };
 			}
 		}
 	];
@@ -160,10 +160,12 @@
 			bind:show
 			bind:methodType
 			title="Category"
-			{clear}
+			clear={() => clearData(category)}
+			{isUpload}
+			{submitDisable}
 		>
 			<div class="px-5">
-				<Input type="text" placeholder="Name" bind:value={category.name} />
+				<Input type="text" placeholder="Name" bind:value={category.name} disabled={isUpload} />
 			</div>
 		</Modal>
 	</div>

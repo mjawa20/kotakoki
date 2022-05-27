@@ -1,7 +1,7 @@
 <script>
 	// library for creating dropdown menu appear on click
 	import { createPopper } from '@popperjs/core';
-
+	import { clickOutside } from '../../utils/index';
 	// core components
 
 	let dropdownPopoverShow = false;
@@ -40,18 +40,25 @@
 			? 'block'
 			: 'hidden'}"
 	>
-		{#each actions as action}
-			<a
-				href="#pablo"
-				on:click={(e) => {
-					e.preventDefault();
-					action.function(data);
-					dropdownPopoverShow = false;
-				}}
-				class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700"
-			>
-				{action.name}
-			</a>
-		{/each}
+		<div
+			use:clickOutside
+			on:click_outside={() => {
+				if (dropdownPopoverShow) dropdownPopoverShow = false;
+			}}
+		>
+			{#each actions as action}
+				<a
+					href="#pablo"
+					on:click={(e) => {
+						e.preventDefault();
+						action.function(data);
+						dropdownPopoverShow = false;
+					}}
+					class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700"
+				>
+					{action.name}
+				</a>
+			{/each}
+		</div>
 	</div>
 </div>

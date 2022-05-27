@@ -3,6 +3,7 @@
 	export let title;
 	export let options;
 	export let value;
+	export let disabled = false;
 </script>
 
 <div class={name ? 'flex items-center' : 'w-full mb-2'}>
@@ -10,10 +11,11 @@
 		<p class="text-sm mr-2">{name}</p>
 	{/if}
 	<select
-		bind:value={value}
-		class="{name
-			? 'text-center'
-			: ''} border border-gray-300 text-xs font-bold px-2 py-2 w-full rounded-md"
+		{disabled}
+		bind:value
+		class="
+		disabled:bg-slate-100
+		{name ? 'text-center' : ''} border border-gray-300 text-xs font-bold px-2 py-2 w-full rounded-md"
 	>
 		<option selected value={null}>{title}</option>
 		{#if options}

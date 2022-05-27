@@ -17,7 +17,7 @@
 	import ImageModal from '$lib/utils/ImageModal.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
 	import Alert from '../../lib/utils/Alert.svelte';
-	import { clearData } from '../../utils';
+	import { clearData, validate } from '../../utils';
 	import Confirm from '../../lib/utils/Confirm.svelte';
 
 	let rows = [];
@@ -39,6 +39,9 @@
 	let isShowAlert = false;
 
 	let methodType = '';
+	let isUpload = false;
+
+	let submitDisable;
 
 	let filteredCollections = { rows: [], count: 0 };
 
@@ -54,12 +57,23 @@
 		filteredCollections = $collections;
 	}
 
+	$: {
+		let valueBind = { name: collection.name, imageUrl: collection.imageUrl };
+		submitDisable = validate(valueBind);
+	}
+
 	onMount(async () => {
 		await load(page);
 	});
 
 	async function load(_page) {
-		await fetchCollections({ offset: _page * pageSize, limit: pageSize, selectors, keyword: text, ...sorting });
+		await fetchCollections({
+			offset: _page * pageSize,
+			limit: pageSize,
+			selectors,
+			keyword: text,
+			...sorting
+		});
 		loading = true;
 		rows = [...filteredCollections.rows];
 		rowsCount = filteredCollections.count;
@@ -98,18 +112,24 @@
 	};
 
 	const handlePost = async () => {
+		isUpload = true;
 		await postCollection(collection);
 		show = false;
 		await load();
+
+		clearData(collection);
+		isUpload = false;
 
 		showAlert('Added Data has Successfully', 'success');
 	};
 
 	const handleUpdate = async (id) => {
+		isUpload = true;
 		await updateCollection(collection);
 		show = false;
 		await load();
 
+		isUpload = false;
 		showAlert('update Data has Successfully', 'success');
 	};
 
@@ -123,7 +143,7 @@
 		{
 			name: 'Delete',
 			function: async (selectedCollection) => {
-				collection = selectedCollection
+				collection = selectedCollection;
 				showConfirm = true;
 			}
 		},
@@ -152,10 +172,13 @@
 			title="Collection"
 			clear={() => clearData(collection)}
 			bind:methodType
+			{isUpload}
+			{submitDisable}
 		>
 			<div class="px-5">
-				<Input type="text" placeholder="Name" bind:value={collection.name} />
+				<Input type="text" placeholder="Name" bind:value={collection.name} disabled={isUpload} />
 				<ImageCropper
+					disabled={isUpload}
 					bind:croppedImage={collection.imageUrl}
 					bind:status={collection.updateImage}
 				/>

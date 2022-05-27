@@ -19,7 +19,7 @@
 	import Alert from '../../lib/utils/Alert.svelte';
 	import Actions from '../../lib/dropdowns/Actions.svelte';
 	import Confirm from '../../lib/utils/Confirm.svelte';
-	import { clearData } from '../../utils';
+	import { clearData, validate } from '../../utils';
 
 	let rows = [];
 	let page = 0; //first page
@@ -36,6 +36,7 @@
 
 	let confirm = false;
 	let showConfirm = false;
+	let isUpload = false;
 
 	let methodType = '';
 	let product = {
@@ -47,7 +48,12 @@
 		categoryId: null
 	};
 
-	$: show = false;
+	let show = false;
+	let submitDisable; 
+
+	$: {
+		submitDisable = validate(product);
+	}
 
 	$: {
 		filteredProducts = $products;
@@ -98,10 +104,12 @@
 	};
 
 	const handlePost = async () => {
+		isUpload = true;
 		await postProduct(product);
 		show = false;
 
 		await load();
+		isUpload = false;
 
 		showAlert('Added Data has Successfully', 'success');
 	};
@@ -113,9 +121,11 @@
 	};
 
 	const handleUpdate = async (id) => {
+		isUpload = true;
 		await updateProduct(product);
 		show = false;
 		await load();
+		isUpload = false;
 
 		showAlert('update Data has Successfully', 'success');
 	};
@@ -150,27 +160,38 @@
 			bind:show
 			title="Product"
 			clear={() => clearData(product)}
+			bind:methodType
+			{isUpload}
+			{submitDisable}
 		>
 			<div class="px-5">
-				<Input type="text" placeholder="Name" bind:value={product.name} />
+				<Input type="text" placeholder="Name" bind:value={product.name} disabled={isUpload} />
 				<input
+					disabled={isUpload}
 					placeholder="Price"
 					type="number"
-					class="mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
+					class="disabled:bg-slate-100 mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
 					bind:value={product.price}
 				/>
 				<textarea
+					disabled={isUpload}
 					placeholder="Description"
-					class="mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
+					class="disabled:bg-slate-100 mb-5 mt-1 px-3 py-2 bg-white border border-slate-300 block w-full rounded-md sm:text-sm "
 					bind:value={product.description}
 				/>
 				<div class="inline-flex justify-between w-full gap-3 ">
 					<SelectItem
+						disabled={isUpload}
 						options={$collections.rows}
 						title="Collection"
 						bind:value={product.collectionId}
 					/>
-					<SelectItem options={$categories.rows} title="Category" bind:value={product.categoryId} />
+					<SelectItem
+						disabled={isUpload}
+						options={$categories.rows}
+						title="Category"
+						bind:value={product.categoryId}
+					/>
 				</div>
 			</div>
 		</Modal>

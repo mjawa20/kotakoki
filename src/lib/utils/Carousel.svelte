@@ -16,9 +16,11 @@
 </script>
 
 <div class="my-10">
-	<svelte:component this={Carousel} bind:this={carousel} autoplay >
+	<svelte:component this={Carousel} bind:this={carousel} autoplay>
 		{#each carouselPhotos as src}
-			<img {src} alt="" style="height: 100%; width:90%" />
+			<div style="max-height: 500px;">
+				<img {src} alt="" style="height: 100%; width:100%" />
+			</div>
 		{/each}
 	</svelte:component>
 </div>

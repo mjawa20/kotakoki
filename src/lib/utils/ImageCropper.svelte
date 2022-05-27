@@ -12,6 +12,7 @@
 	export let placeHolder = 'Select a photo';
 	export let croppedImage;
 	export let status = false;
+	export let disabled = false;
 
 	onMount(async () => {
 		if (croppedImage) {
@@ -102,7 +103,8 @@
 			</button>
 		{/if}
 		<button
-			class="text-red-500 bg-transparent border border-solid border-red-500 hover:bg-red-500 hover:text-white active:bg-red	-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+			{disabled}
+			class="disabled:border-slate-400 disabled:text-slate-400 text-red-500 bg-transparent border border-solid border-red-500 {!disabled ?"hover:bg-red-500 hover:text-white" : ""} active:bg-red	-600 font-bold uppercase text-xs px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 			type="button"
 			on:click={reset}
 		>

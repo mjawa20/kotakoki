@@ -1,15 +1,15 @@
 <script>
 	import Carousel from '$lib/utils/Carousel.svelte';
 	import Collection from '$lib/collection/Collection.svelte';
-	import { collections, fetchCollections } from '../store/collectionstore';
+	import { collections, fetchCollections } from '../store/collection';
 	import { onMount } from 'svelte';
 	let filteredCollection = [];
 
 	onMount(() => fetchCollections());
 
 	$: {
-		if ($collections) {
-			filteredCollection = $collections.slice(0, 4);
+		if ($collections.rows) {
+			filteredCollection = $collections.rows.slice(0, 4);
 		}
 	}
 </script>
