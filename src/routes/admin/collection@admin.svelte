@@ -59,6 +59,7 @@
 
 	$: {
 		let valueBind = { name: collection.name, imageUrl: collection.imageUrl };
+
 		submitDisable = validate(valueBind);
 	}
 

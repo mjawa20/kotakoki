@@ -44,14 +44,8 @@
 
 	let filteredCategories = { rows: [], count: 0 };
 
-	let submitDisable;
-
 	$: {
 		filteredCategories = $categories;
-	}
-
-	$: {
-		submitDisable = validate(category);
 	}
 
 	onMount(async () => {
@@ -162,7 +156,7 @@
 			title="Category"
 			clear={() => clearData(category)}
 			{isUpload}
-			{submitDisable}
+			isValid={validate(category)}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={category.name} disabled={isUpload} />

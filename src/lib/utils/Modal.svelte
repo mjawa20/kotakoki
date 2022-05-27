@@ -8,7 +8,7 @@
 	export let clear;
 	export let methodType;
 	export let isUpload = false;
-	export let submitDisable = true;
+	export let isValid = false;
 
 	const handleShow = () => {
 		show = true;
@@ -49,7 +49,7 @@
 				>
 				{#if !isUpload}
 					<button
-						disabled={submitDisable}
+						disabled={!isValid}
 						on:click={() => {
 							dispatch('submit');
 							clear();

@@ -55,18 +55,12 @@ export const clearData = (data) => {
 }
 
 export const validate = (data) => {
-  let err = true;
-  Object.keys(data).forEach((key) => {
-    if (key !== 'id') {
-      if (!data[key]) {
-        err = true;
-        return;
-      } else {
-        err = false;
-      }
-    }
+  let isValid = true
+  const excludes = ["id", "createdAt", "updatedAt"]
+  Object.keys(data).filter((key) => !excludes.includes(key)).forEach((key) => {
+    isValid = !!data[key];
   })
-  return err;
+  return isValid;
 }
 
 export function clickOutside(node) {
