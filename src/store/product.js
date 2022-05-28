@@ -6,9 +6,18 @@ const url = '/api/product';
 
 export const products = writable([]);
 
-export const fetchProduct = async (query) => {
+export const fetchProducts = async (query) => {
 	try {
 		const res = await axios.get(`${url}?${objectToQueryParam(query)}`);
+		const body = await res.data;
+		products.set(body.data);
+	} catch (error) {
+		console.log(error.response);
+	}
+}
+export const fetchProduct = async (id) => {
+	try {
+		const res = await axios.get(`${url}/${id}`);
 		const body = await res.data;
 		products.set(body.data);
 	} catch (error) {
@@ -34,7 +43,7 @@ export const deleteProduct = async (id) => {
 
 export const updateProduct = async (newProduct) => {
 	try {
-		await axios.put('/api/product/',newProduct)
+		await axios.put('/api/product/', newProduct)
 	} catch (error) {
 		console.error(error.response);
 	}

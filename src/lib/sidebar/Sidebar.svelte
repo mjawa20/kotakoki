@@ -95,7 +95,7 @@
 						href="/admin/category"
 						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
 					>
-						<i class="fas fa-tv mr-2 text-gray-300 text-base" />
+						<i class="fas fa-list mr-2 text-gray-300 text-base" />
 						Category
 					</a>
 				</li>
@@ -104,7 +104,7 @@
 						href="/admin/collection"
 						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
 					>
-						<i class="fas fa-inbox mr-2 text-gray-300 text-base" />
+						<i class="fas fa-bookmark mr-2 text-gray-300 text-base" />
 						Collection
 					</a>
 				</li>

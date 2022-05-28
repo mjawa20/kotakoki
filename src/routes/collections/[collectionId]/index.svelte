@@ -1,14 +1,7 @@
 <script context="module">
 	export async function load({ params }) {
 		const { collectionId } = params;
-		let collection;
-		try {
-			const res = await axios.get(`/api/collection/${collectionId}`);
-			collection = await res.data.data;
-		} catch (error) {
-			console.log('catch errror');
-		}
-		return { props: { collection } };
+		return { props: { collectionId } };
 	}
 </script>
 
@@ -19,28 +12,45 @@
 	import SelectItem from '$lib/utils/SelectItem.svelte';
 	import CollectionSkel from '$lib/skeleton/CollectionSkel.svelte';
 	import Product from '$lib/collection/Product.svelte';
-	import { product } from '../../../store/productstore';
-	export let collection;
-	let filteredProduct = [];
-	console.log(collection);
+	import { fetchProducts, products } from '../../../store/product';
+	import { onMount } from 'svelte';
+	import { fetchCollections, collections, fetchCollection } from '../../../store/collection';
+	export let collectionId;
 
-	filteredProduct = $product.filter((item) => item.collectionId == collection.id);
-	console.log(filteredProduct);
+	let rowCollection = {};
+	$: rowsproduct = [];
+
+	onMount(async () => {
+		await load();
+	});
+	async function load(_page) {
+		await fetchProducts();
+		await fetchCollection(collectionId);
+		rowCollection = $collections;
+		rowsproduct = $products.rows;
+	}
+	$: {
+		if (rowsproduct) {
+			rowsproduct = rowsproduct.filter((item) => item.collectionId == rowCollection.id);
+		}
+	}
+
+	$: breadcrumb = [{ name: 'Home', url: '/' }, { name: rowCollection.name }];
 </script>
 
 <div class="mt-10">
-	<Breadcrumb />
-	{#if collection}
+	{#if Object.keys(rowCollection).length > 0}
+		<Breadcrumb data={breadcrumb} />
 		<div class="flex flex-col md:flex-row md:justify-between md:items-center  my-7 ">
-			<h1 class="font-bold text-2xl text-amber-900">{collection.name}</h1>
+			<h1 class="font-bold text-2xl text-amber-900">{rowCollection.name}</h1>
 			<div class="flex  gap-4 mt-5 md:mt-0">
 				<SelectItem name="Browse" />
 				<SelectItem name="Sort" />
 			</div>
 		</div>
-		{#if filteredProduct.length}
+		{#if rowsproduct}
 			<div class="grid md:grid-cols-4 grid-cols-2 gap-6">
-				{#each filteredProduct as product}
+				{#each rowsproduct as product}
 					<Product {product} />
 				{/each}
 			</div>

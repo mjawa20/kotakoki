@@ -1,7 +1,15 @@
 <script>
 	export let color = 'text-amber-900';
+	export let data;
 </script>
 
 <p class="text-xs {color} font-semibold">
-	Home <span class="font-bold mx-2">></span> Spice blend
+	{#each data as data}
+		{#if data.url}
+			<a href={data.url}>{data.name}</a>
+			<span class="font-bold mx-2">></span>
+		{:else}
+			{data.name}
+		{/if}
+	{/each}
 </p>

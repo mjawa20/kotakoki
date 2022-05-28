@@ -4,6 +4,17 @@
 	import ImageModal from '../../../../lib/utils/ImageModal.svelte';
 	import Confirm from '../../../../lib/utils/Confirm.svelte';
 	let showConfirm;
+
+	let breadcrumb = [
+		{
+			name: 'Product',
+			url: '/admin/product'
+		},
+		{
+			name: 'Images',
+			url:''
+		}
+	]
 </script>
 
 <Confirm bind:showConfirm onDelete={() => alert('delete success')} />
@@ -20,7 +31,7 @@
 		</h3>
 		<button>Addd</button>
 	</div>
-	<Breadcrumb />
+	<Breadcrumb data={breadcrumb}/>
 	<div class="grid grid-cols-5 mt-10 gap-5 justify-items-center ">
 		<ImageModal src="/assets/img/a.jpg" type="gallery" bind:showConfirm />
 	</div>

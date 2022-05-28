@@ -10,7 +10,8 @@
 		fetchProduct,
 		postProduct,
 		deleteProduct,
-		updateProduct
+		updateProduct,
+		fetchProducts
 	} from '../../../store/product';
 	import Input from '$lib/utils/Input.svelte';
 	import SelectItem from '$lib/utils/SelectItem.svelte';
@@ -20,6 +21,7 @@
 	import Actions from '$lib/dropdowns/Actions.svelte';
 	import Confirm from '$lib/utils/Confirm.svelte';
 	import { clearData, validate } from '../../../utils';
+	import DetailModal from '../../../lib/utils/DetailModal.svelte';
 
 	let rows = [];
 	let page = 0; //first page
@@ -49,6 +51,7 @@
 	};
 
 	let show = false;
+	let showDetail = false;
 
 	$: {
 		filteredProducts = $products;
@@ -61,7 +64,7 @@
 	async function load(_page) {
 		await fetchCollections();
 		await fetchCategories();
-		await fetchProduct();
+		await fetchProducts();
 		loading = true;
 		rows = [...filteredProducts.rows];
 		rowsCount = filteredProducts.count;
@@ -144,13 +147,17 @@
 		},
 		{
 			name: 'Detail',
-			function: async (selectedProduct) => {}
+			function: async (selectedProduct) => {
+				showDetail = true;
+				product = { ...selectedProduct };
+			}
 		}
 	];
 </script>
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 <Confirm bind:showConfirm onDelete={handleDelete} />
+<DetailModal bind:showDetail row={product} clear={() => clearData(product)} />
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
@@ -207,20 +214,17 @@
 				</th>
 				<th width="18%">
 					Price
-					<Sort key="lastName" on:sort={onSort} />
+					<Sort key="price" on:sort={onSort} />
 				</th>
 				<th width="15%">
 					Category
-					<Sort key="age" on:sort={onSort} />
+					<Sort key="category" on:sort={onSort} />
 				</th>
 				<th width="15%">
 					Collection
-					<Sort key="age" on:sort={onSort} />
+					<Sort key="collection" on:sort={onSort} />
 				</th>
-				<th width="25%">
-					Images
-					<Sort key="age" on:sort={onSort} />
-				</th>
+				<th width="25%"> Images </th>
 				<th width="7%" />
 			</tr>
 		</thead>
