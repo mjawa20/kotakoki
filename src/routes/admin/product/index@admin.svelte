@@ -4,22 +4,22 @@
 	import { onMount } from 'svelte';
 	import Table, { Pagination, Row, Search, Sort } from '$lib/table/Table.svelte';
 	import { sortNumber, sortString } from '$lib/table/sorting';
-	import Modal from '../../lib/utils/Modal.svelte';
+	import Modal from '$lib/utils/Modal.svelte';
 	import {
 		products,
 		fetchProduct,
 		postProduct,
 		deleteProduct,
 		updateProduct
-	} from '../../store/product';
-	import Input from '../../lib/utils/Input.svelte';
-	import SelectItem from '../../lib/utils/SelectItem.svelte';
-	import { collections, fetchCollections } from '../../store/collection';
-	import { categories, fetchCategories } from '../../store/category';
-	import Alert from '../../lib/utils/Alert.svelte';
-	import Actions from '../../lib/dropdowns/Actions.svelte';
-	import Confirm from '../../lib/utils/Confirm.svelte';
-	import { clearData, validate } from '../../utils';
+	} from '../../../store/product';
+	import Input from '$lib/utils/Input.svelte';
+	import SelectItem from '$lib/utils/SelectItem.svelte';
+	import { collections, fetchCollections } from '../../../store/collection';
+	import { categories, fetchCategories } from '../../../store/category';
+	import Alert from '$lib/utils/Alert.svelte';
+	import Actions from '$lib/dropdowns/Actions.svelte';
+	import Confirm from '$lib/utils/Confirm.svelte';
+	import { clearData, validate } from '../../../utils';
 
 	let rows = [];
 	let page = 0; //first page
@@ -49,11 +49,6 @@
 	};
 
 	let show = false;
-	let submitDisable; 
-
-	$: {
-		submitDisable = validate(product);
-	}
 
 	$: {
 		filteredProducts = $products;
@@ -146,6 +141,10 @@
 				show = true;
 				console.log(product);
 			}
+		},
+		{
+			name: 'Detail',
+			function: async (selectedProduct) => {}
 		}
 	];
 </script>
@@ -162,7 +161,7 @@
 			clear={() => clearData(product)}
 			bind:methodType
 			{isUpload}
-			{submitDisable}
+			isValid={validate(product)}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={product.name} disabled={isUpload} />
@@ -202,40 +201,34 @@
 		</div>
 		<thead slot="head">
 			<tr>
-				<th width="8%">
-					Id
-					<Sort key="name" on:sort={onSort} />
-				</th>
 				<th width="20%">
 					Name
 					<Sort key="name" on:sort={onSort} />
 				</th>
-				<th width="20%">
+				<th width="18%">
 					Price
 					<Sort key="lastName" on:sort={onSort} />
 				</th>
-				<th width="25%">
-					Description
-					<Sort key="age" on:sort={onSort} />
-				</th>
-				<th width="12%">
+				<th width="15%">
 					Category
 					<Sort key="age" on:sort={onSort} />
 				</th>
-				<th width="12%">
+				<th width="15%">
 					Collection
 					<Sort key="age" on:sort={onSort} />
 				</th>
-				<th width="3%" />
+				<th width="25%">
+					Images
+					<Sort key="age" on:sort={onSort} />
+				</th>
+				<th width="7%" />
 			</tr>
 		</thead>
 		<tbody>
 			{#each rows2 as row, index (row)}
 				<Row {index}>
-					<td data-label="Id">{row.id}</td>
 					<td data-label="Name">{row.name}</td>
-					<td data-label="Age">{row.price}</td>
-					<td data-label="Description">{row.description}</td>
+					<td data-label="Price">{row.price}</td>
 					<td data-label="Category">
 						{row.categoryId ? $categories?.rows.find((x) => x.id === row.categoryId).name : '-'}
 					</td>
@@ -244,6 +237,32 @@
 							? $collections?.rows.find((x) => x.id === row.collectionId).name
 							: '-'}</td
 					>
+					<td data-label="Images">
+						<a href="/admin/product/images/{row.id}">
+							<div class="inline-flex -space-x-3 ">
+								<img
+									src="/assets/img/a.jpg"
+									alt=""
+									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
+								/>
+								<img
+									src="/assets/img/a.jpg"
+									alt=""
+									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
+								/>
+								<img
+									src="/assets/img/a.jpg"
+									alt=""
+									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
+								/>
+								<img
+									src="/assets/img/a.jpg"
+									alt=""
+									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
+								/>
+							</div>
+						</a>
+					</td>
 					<td>
 						<Actions data={row} actions={rowActions} />
 					</td>

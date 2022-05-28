@@ -56,6 +56,7 @@ export const clearData = (data) => {
 
 export const validate = (data) => {
   let isValid = true
+  console.log(data);
   const excludes = ["id", "createdAt", "updatedAt"]
   Object.keys(data).filter((key) => !excludes.includes(key)).forEach((key) => {
     isValid = !!data[key];
