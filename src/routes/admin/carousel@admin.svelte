@@ -13,6 +13,7 @@
 		updateImage: false,
 		oldImage: ''
 	};
+	let isValid = false;
 </script>
 
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
@@ -25,7 +26,7 @@
 			clear={() => clearData(collection)}
 			bind:methodType
 			{isUpload}
-			{submitDisable}
+			{isValid}
 		>
 			<div class="px-5">
 				<ImageCropper
