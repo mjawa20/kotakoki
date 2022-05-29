@@ -39,6 +39,8 @@
 	let confirm = false;
 	let showConfirm = false;
 	let isUpload = false;
+	let text;
+	let sorting;
 
 	let methodType = '';
 	let product = {
@@ -64,7 +66,13 @@
 	async function load(_page) {
 		await fetchCollections();
 		await fetchCategories();
-		await fetchProducts();
+		await fetchProducts({
+			offset: _page * pageSize,
+			limit: pageSize,
+			selectors,
+			keyword: text,
+			...sorting
+		});
 		loading = true;
 		rows = [...filteredProducts.rows];
 		rowsCount = filteredProducts.count;

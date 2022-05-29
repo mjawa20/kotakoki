@@ -117,6 +117,15 @@
 						Product
 					</a>
 				</li>
+				<li class="inline-flex">
+					<a
+						href="/admin/carousel"
+						class="text-gray-700 hover:text-gray-500 text-sm block mb-4 no-underline font-semibold"
+					>
+						<i class="fas fa-images mr-2 text-gray-300 text-base" />
+						Carousel
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>
