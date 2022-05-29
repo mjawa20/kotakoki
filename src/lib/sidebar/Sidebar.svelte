@@ -83,10 +83,10 @@
 			<!-- Navigation -->
 			<ul class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
 				{#each items as item}
-					<li class="inline-flex group hover:bg-red-500 hover:text-white p-3">
+					<li class="inline-flex group hover:bg-red-500 hover:text-white p-2 hover:cursor-pointer">
 						<a
 							href={item.link}
-							class=" text-sm block no-underline font-semibold"
+							class=" text-sm block no-underline font-semibold w-full"
 						>
 							<i class="fa-fw fas fa-{item.icon} mr-2 text-gray-300 group-hover:text-white text-base" />
 							{item.title}
