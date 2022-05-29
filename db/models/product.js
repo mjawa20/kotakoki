@@ -58,6 +58,8 @@ export default (sequelize) => {
 			onDelete: 'CASCADE',
       
 		});
+		Product.belongsTo(models.collection)
+		Product.belongsTo(models.category)
 	};
 
 	return Product;

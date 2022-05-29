@@ -3,7 +3,7 @@ import { filterBuilder, responseBuilder } from '../_api';
 
 export async function get({ url }) {
   try {
-    const products = await db.models.product.findAndCountAll({ include: ['images'], ...filterBuilder(url) });
+    const products = await db.models.product.findAndCountAll({ include: ['images', 'collection', 'category'], ...filterBuilder(url) });
     return responseBuilder(200, 'success', products);
   } catch (error) {
     return responseBuilder(400, error);
