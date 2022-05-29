@@ -7,10 +7,17 @@
 	import Sidebar from '$lib/sidebar/Sidebar.svelte';
 
 	// components for this layout
+	const items = [
+		{ link: '/admin/', icon: 'tv', title: 'Dashboard' },
+		{ link: '/admin/category', icon: 'list', title: 'Category' },
+		{ link: '/admin/collection', icon: 'bookmark', title: 'Collection' },
+		{ link: '/admin/product', icon: 'inbox', title: 'Product' },
+		{ link: '/admin/carousel', icon: 'images', title: 'Carousel' }
+	];
 </script>
 
 <div>
-	<Sidebar />
+	<Sidebar {items} />
 	<div class="relative md:ml-64 bg-gray-100 h-screen justify-between">
 		<AdminNavbar />
 		<HeaderStats />
