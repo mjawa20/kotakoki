@@ -16,9 +16,9 @@ export async function get({ url }) {
 export async function post({ request }) {
 	try {
 		const image = await request.json();
-		if (image.imageUrl) {
-			const dir = 'static/assets/upload/img/image';
-			image.imageUrl = uploadBase64(dir, image.imageUrl)
+		if (image.url) {
+			const dir = 'static/assets/upload/img/product';
+			image.url = uploadBase64(dir, image.url)
 		}
 		await db.models.image.create(image);
 		return responseBuilder(200, 'image has been created', image);
@@ -30,9 +30,9 @@ export async function post({ request }) {
 export async function put({ request }) {
 	try {
 		const image = await request.json();
-		if (image.imageUrl && image.updateImage) {
-			const dir = 'static/assets/upload/img/image';
-			image.imageUrl = uploadBase64(dir, image.imageUrl)
+		if (image.url && image.updateImage) {
+			const dir = 'static/assets/upload/img/product';
+			image.url = uploadBase64(dir, image.url)
 			unlink(`static${image.oldImage}`, (err) => {
 				console.log(err);
 			})

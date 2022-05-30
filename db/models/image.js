@@ -21,7 +21,7 @@ export default (sequelize) => {
 					key: 'id'
 				}
 			},
-			imageUrl: {
+			url: {
 				allowNull: false,
 				type: DataTypes.STRING
 			},

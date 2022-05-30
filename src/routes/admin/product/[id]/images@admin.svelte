@@ -1,8 +1,7 @@
 <script context="module">
 	export async function load({ params }) {
-		const { id } = params;
-
-		return { props: { id } };
+		const productId = params.id;
+		return { props: {productId} };
 	}
 </script>
 
@@ -25,7 +24,7 @@
 	import { onMount } from 'svelte';
 	import Alert from '../../../../lib/utils/Alert.svelte';
 
-	export let id;
+	export let productId;
 
 	let page = 0; //first page
 	let pageIndex = 0; //first row
@@ -48,8 +47,8 @@
 	let isUpload;
 	let imageData = {
 		id: 0,
-		productId: id,
-		imageUrl: '',
+		productId,
+		url: '',
 		updateImage: false,
 		oldImage: ''
 	};
@@ -156,7 +155,7 @@
 				<Input type="text" placeholder="Name" bind:value={imageData.name} disabled={isUpload} />
 				<ImageCropper
 					disabled={isUpload}
-					bind:croppedImage={imageData.imageUrl}
+					bind:croppedImage={imageData.url}
 					bind:status={imageData.updateImage}
 				/>
 			</div>
@@ -168,7 +167,7 @@
 			{#if rows.length}
 				{#each rows as row, index (row)}
 					<ImageModal
-						src={row.imageUrl}
+						src={row.url}
 						type="gallery"
 						bind:showConfirm
 						on:selectId={() => {

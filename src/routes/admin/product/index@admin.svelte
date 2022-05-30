@@ -250,7 +250,7 @@
 							: '-'}
 					</td>
 					<td data-label="Images">
-						<a href="/admin/product/images/{row.id}">
+						<a href="/admin/product/{row.id}/images">
 							<div class="inline-flex -space-x-3 ">
 								<img
 									src="/assets/img/a.jpg"
