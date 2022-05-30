@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { uid } from 'uid';
+import { sortNumber, sortString } from '../lib/table/sorting';
 
 export const objectToQueryParam = (obj) => {
   if (!obj) return ""
@@ -80,4 +81,11 @@ export function clickOutside(node) {
       document.removeEventListener('click', handleClick, true);
     }
   }
+}
+
+export const sortProduct = (data, dir, key) => {
+  if (key === 'name') {
+    return sortString(data, dir, key);
+  }
+  return sortNumber(data, dir, key)
 }

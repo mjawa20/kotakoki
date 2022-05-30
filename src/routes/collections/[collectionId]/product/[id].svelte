@@ -35,6 +35,7 @@
 	];
 </script>
 
+
 <div class="mt-10">
 	{#if product && collection}
 		<Breadcrumb data={breadcrumb} />

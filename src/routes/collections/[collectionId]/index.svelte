@@ -15,11 +15,19 @@
 	import { fetchProducts, products } from '../../../store/product';
 	import { onMount } from 'svelte';
 	import { fetchCollections, collections, fetchCollection } from '../../../store/collection';
+	import { sortProduct } from '../../../utils';
 	export let collectionId;
 
 	let rowCollection = {};
 	$: rowsproduct = [];
+	let sort = [
+		{ id: 1, name: 'Alphabetical, AZ', dir: 'asc', key: 'name' },
+		{ id: 2, name: 'Alphabetical, ZA', dir: 'desc', key: 'name' },
+		{ id: 3, name: 'Highest price', dir: 'desc', key: 'price' },
+		{ id: 4, name: 'Lowest price', dir: 'asc', key: 'price' }
+	];
 
+	let value;
 	onMount(async () => {
 		await load();
 	});
@@ -32,6 +40,10 @@
 	$: {
 		if (rowsproduct) {
 			rowsproduct = rowsproduct.filter((item) => item.collectionId == rowCollection.id);
+			if (value) {
+				let selectedSort = sort[value - 1];
+				rowsproduct = sortProduct(rowsproduct, selectedSort.dir, selectedSort.key);
+			}
 		}
 	}
 
@@ -45,7 +57,7 @@
 			<h1 class="font-bold text-2xl text-amber-900">{rowCollection.name}</h1>
 			<div class="flex  gap-4 mt-5 md:mt-0">
 				<SelectItem name="Browse" />
-				<SelectItem name="Sort" />
+				<SelectItem name="Sort" options={sort} title="All" bind:value />
 			</div>
 		</div>
 		{#if rowsproduct}

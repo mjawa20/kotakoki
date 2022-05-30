@@ -14,6 +14,7 @@
 	import { clearData, validate } from '../../utils';
 	import { onMount } from 'svelte';
 	import Confirm from '../../lib/utils/Confirm.svelte';
+	import Alert from '../../lib/utils/Alert.svelte';
 
 	let rows = [];
 	let rowsCount = 0;
@@ -105,7 +106,7 @@
 </script>
 
 <Confirm bind:showConfirm onDelete={() => handleDelete()} />
-
+<Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Carousel</h3>
@@ -130,7 +131,7 @@
 	</div>
 
 	<div class="grid grid-cols-5 mt-8 gap-5 justify-items-center ">
-		{#if rows.length}
+		{#if rows}
 			{#each rows as row, index (row)}
 				<ImageModal
 					src={row.imageUrl}

@@ -21,6 +21,10 @@ export default (sequelize) => {
 					key: 'id'
 				}
 			},
+			imageUrl: {
+				allowNull: false,
+				type: DataTypes.STRING
+			},
 			createdAt: DataTypes.DATE,
 			updatedAt: DataTypes.DATE
 		},
