@@ -12,13 +12,20 @@
 	import Product from '$lib/collection/Product.svelte';
 	import axios from 'axios';
 	import { fetchProduct, products } from '../../../../store/product';
+	import { postCart, carts } from '../../../../store/cart';
 	import { onMount } from 'svelte';
 	import { collections, fetchCollection } from '../../../../store/collection';
 
 	export let id;
 
+	let isUpload;
+	let show;
+	let isShowAlert;
+	let messageAlert = '';
+	let typeAlert = '';
+
 	onMount(async () => await load());
-	
+
 	$: product = $products;
 	$: collection = $collections;
 	async function load() {
@@ -28,30 +35,59 @@
 		console.log(product);
 		console.log(collection);
 	}
+
+	const showAlert = (message, type) => {
+		isShowAlert = true;
+		messageAlert = message;
+		typeAlert = type;
+
+		setTimeout(() => {
+			isShowAlert = false;
+		}, 3000);
+	};
+
+	const handlePost = async (event) => {
+		let selectedProduct = event.detail;
+		let newCart = {
+			userId: 1,
+			productId: selectedProduct.id,
+			quantity: 1,
+			total: 1 * selectedProduct.price
+		};
+		isUpload = true;
+		await postCart(newCart);
+		show = false;
+		await load();
+
+		isUpload = false;
+
+		showAlert('Added Data has Successfully', 'success');
+	};
+
 	$: breadcrumb = [
 		{ name: 'Home', url: '/' },
 		{ name: collection.name, url: `/collections/${collection.id}` },
 		{ name: collection.name }
 	];
+	
 </script>
-
 
 <div class="mt-10">
 	{#if product && collection}
 		<Breadcrumb data={breadcrumb} />
 		<div class="flex flex-col md:flex-row mt-8 gap-7">
 			<div class="flex w-full md:w-4/6 gap-8 ">
-			<img src="/assets/img/a.jpg" alt="" class="w-full max-h-80" />
-			<div class="flex flex-col w-2/12 gap-3 ">
-				<img src="/assets/img/c.jpg" alt="" />
-				<img src="/assets/img/c.jpg" alt="" />
-				<img src="/assets/img/c.jpg" alt="" />
+				<img src="/assets/img/a.jpg" alt="" class="w-full max-h-80" />
+				<div class="flex flex-col w-2/12 gap-3 ">
+					<img src="/assets/img/c.jpg" alt="" />
+					<img src="/assets/img/c.jpg" alt="" />
+					<img src="/assets/img/c.jpg" alt="" />
+				</div>
 			</div>
+			{#if product}
+				<Detail {product} on:addCart={handlePost} />
+			{/if}
 		</div>
-		{#if product}
-		<Detail {product} />
-		{/if}
-	</div>
 	{/if}
 	<div class="mt-14">
 		<h1 class="font-bold text-sm text-amber-900 mb-5">Recomendation for you</h1>
