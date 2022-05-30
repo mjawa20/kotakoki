@@ -43,7 +43,6 @@
 	let sorting;
 	const selectors = 'name';
 
-
 	let methodType = '';
 	let product = {
 		id: '',
@@ -62,12 +61,12 @@
 	}
 
 	onMount(async () => {
+		await fetchCollections();
+		await fetchCategories();
 		await load(page);
 	});
 
 	async function load(_page) {
-		await fetchCollections();
-		await fetchCategories();
 		await fetchProducts({
 			offset: _page * pageSize,
 			limit: pageSize,
@@ -152,7 +151,6 @@
 				methodType = 'update';
 				product = { ...selectedProduct };
 				show = true;
-				console.log(product);
 			}
 		},
 		{
@@ -228,11 +226,11 @@
 				</th>
 				<th width="15%">
 					Category
-					<Sort key="category" on:sort={onSort} />
+					<Sort key="category.name" on:sort={onSort} />
 				</th>
 				<th width="15%">
 					Collection
-					<Sort key="collection" on:sort={onSort} />
+					<Sort key="collection.name" on:sort={onSort} />
 				</th>
 				<th width="25%"> Images </th>
 				<th width="7%" />
@@ -246,11 +244,11 @@
 					<td data-label="Category">
 						{row.categoryId ? $categories?.rows.find((x) => x.id === row.categoryId).name : '-'}
 					</td>
-					<td data-label="Collection"
-						>{row.collectionId
+					<td data-label="Collection">
+						{row.collectionId
 							? $collections?.rows.find((x) => x.id === row.collectionId).name
-							: '-'}</td
-					>
+							: '-'}
+					</td>
 					<td data-label="Images">
 						<a href="/admin/product/images/{row.id}">
 							<div class="inline-flex -space-x-3 ">

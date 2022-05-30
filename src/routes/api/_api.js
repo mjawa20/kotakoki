@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import db from "../../../db";
 
 export function responseBuilder(statusCode, message, data) {
 	const response = {
@@ -29,10 +30,11 @@ export const filterBuilder = (url) => {
 	const keyword = url.searchParams.get('keyword')
 	const selectors = url.searchParams.get('selectors')
 	const dir = url.searchParams.get('dir')
-	const key = url.searchParams.get('key')
-	
+	const key = url.searchParams.get('key') || ''
+	const keys = key.split('.')
+
 	if ((offset || offset === 0) && limit) filter = { offset, limit }
 	if (keyword && selectors) filter = { where: whereBuilder(selectors, keyword), ...filter }
-	if (dir && key) filter = { order: [[key, dir]] }
+	if (dir && key) filter = keys.length == 2 ? { order: [[db.models[keys[0]], keys[1], dir]] } : { order: [[key, dir]] }
 	return filter
 }
