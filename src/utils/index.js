@@ -30,13 +30,15 @@ export const page = (page, limit = 10) => {
 }
 
 
-export const clearData = (data) => {
+export const clearData = (data, excludes = []) => {
+  excludes.forEach(key => delete data[key])
   Object.keys(data).forEach((key) => {
     if (Array.isArray(data[key])) {
       data[key].forEach((d) => {
         clearData(d)
       })
     } else {
+      if (data[key] === null) data[key] = ""  
       switch (typeof data[key]) {
         case 'object':
           clearData(data[key])
@@ -55,14 +57,16 @@ export const clearData = (data) => {
   })
 }
 
-export const validate = (data) => {
-  console.log({data});
-  let isValid = true
-  const excludes = ["id", "createdAt", "updatedAt"]
-  Object.keys(data).filter((key) => !excludes.includes(key)).forEach((key) => {
-    isValid = !!data[key];
-  })
-  return isValid;
+export const validate = (data, excludes = []) => {
+  excludes = ["id", "createdAt", "updatedAt", ...excludes]
+
+  const filtered = Object.keys(data).filter((key) => !excludes.includes(key))
+  for (const key of filtered) {
+    if (!data[key]) {
+      return false
+    }
+  }
+  return true;
 }
 
 export function clickOutside(node) {

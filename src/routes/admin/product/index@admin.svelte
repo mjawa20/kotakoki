@@ -42,6 +42,7 @@
 	let text;
 	let sorting;
 	const selectors = 'name';
+	const excludes = ['category', 'images', 'collection'];
 
 	let methodType = '';
 	let product = {
@@ -55,9 +56,11 @@
 
 	let show = false;
 	let showDetail = false;
+	let isValid = false;
 
 	$: {
 		filteredProducts = $products;
+		isValid = validate(product, excludes);
 	}
 
 	onMount(async () => {
@@ -165,7 +168,7 @@
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 <Confirm bind:showConfirm onDelete={handleDelete} />
-<DetailModal bind:showDetail row={product} clear={() => clearData(product)} />
+<DetailModal bind:showDetail row={product} clear={() => clearData(product, excludes)} />
 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded p-10 bg-white">
 	<div class="flex justify-between items-center mb-5">
 		<h3 class="font-semibold text-lg text-gray-700">Products</h3>
@@ -173,10 +176,13 @@
 			on:submit={methodType === 'post' ? handlePost : handleUpdate}
 			bind:show
 			title="Product"
-			clear={() => clearData(product)}
+			clear={() => {
+				clearData(product, excludes);
+			}}
 			bind:methodType
 			{isUpload}
-			isValid={validate(product)}
+			{isValid}
+			on:validate={() => (isValid = validate(product, excludes))}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={product.name} disabled={isUpload} />
