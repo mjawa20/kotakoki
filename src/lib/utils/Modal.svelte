@@ -20,6 +20,10 @@
 		clear();
 	};
 
+	$: {
+		if (show) dispatch('validate');
+	}
+
 	const dispatch = createEventDispatcher();
 </script>
 
