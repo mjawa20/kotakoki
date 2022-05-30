@@ -1,8 +1,13 @@
 <script>
+import { createEventDispatcher } from 'svelte';
+
 	import { fly } from 'svelte/transition';
 
 	export let type;
 	export let showConfirm;
+
+	const dispatch = createEventDispatcher();
+
 	let show = false;
 	export let src;
 	const handleShow = () => {
@@ -20,14 +25,31 @@
 	>
 		click to show
 	</p>
-	<img
-		on:click={handleShow}
-		{src}
-		alt="..."
-		class="cursor-pointer {type === 'gallery'
-			? 'w-full h-full hover:scale-105'
-			: 'w-12 h-12 rounded-full border-2 border-gray-50 shadow'}"
-	/>
+	<div class="group">
+		{#if type === 'gallery'}
+			<img on:click={handleShow} {src} alt="..." class=" w-full h-full group-hover:opacity-50" />
+			<div
+				class="absolute hidden group-hover:flex inset-x-0 bg-black inset-y-0 group-hover:items-center group-hover:justify-center gap-2 bg-opacity-60"
+			>
+				<button on:click={handleShow} class="  rounded bg-red-500 text-white p-2">show</button>
+				<button
+					on:click={() => {
+						close();
+						dispatch('selectId');
+						showConfirm = true;
+					}}
+					class="  rounded bg-red-500 text-white p-2"><i class="fas fa-trash" /></button
+				>
+			</div>
+		{:else}
+			<img
+				on:click={handleShow}
+				{src}
+				alt="..."
+				class="cursor-pointer  w-12 h-12 rounded-full border-2 border-gray-50 shadow"
+			/>
+		{/if}
+	</div>
 </div>
 
 {#if show}
@@ -43,17 +65,6 @@
 			<div class="p-5 ">
 				<img {src} alt="" class="bg-black w-full h-full" />
 			</div>
-			{#if type === 'gallery'}
-				<div class="mb-5 px-5">
-					<button
-						on:click={() => {
-							close();
-							showConfirm = true;
-						}}
-						class="rounded bg-red-500 text-white p-2  w-full">Delete</button
-					>
-				</div>
-			{/if}
 		</div>
 	</div>
 {/if}

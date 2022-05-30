@@ -174,7 +174,7 @@
 			clear={() => clearData(collection)}
 			bind:methodType
 			{isUpload}
-			{submitDisable}
+			isValid={submitDisable}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={collection.name} disabled={isUpload} />

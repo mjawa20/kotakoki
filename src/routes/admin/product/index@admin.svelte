@@ -41,6 +41,8 @@
 	let isUpload = false;
 	let text;
 	let sorting;
+	const selectors = 'name';
+
 
 	let methodType = '';
 	let product = {
