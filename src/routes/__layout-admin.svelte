@@ -8,7 +8,7 @@
 
 	// components for this layout
 	const items = [
-		{ link: '/admin/', icon: 'tv', title: 'Dashboard' },
+		{ link: '/admin', icon: 'tv', title: 'Dashboard' },
 		{ link: '/admin/category', icon: 'list', title: 'Category' },
 		{ link: '/admin/collection', icon: 'bookmark', title: 'Collection' },
 		{ link: '/admin/product', icon: 'inbox', title: 'Product' },
