@@ -35,6 +35,8 @@
 	let methodType;
 	let isUpload;
 	let showConfirm = false;
+	let submitDisable;
+
 	let carousel = {
 		id: 0,
 		imageUrl: '',
@@ -46,6 +48,12 @@
 
 	$: {
 		filteredCarousels = $carousels;
+	}
+
+	$: {
+		let valueBind = { name: carousel.name, imageUrl: carousel.imageUrl };
+
+		submitDisable = validate(valueBind);
 	}
 
 	onMount(async () => {
@@ -117,7 +125,7 @@
 			clear={() => clearData(carousel)}
 			bind:methodType
 			{isUpload}
-			isValid={true}
+			isValid={submitDisable}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={carousel.name} disabled={isUpload} />
