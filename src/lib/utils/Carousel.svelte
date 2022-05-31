@@ -8,7 +8,11 @@
 		Carousel = module.default;
 	});
 
-	const carouselPhotos = ['/assets/img/a.jpg', '/assets/img/b.png', '/assets/img/c.jpg'];
+	const carouselPhotos = [
+		'https://cdn.shopify.com/s/files/1/0515/0975/6059/files/Copy_of_Copy_of_Copy_of_Recipe_Card_kotakoki-2_2048x.png?v=1612355414',
+		'/assets/img/b.png',
+		'/assets/img/c.jpg'
+	];
 
 	const handleNextClick = () => {
 		carousel.goToNext();
@@ -18,11 +22,14 @@
 <div class="my-10">
 	<svelte:component this={Carousel} bind:this={carousel} autoplay>
 		{#each carouselPhotos as src}
-			<div style="  max-height: 650px;">
-				<button style="background: #6f4421;" class=" z-50 absolute text-white top-1/3 left-9">asyudgu</button>
-				<div class="bg-black absolute  w-full h-full opacity-20">
-				</div>
-				<img {src} alt="" style="height: 100%; width:100%" />
+			<div class="relative" style="max-height: 650px;">
+				<button
+					style="background: #6f4421;"
+					class=" z-50 absolute bg-black text-white top-1/2 
+					right-24 p-2">Our Story</button
+				>
+				<div class="bg-black absolute  w-full h-full opacity-10" />
+				<img {src} alt="" class="w-full object-contain"/>
 			</div>
 		{/each}
 	</svelte:component>
