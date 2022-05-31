@@ -6,7 +6,7 @@
 </script>
 
 <Nav />
-<div class="mx-auto max-w-4xl  px-7">
+<div class="mx-auto max-w-5xl  px-7">
 	<Header />
 	<slot />
 	<Footer />

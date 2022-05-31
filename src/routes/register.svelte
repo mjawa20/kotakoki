@@ -27,7 +27,7 @@
 		type="text"
 		class="border p-2 mb-4 placeholder:text-gray-700 placeholder:text-sm"
 		placeholder="Surname"
-		bind:value={user.surname}
+		bind:value={user.surName}
 	/>
 	<input
 		type="text"

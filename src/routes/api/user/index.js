@@ -18,14 +18,11 @@ export async function get({ url }) {
 
 export async function post({ request }) {
 	try {
-		// const user = await request.json();
-		bcrypt.genSalt(saltRounds, function (err, salt) {
-			bcrypt.hash(myPlaintextPassword, salt, function (err, hash) {
-				console.log(hash);
-				return responseBuilder(200, 'user has been created', 'as');
-			});
-		});
-		// await db.models.user.create(user);
+		const user = await request.json();
+		user.password = bcrypt.hashSync(user.password, saltRounds);
+		
+		await db.models.user.create(user);
+		return responseBuilder(200, 'user has been created', user);
 	} catch (error) {
 		return responseBuilder(400, error);
 	}

@@ -10,14 +10,14 @@
 <svelte:window bind:innerWidth />
 
 <nav class="bg-amber-50 py-3">
-	<div class="flex flex-col justify-between px-7 md:mx-auto max-w-4xl md:flex-row">
+	<div class="flex flex-col justify-between px-7 md:mx-auto max-w-5xl md:flex-row">
 		<h1
-			class="text-amber-900  font-semibold 	font-sans text-xs md:w-72 w-full leading-5 md:text-left text-center mb-4 md:mb-0"
+			class="text-amber-900  font-bold  text-xs md:w-80 w-full leading-6 md:text-left text-center mb-4 md:mb-0"
 		>
 			Shopping at KOTAKOKI will be even easier! The pricing system has changed so that all products
 			are displayed at tax-included prices.
 		</h1>
-		<div class="hidden md:flex items-center text-xs text-amber-900 gap-2 font-semibold">
+		<div class="hidden md:flex items-center text-xs text-amber-900 gap-2 font-bold">
 			<a href="/login">Login</a>
 			<span>or</span>
 			<a href="/register">create an account</a>
