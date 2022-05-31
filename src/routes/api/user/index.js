@@ -1,5 +1,11 @@
 import db from '../../../../db';
 import { filterBuilder, responseBuilder } from '../_api';
+import bcrypt from 'bcrypt';
+
+
+const saltRounds = 10;
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
+const someOtherPlaintextPassword = 'not_bacon';
 
 export async function get({ url }) {
 	try {
@@ -12,9 +18,14 @@ export async function get({ url }) {
 
 export async function post({ request }) {
 	try {
-		const user = await request.json();
-		await db.models.user.create(user);
-		return responseBuilder(200, 'user has been created', user);
+		// const user = await request.json();
+		bcrypt.genSalt(saltRounds, function (err, salt) {
+			bcrypt.hash(myPlaintextPassword, salt, function (err, hash) {
+				console.log(hash);
+				return responseBuilder(200, 'user has been created', 'as');
+			});
+		});
+		// await db.models.user.create(user);
 	} catch (error) {
 		return responseBuilder(400, error);
 	}
