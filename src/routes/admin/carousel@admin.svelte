@@ -117,7 +117,7 @@
 			clear={() => clearData(carousel)}
 			bind:methodType
 			{isUpload}
-			isValid={validate(carousel)}
+			isValid={true}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={carousel.name} disabled={isUpload} />
