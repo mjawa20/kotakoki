@@ -22,6 +22,7 @@
 	import Confirm from '$lib/utils/Confirm.svelte';
 	import { clearData, validate } from '../../../utils';
 	import DetailModal from '../../../lib/utils/DetailModal.svelte';
+	import { fetchImages, images } from '../../../store/image';
 
 	let rows = [];
 	let page = 0; //first page
@@ -58,12 +59,8 @@
 	let showDetail = false;
 	let isValid = false;
 
-	$: {
-		filteredProducts = $products;
-		isValid = validate(product, excludes);
-	}
-
 	onMount(async () => {
+		await fetchImages();
 		await fetchCollections();
 		await fetchCategories();
 		await load(page);
@@ -83,6 +80,10 @@
 		loading = false;
 	}
 
+	$: {
+		filteredProducts = $products;
+		isValid = validate(product, excludes);
+	}
 	function onCellClick(row) {
 		alert(JSON.stringify(row));
 	}
@@ -164,6 +165,9 @@
 			}
 		}
 	];
+	$: {
+		console.log($images);
+	}
 </script>
 
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
@@ -256,30 +260,25 @@
 							: '-'}
 					</td>
 					<td data-label="Images">
-						<a href="/admin/product/{row.id}/images">
-							<div class="inline-flex -space-x-3 ">
-								<img
-									src="/assets/img/a.jpg"
-									alt=""
-									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
-								/>
-								<img
-									src="/assets/img/a.jpg"
-									alt=""
-									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
-								/>
-								<img
-									src="/assets/img/a.jpg"
-									alt=""
-									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
-								/>
-								<img
-									src="/assets/img/a.jpg"
-									alt=""
-									class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
-								/>
-							</div>
-						</a>
+						{#if $images.rows.filter((item) => item.productId === row.id).length}
+							<a href="/admin/product/{row.id}/images">
+								<div class="inline-flex -space-x-3 ">
+									{#each $images.rows.filter((item) => item.productId === row.id) as image}
+										<img
+											src={image.url}
+											alt=""
+											class="rounded-full w-9 h-9 border-slate-400 border shadow-lg"
+										/>
+									{/each}
+								</div>
+							</a>
+						{:else}
+							<a
+								href="/admin/product/{row.id}/images"
+								class="bg-blue-500 px-3 py-1 text-xs ml-3 text-white rounded active:bg-blue-800 active:shadow-lg hover:bg-blue-500 hover:shadow-lg"
+								>Add image</a
+							>
+						{/if}
 					</td>
 					<td>
 						<Actions data={row} actions={rowActions} />

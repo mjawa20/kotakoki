@@ -1,7 +1,7 @@
 <script context="module">
 	export async function load({ params }) {
 		const productId = params.id;
-		return { props: {productId} };
+		return { props: { productId } };
 	}
 </script>
 
@@ -45,9 +45,12 @@
 	let show;
 	let methodType;
 	let isUpload;
+	let isValid = false;
+	const excludes = ['updateImage', 'oldImage','productId'];
+
 	let imageData = {
 		id: 0,
-		productId,
+		productId : productId,
 		url: '',
 		updateImage: false,
 		oldImage: ''
@@ -57,6 +60,8 @@
 
 	$: {
 		filteredImage = $images;
+		isValid = validate(imageData, excludes);
+		console.log(imageData);
 	}
 
 	onMount(async () => {
@@ -72,7 +77,7 @@
 			...sorting
 		});
 		loading = true;
-		rows = [...filteredImage.rows];
+		rows = [...filteredImage.rows].filter((item)=>item.productId === productId);
 		rowsCount = filteredImage.count;
 		loading = false;
 	}
@@ -149,7 +154,8 @@
 			clear={() => clearData(imageData)}
 			bind:methodType
 			{isUpload}
-			isValid={validate(imageData)}
+			{isValid}
+			on:validate={() => (isValid = validate(imageData, excludes))}
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={imageData.name} disabled={isUpload} />
