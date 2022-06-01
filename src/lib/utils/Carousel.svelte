@@ -29,7 +29,6 @@
 	const handleNextClick = () => {
 		carousel.goToNext();
 	};
-	$: console.log(filteredCarousels);
 </script>
 
 <div class="my-10">

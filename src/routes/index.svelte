@@ -3,7 +3,7 @@
 	import Collection from '$lib/collection/Collection.svelte';
 	import { collections, fetchCollections } from '../store/collection';
 	import { onMount } from 'svelte';
-	let filteredCollection = [];
+	let filteredCollection;
 
 	onMount(() => fetchCollections());
 

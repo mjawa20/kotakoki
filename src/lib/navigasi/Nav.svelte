@@ -12,7 +12,6 @@
 		isShow = false;
 	}
 	$: innerWidth = 0;
-	$:console.log($carts);
 </script>
 
 <svelte:window bind:innerWidth />

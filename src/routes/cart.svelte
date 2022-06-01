@@ -2,7 +2,7 @@
 	import CartItem from '$lib/cart/CartItem.svelte';
 	import CartList from '$lib/cart/CartList.svelte';
 	import { onMount } from 'svelte';
-import Alert from '../lib/utils/Alert.svelte';
+	import Alert from '../lib/utils/Alert.svelte';
 	import Confirm from '../lib/utils/Confirm.svelte';
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
 	import { fetchProducts, products } from '../store/product';
@@ -13,7 +13,7 @@ import Alert from '../lib/utils/Alert.svelte';
 	let typeAlert = '';
 	let messageAlert = '';
 	let isShowAlert = false;
-	$: selectedId = 0;;
+	$: selectedId = 0;
 
 	onMount(async () => await load());
 	async function load() {
@@ -49,17 +49,24 @@ import Alert from '../lib/utils/Alert.svelte';
 <div class="mt-10">
 	<h1 class="font-bold text-2xl text-amber-900 mb-8">Your cart</h1>
 	{#if rows}
-		<CartList>
-			{#each rows as cart}
-				<CartItem
-					{cart}
-					product={getProduct(cart.productId)[0]}
-					on:delete={() => {
-						showConfirm = true;
-						selectedId = cart.id;
-					}}
-				/>
-			{/each}
-		</CartList>
+		{#if rows.length}
+			<CartList>
+				{#each rows as cart}
+					<CartItem
+						{cart}
+						product={getProduct(cart.productId)[0]}
+						on:delete={() => {
+							showConfirm = true;
+							selectedId = cart.id;
+						}}
+					/>
+				{/each}
+			</CartList>
+		{:else}
+			<div class="text-center">
+				<p class="mb-5">Carts item is empty</p>
+				<a class="bg-amber-900 text-white px-8 py-3 text-sm rounded" href="/">Continue to buy any our product?</a>
+			</div>
+		{/if}
 	{/if}
 </div>
