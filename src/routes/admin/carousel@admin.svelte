@@ -40,6 +40,7 @@
 	let carousel = {
 		id: 0,
 		imageUrl: '',
+		link: '',
 		updateImage: false,
 		oldImage: ''
 	};
@@ -129,6 +130,7 @@
 		>
 			<div class="px-5">
 				<Input type="text" placeholder="Name" bind:value={carousel.name} disabled={isUpload} />
+				<Input type="text" placeholder="link (can be null)" bind:value={carousel.link} disabled={isUpload} />
 				<ImageCropper
 					disabled={isUpload}
 					bind:croppedImage={carousel.imageUrl}
@@ -179,3 +181,4 @@
 		{/if}
 	</div>
 </div>
+

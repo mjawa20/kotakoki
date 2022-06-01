@@ -17,6 +17,10 @@ export default (sequelize) => {
 				allowNull: false,
 				type: DataTypes.STRING
 			},
+			link: {
+				allowNull: false,
+				type: DataTypes.STRING
+			},
 			createdAt: DataTypes.DATE,
 			updatedAt: DataTypes.DATE
 		},
