@@ -47,8 +47,8 @@
 		>
 			<div slot="dots" class=" mt-6 flex items-center space-x-10">
 				<i
-					class="fa-solid fa-angle-left  cursor-pointer text-amber-900 text-sm"
-					on:click={showPrevPage}
+					class=" fa-solid fa-angle-left  cursor-pointer text-amber-900 text-sm"
+					on:click={() => showPage(currentPageIndex - 1)}
 				/>
 				<div class="space-x-5 flex items-center">
 					{#each Array(pagesCount) as _, pageIndex (pageIndex)}
@@ -57,7 +57,7 @@
 				</div>
 				<i
 					class="fa-solid fa-angle-right   cursor-pointer text-amber-900 text-sm"
-					on:click={showNextPage}
+					on:click={() => showPage(currentPageIndex + 1)}
 				/>
 			</div>
 			{#each $carousels.rows as row}

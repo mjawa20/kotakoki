@@ -1,10 +1,18 @@
 <script>
 	import NavRes from './NavRes.svelte';
+	import { fetchCarts, carts } from '../../store/cart';
+	import { onMount } from 'svelte';
 	let isShow = false;
+
+	onMount(async () => {
+		fetchCarts();
+	});
+
 	$: if (innerWidth > 768) {
 		isShow = false;
 	}
 	$: innerWidth = 0;
+	$:console.log($carts);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -20,8 +28,14 @@
 		<div class="hidden md:flex items-center text-xs text-amber-900 gap-2 font-bold">
 			<a href="/login">Login</a>
 			<span>or</span>
-			<a href="/register">create an account</a>
-			<a href="/cart" class="mx-3"><i class="fas fa-cart-arrow-down mr-1" />Cart : 2</a>
+			<a href="/register">Create an Account</a>
+			<a href="/cart" class="mx-3"
+				><i class="fas fa-cart-arrow-down mr-1" />
+				Cart
+				{#if $carts.count}
+					: 2
+				{/if}
+			</a>
 			<label class="relative block">
 				<span class="absolute inset-y-0 left-1 flex items-center pl-2">
 					<i class="fas fa-search text-gray-600" />
