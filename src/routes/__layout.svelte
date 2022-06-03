@@ -1,10 +1,10 @@
 <script context="module">
-	export async function load(event) {
+	export async function load({session}) {
 		return {
 			props: {
-				authenticated: event.session.authenticated,
-				name: event.session.name,
-				email: event.session.email
+				authenticated: session.authenticated,
+				name: session.name,
+				email: session.email
 			}
 		};
 	}
