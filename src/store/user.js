@@ -2,7 +2,7 @@ import axios from "axios";
 import { writable } from "svelte/store";
 import { objectToQueryParam } from "../utils";
 
-const url = '/api/user';
+const url = '/api/auth';
 
 export const users = writable([]);
 
@@ -15,36 +15,28 @@ export const fetchUsers = async (query) => {
 		console.log(error.response);
 	}
 }
-export const fetchUser = async (id) => {
+
+
+export const login = async (newUser) => {
 	try {
-		const res = await axios.get(`${url}/${id}`);
-		const body = await res.data;
-		users.set(body.data);
+		const res = await axios.post(`${url}/login`, newUser)
+		console.log('success');
+		return {
+			status: res.status,
+			message: res.data
+		}
+	} catch (error) {
+		console.log('error');
+		return {
+			status: error.response.status,
+			message: error.response.data.message
+		}
+	}
+}
+export const register = async (newUser) => {
+	try {
+		await axios.post(`${url}/register`, newUser)
 	} catch (error) {
 		console.log(error.response);
-	}
-}
-
-export const postUser = async (newUser) => {
-	try {
-		await axios.post(url, newUser)
-	} catch (error) {
-		console.log(error.response);
-	}
-}
-
-export const deleteUser = async (id) => {
-	try {
-		await axios.delete('/api/user/' + id)
-	} catch (error) {
-		console.error(error.response);
-	}
-}
-
-export const updateUser = async (newUser) => {
-	try {
-		await axios.put('/api/user/', newUser)
-	} catch (error) {
-		console.error(error.response);
 	}
 }

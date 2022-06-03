@@ -4,7 +4,7 @@ import db from "../../../db";
 export function responseBuilder(statusCode, message, data) {
 	const response = {
 		status: statusCode,
-		body: { message }
+		body: { message },
 	};
 	if (data) response.body.data = data;
 	return response;

@@ -1,3 +1,11 @@
+<script context="module">
+	export async function load(event ) {
+		// console.log(event.request);
+		console.log('=============');
+		return { props:  'asd'  };
+	}
+</script>
+
 <script>
 	import '../app.css';
 	import Footer from '$lib/home/Footer.svelte';

@@ -2,6 +2,7 @@
 	import NavRes from './NavRes.svelte';
 	import { fetchCarts, carts } from '../../store/cart';
 	import { onMount } from 'svelte';
+	import * as cookie from 'cookie';
 	let isShow = false;
 
 	onMount(async () => {
@@ -12,6 +13,8 @@
 		isShow = false;
 	}
 	$: innerWidth = 0;
+
+	// $: auth = cookie.parse(event.request.headers.get('cookie') || '');
 </script>
 
 <svelte:window bind:innerWidth />
@@ -25,9 +28,14 @@
 			are displayed at tax-included prices.
 		</h1>
 		<div class="hidden md:flex items-center text-xs text-amber-900 gap-2 font-bold">
-			<a href="/login">Login</a>
-			<span>or</span>
-			<a href="/register">Create an Account</a>
+			{#if false}
+				<a rel="external" href="/login">my account</a>
+				<a rel="external" href="/login">Logout</a>
+			{:else}
+				<a rel="external" href="/login">Login</a>
+				<span>or</span>
+				<a rel="external" href="/register">Create an Account</a>
+			{/if}
 			<a href="/cart" class="mx-3"
 				><i class="fas fa-cart-arrow-down mr-1" />
 				Cart
