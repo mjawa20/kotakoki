@@ -3,9 +3,6 @@ import { uid } from 'uid';
 import db from '../../../../db';
 import bcrypt from 'bcrypt';
 import { responseBuilder } from '../_api';
-import { Tedis } from 'tedis';
-
-const store = new Tedis({ host: "127.0.0.1", port: 6379 })
 
 export async function post({ request }) {
     try {
@@ -19,14 +16,12 @@ export async function post({ request }) {
         if (!bcrypt.compareSync(req.password, user.password)) {
             return responseBuilder(401, 'Incorrect Email or Password');
         }
-        const cookieId = uid();
-        
-        await store.set(cookieId, JSON.stringify({
-            email: user.email
-        }));
+        const sessionId = uid();
+        user.sessionId = sessionId
+        await user.save()
         
         const headers = {
-            'Set-Cookie': cookie.serialize('session_id', cookieId, {
+            'Set-Cookie': cookie.serialize('session_id', sessionId, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 24 * 7,
                 sameSite: 'lax',

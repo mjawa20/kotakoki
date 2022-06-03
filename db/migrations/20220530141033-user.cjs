@@ -25,6 +25,10 @@ module.exports = {
           allowNull: false,
           type: Sequelize.STRING
         },
+        sessionId: {
+          allowNull: true,
+          type: Sequelize.STRING
+        },
         role: {
           allowNull: false,
           type: Sequelize.ENUM,

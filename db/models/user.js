@@ -31,6 +31,10 @@ export default (sequelize) => {
 				values: ['admin', 'user'],
 				defaultValue: 'user'
 			},
+			sessionId: {
+				allowNull: true,
+				type: DataTypes.STRING
+			},
 			createdAt: DataTypes.DATE,
 			updatedAt: DataTypes.DATE
 		},

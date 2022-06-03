@@ -1,8 +1,12 @@
 <script context="module">
-	export async function load(event ) {
-		// console.log(event.request);
-		console.log('=============');
-		return { props:  'asd'  };
+	export async function load(event) {
+		return {
+			props: {
+				authenticated: event.session.authenticated,
+				name: event.session.name,
+				email: event.session.email
+			}
+		};
 	}
 </script>
 
@@ -11,9 +15,14 @@
 	import Footer from '$lib/home/Footer.svelte';
 	import Header from '$lib/home/Header.svelte';
 	import Nav from '$lib/navigasi/Nav.svelte';
+
+	export let authenticated;
+	export let name;
+	export let email;
 </script>
 
-<Nav />
+<h1>{name} {email}</h1>
+<Nav {authenticated} />
 <div class="mx-auto max-w-5xl  px-7">
 	<Header />
 	<slot />

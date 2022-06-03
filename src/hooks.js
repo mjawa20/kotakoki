@@ -1,7 +1,5 @@
 import * as cookie from 'cookie'
-import { Tedis } from "tedis";
-
-const db = new Tedis({ host: "localhost", port: 6379 })
+import db from './../db';
 
 const routes = {
   private: [
@@ -18,27 +16,30 @@ const routes = {
 export async function handle({ event, resolve }) {
   const cookies = cookie.parse(event.request.headers.get('cookie') || "")
   if (cookies.session_id && routes.auth.includes(event.url.pathname)) {
-    return Response.redirect(event.url.origin+"/", 303);
+    return Response.redirect(event.url.origin + "/", 303);
   }
+  
+  event.locals.authenticated = false;
 
-  if(routes.private.includes(event.url.pathname)) {
-    if (!cookies.session_id) {
-      return Response.redirect(event.url.origin+"/", 303);
+  if (routes.private.includes(event.url.pathname) || event.url.pathname === '/') {
+    if (!cookies.session_id && event.url.pathname !== '/') {
+      return Response.redirect(event.url.origin + "/", 303);
     }
-  
-    const userSession = JSON.parse(await db.get(cookies.session_id))
-  
+
+    let userSession;
+    if (cookies.session_id) {
+      userSession = await db.models.user.findOne({ where: { sessionId: cookies.session_id } })
+    }
+
     if (userSession) {
       event.locals.authenticated = true;
+      event.locals.name = userSession.name;
       event.locals.email = userSession.email;
-    } else {
-      event.locals.authenticated = false;
-    }
+    } 
   }
 
   const response = await resolve(event);
   return response;
-
 }
 
 /** @type {import('@sveltejs/kit').GetSession} */
@@ -51,6 +52,7 @@ export function getSession(event) {
 
   return {
     authenticated: event.locals.authenticated,
-    email: event.locals.email
+    email: event.locals.email,
+    name: event.locals.name
   }
 }

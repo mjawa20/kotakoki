@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import * as cookie from 'cookie';
 	let isShow = false;
-
+	export let authenticated
 	onMount(async () => {
 		fetchCarts();
 	});
@@ -28,7 +28,7 @@
 			are displayed at tax-included prices.
 		</h1>
 		<div class="hidden md:flex items-center text-xs text-amber-900 gap-2 font-bold">
-			{#if false}
+			{#if authenticated}
 				<a rel="external" href="/login">my account</a>
 				<a rel="external" href="/login">Logout</a>
 			{:else}
