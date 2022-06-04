@@ -38,6 +38,7 @@
 		"sequelize": "^6.19.2",
 		"sequelize-cli": "^6.4.1",
 		"svelte-easy-crop": "^1.0.7",
+		"svelte-kit-cookie-session": "^2.1.4",
 		"tedis": "^0.1.12",
 		"uid": "^2.0.0",
 		"utils": "^0.2.2"

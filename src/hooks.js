@@ -9,6 +9,10 @@ const routes = {
   auth: [
     '/login',
     '/register'
+  ],
+  public: [
+    '/',
+    '/cart'
   ]
 }
 
@@ -21,8 +25,8 @@ export async function handle({ event, resolve }) {
   
   event.locals.authenticated = false;
 
-  if (routes.private.includes(event.url.pathname) || event.url.pathname === '/') {
-    if (!cookies.session_id && event.url.pathname !== '/') {
+  if (routes.private.includes(event.url.pathname) || routes.public.includes(event.url.pathname)) {
+    if (!cookies.session_id && event.url.pathname !== routes.public.includes(event.url.pathname)) {
       return Response.redirect(event.url.origin + "/", 303);
     }
 

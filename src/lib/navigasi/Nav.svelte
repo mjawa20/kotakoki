@@ -16,8 +16,8 @@
 	$: innerWidth = 0;
 
 	const handleLogout = async () => {
-		await logout;
-		// location.reload();
+		await logout();
+		location.reload();
 	};
 
 	// $: auth = cookie.parse(event.request.headers.get('cookie') || '');
