@@ -40,3 +40,11 @@ export const register = async (newUser) => {
 		console.log(error.response);
 	}
 }
+
+export const logout = async () => {
+	try {
+		await axios.get(`${url}/logout`);
+	} catch (error) {
+		console.log(error.response);
+	}
+}
