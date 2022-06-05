@@ -1,18 +1,17 @@
-import * as cookie from 'cookie';
 import { uid } from 'uid';
 import db from '../../../../db';
 import bcrypt from 'bcrypt';
 import { responseBuilder } from '../_api';
 
-export async function post({ request }) {
+export async function post({ request, locals }) {
     try {
         const req = await request.json();
-        const user = await db.models.user.findOne({ where: { email: req.email } });
-        
+        let user = await db.models.user.findOne({ where: { email: req.email } });
+
         if (!user) {
             return responseBuilder(401, 'Incorrect Email or Password');
         }
-        
+
         if (!bcrypt.compareSync(req.password, user.password)) {
             return responseBuilder(401, 'Incorrect Email or Password');
         }
@@ -20,20 +19,13 @@ export async function post({ request }) {
         user.sessionId = sessionId
         await user.save()
         
-        const headers = {
-            'Set-Cookie': cookie.serialize('session_id', sessionId, {
-                httpOnly: true,
-                maxAge: 60 * 60 * 24 * 7,
-                sameSite: 'lax',
-                path: '/'
-            })
-        }
-        return {
-            status: 200,
-            headers,
-        }
+        user = user.dataValues
+        delete user.password
+
+        locals.session.data = { authenticated: true, sessionId, ...user }
+        console.log('==========================RESPONSE');
+        return responseBuilder(200, 'success', null, locals.session.data)
     } catch (error) {
-        console.log('--------------------');
         return responseBuilder(400, error);
     }
 }

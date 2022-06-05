@@ -1,5 +1,6 @@
 import axios from "axios";
 import { writable } from "svelte/store";
+import { restReqeust } from ".";
 import { objectToQueryParam } from "../utils";
 
 const url = '/api/auth';
@@ -19,20 +20,19 @@ export const fetchUsers = async (query) => {
 
 export const login = async (newUser) => {
 	try {
-		const res = await axios.post(`${url}/login`, newUser)
-		console.log('success');
+		const res = await restReqeust({ method: 'post', url: url + '/login', data: newUser })
 		return {
 			status: res.status,
-			message: res.data
+			message: res.body.message
 		}
 	} catch (error) {
-		console.log('error');
 		return {
 			status: error.response.status,
 			message: error.response.data.message
 		}
 	}
 }
+
 export const register = async (newUser) => {
 	try {
 		await axios.post(`${url}/register`, newUser)

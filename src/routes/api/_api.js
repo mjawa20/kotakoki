@@ -1,12 +1,13 @@
 import { Sequelize } from "sequelize";
 import db from "../../../db";
 
-export function responseBuilder(statusCode, message, data) {
+export function responseBuilder(statusCode, message, data, session) {
 	const response = {
 		status: statusCode,
 		body: { message },
 	};
 	if (data) response.body.data = data;
+	if (session) response.body.session = session;
 	return response;
 }
 
