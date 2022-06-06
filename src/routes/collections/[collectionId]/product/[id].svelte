@@ -1,8 +1,8 @@
 <script context="module">
-	export async function load({ params }) {
+	export async function load({ params, session }) {
 		const { id } = params;
 
-		return { props: { id } };
+		return { props: { id, email: session.email } };
 	}
 </script>
 
@@ -15,8 +15,10 @@
 	import { postCart, carts } from '../../../../store/cart';
 	import { onMount } from 'svelte';
 	import { collections, fetchCollection } from '../../../../store/collection';
+	import { getUserByEmail, users } from '../../../../store/user';
 
 	export let id;
+	export let email;
 
 	let isUpload;
 	let show;
@@ -28,11 +30,12 @@
 
 	$: product = $products;
 	$: collection = $collections;
+	$: user = {};
 	async function load() {
-		console.log('...................');
 		await fetchProduct(id);
 		await fetchCollection(product.collectionId);
-		console.log(product);
+		user = await getUserByEmail(email);
+		console.log(user,"asd");
 		console.log(collection);
 	}
 
@@ -45,11 +48,11 @@
 			isShowAlert = false;
 		}, 3000);
 	};
-
+	console.log(user)
 	const handlePost = async (event) => {
 		let selectedProduct = event.detail;
 		let newCart = {
-			userId: 1,
+			userId: user.id,
 			productId: selectedProduct.id,
 			quantity: 1,
 			total: 1 * selectedProduct.price
@@ -69,7 +72,6 @@
 		{ name: collection.name, url: `/collections/${collection.id}` },
 		{ name: collection.name }
 	];
-	
 </script>
 
 <div class="mt-10">

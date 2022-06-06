@@ -1,3 +1,13 @@
+<script context="module">
+	export async function load({ session }) {
+		return {
+			props: {
+				email: session.email
+			}
+		};
+	}
+</script>
+
 <script>
 	import CartItem from '$lib/cart/CartItem.svelte';
 	import CartList from '$lib/cart/CartList.svelte';
@@ -6,20 +16,27 @@
 	import Confirm from '../lib/utils/Confirm.svelte';
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
 	import { fetchProducts, products } from '../store/product';
-
+	import { fetchUsers, users } from '../store/user';
+	
+	export let email;
+	
 	let rows = [];
+	let user = [];
+	
 	let showConfirm = false;
-
+	
 	let typeAlert = '';
 	let messageAlert = '';
 	let isShowAlert = false;
 	$: selectedId = 0;
-
+	
 	onMount(async () => await load());
 	async function load() {
 		await fetchCarts();
 		await fetchProducts();
+		await fetchUsers();
 		rows = $carts.rows;
+		user = $users.rows;
 	}
 
 	const showAlert = (message, type) => {
@@ -41,17 +58,21 @@
 		console.log(selectedId);
 		showAlert('Delete Data Successfully', 'success');
 	};
-	$: console.log($products.rows);
+	$: {
+		if (user) {
+			user = user.filter((item) => item.email === email);
+		}
+	}
 </script>
 
 <Confirm bind:showConfirm onDelete={handleDelete} />
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 <div class="mt-10">
 	<h1 class="font-bold text-2xl text-amber-900 mb-8">Your cart</h1>
-	{#if rows}
-		{#if rows.length}
+	{#if rows && user}
+		{#if $carts.count == 0}
 			<CartList>
-				{#each rows as cart}
+				{#each rows.filter((item) => item.userId === user.id) as cart}
 					<CartItem
 						{cart}
 						product={getProduct(cart.productId)[0]}
@@ -65,7 +86,9 @@
 		{:else}
 			<div class="text-center">
 				<p class="mb-5">Carts item is empty</p>
-				<a class="bg-amber-900 text-white px-8 py-3 text-sm rounded" href="/">Continue to buy any our product?</a>
+				<a class="bg-amber-900 text-white px-8 py-3 text-sm rounded" href="/"
+					>Continue to buy any our product?</a
+				>
 			</div>
 		{/if}
 	{/if}

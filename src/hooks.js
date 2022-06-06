@@ -3,7 +3,7 @@ import db from './../db';
 
 const routes = {
   private: [
-    '/profile',
+    '/account',
     '/user'
   ],
   auth: [
@@ -12,7 +12,8 @@ const routes = {
   ],
   public: [
     '/',
-    '/cart'
+    '/cart',
+    '/collections/1/product/1f3c70072c5'
   ]
 }
 
@@ -25,7 +26,7 @@ export async function handle({ event, resolve }) {
   
   event.locals.authenticated = false;
 
-  if (routes.private.includes(event.url.pathname) || routes.public.includes(event.url.pathname)) {
+  if (routes.private.includes(event.url.pathname) || !routes.auth.includes(event.url.pathname)) {
     if (!cookies.session_id && !routes.public.includes(event.url.pathname)) {
       return Response.redirect(event.url.origin + "/", 303);
     }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { objectToQueryParam } from "../utils";
 
 const url = '/api/auth';
@@ -8,7 +8,7 @@ export const users = writable([]);
 
 export const fetchUsers = async (query) => {
 	try {
-		const res = await axios.get(`${url}?${objectToQueryParam(query)}`);
+		const res = await axios.get(`${url}/user`);
 		const body = await res.data;
 		users.set(body.data);
 	} catch (error) {
@@ -16,6 +16,11 @@ export const fetchUsers = async (query) => {
 	}
 }
 
+export const getUserByEmail = async (email) => {
+	await fetchUsers();
+	let user = await get(users).rows.filter((item) => item.email === email);
+	return user[0];
+}
 
 export const login = async (newUser) => {
 	try {
