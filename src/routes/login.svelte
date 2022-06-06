@@ -6,18 +6,18 @@
 		email: '',
 		password: ''
 	};
-	let isUpload = false;
+	let isSubmit = false;
 	const handlePost = async () => {
-		isUpload = true;
+		isSubmit = true;
 		const res = await login(user);
-		console.log(res);
+		console.log('--------===========', res);
 		if (res.status === 200) {
 			location.reload();
 			clearData(user);
 		} else {
-			error = res.message
+			error = res.message;
 		}
-		isUpload = false;
+		isSubmit = false;
 	};
 
 	$: error = '';
@@ -42,11 +42,11 @@
 		>Did You forget your password?</a
 	>
 	<button
-		disabled={isUpload}
+		disabled={isSubmit}
 		class="disabled:bg-slate-400 mb-4 p-3 rounded-sm bg-amber-900 text-white w-fit font-semibold text-sm"
 		on:click={handlePost}
 	>
-		{#if isUpload}
+		{#if isSubmit}
 			<div class="flex items-center">
 				<div class="border-dashed animate-spin  w-4 h-4 border-2 rounded-full mr-1" role="status" />
 				Loging...

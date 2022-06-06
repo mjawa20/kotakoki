@@ -35,12 +35,12 @@
 		</h1>
 		<div class="hidden md:flex items-center text-xs text-amber-900 gap-2 font-bold">
 			{#if authenticated}
-				<a rel="external" href="/account">My Account</a>
+				<a href="/account">My Account</a>
 				<p class="cursor-pointer" on:click={handleLogout}>Logout</p>
 			{:else}
-				<a rel="external" href="/login">Login</a>
+				<a href="/login">Login</a>
 				<span>or</span>
-				<a rel="external" href="/register">Create an Account</a>
+				<a href="/register">Create an Account</a>
 			{/if}
 			<a href="/cart" class="mx-3"
 				><i class="fas fa-cart-arrow-down mr-1" />
