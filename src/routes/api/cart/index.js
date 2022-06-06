@@ -3,7 +3,7 @@ import { filterBuilder, responseBuilder } from '../_api';
 
 export async function get({ url }) {
     try {
-        const categories = await db.models.cart.findAndCountAll({ ...filterBuilder(url) });
+        const categories = await db.models.cart.findAndCountAll({ include: ['product'], ...filterBuilder(url) });
         return responseBuilder(200, 'success', categories);
     } catch (error) {
         return responseBuilder(400, error);

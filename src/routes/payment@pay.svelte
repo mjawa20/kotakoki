@@ -1,13 +1,3 @@
-<script context="module">
-	export async function load({ session }) {
-		return {
-			props: {
-				email: session.email
-			}
-		};
-	}
-</script>
-
 <script>
 	import Checkout from '$lib/checkout/Checkout.svelte';
 	import Shipping from '$lib/checkout/Shipping.svelte';
@@ -15,31 +5,24 @@
 	import { onMount } from 'svelte';
 
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
-	import { fetchProducts, products } from '../store/product';
-	import { fetchUsers, getUserByEmail, users } from '../store/user';
+
+	import { session } from '$app/stores';
 
 	let isShow = false;
 
-	export let email;
-
-	let rows = [];
-	let user = [];
+	let items = [];
 
 	onMount(async () => await load());
 
 	async function load() {
-		await fetchCarts();
-		await fetchProducts();
-		user = await getUserByEmail(email);
-		rows = $carts.rows.filter((item) => item.userId === user.id);
+		await fetchCarts({ selectors: 'userId', keyword: $session.id, op: 'eq' });
+		items = [...$carts.rows];
 	}
 
 	$: if (innerWidth > 1024) {
 		isShow = false;
 	}
-	console.log(email);
 	$: innerWidth = 0;
-	$: console.log($products.rows,"------------", rows);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -54,7 +37,7 @@
 		<p class="font-medium text-lg">¥ 1,100</p>
 	</div>
 </button>
-<Summary {isShow} res={true} {rows} products={$products?.rows} />
+<Summary {isShow} res={true} {items} />
 <div class="w-full bg-white pt-10 lg:pt-14 lg:pr-10 px-5">
 	<div class="max-w-md mx-auto lg:max-w-lg lg:ml-auto lg:mx-0">
 		<h1 class="font-medium text-2xl mb-4 lg:block hidden">Kotakoki</h1>

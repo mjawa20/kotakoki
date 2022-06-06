@@ -1,18 +1,14 @@
 <script>
+	import { onMount } from 'svelte';
+
 	import { slide } from 'svelte/transition';
 	import Item from './Item.svelte';
 
 	export let isShow;
 	export let res;
-	export let rows = [];
-	// export let products = [];
-
-	// console.log(rows, '-----------------------------', products);
-	// const getProduct = (id) => {
-	// 	return products?.filter((row) => row.id === id);
-	// };
+	export let items = [];
+	
 </script>
-
 {#if isShow || isShow == undefined}
 	<div
 		transition:slide
@@ -21,11 +17,9 @@
 			: 'lg:block hidden'} w-full lg:w-4/5 border-l bg-zinc-50 lg:pl-10 py-10 lg:pt-14"
 	>
 		<div class="max-w-md mx-auto lg:max-w-sm lg:mr-auto lg:mx-0">
-			<!-- {#if rows} -->
-				<!-- {#each rows as cart} -->
-					<Item />
-				<!-- {/each} -->
-			<!-- {/if} -->
+			{#each items as item}
+				<Item />
+			{/each}
 			<hr />
 			<div class="my-5 flex space-x-3">
 				<input
