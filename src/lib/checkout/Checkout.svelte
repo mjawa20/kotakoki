@@ -4,7 +4,7 @@
 	import Summary from '$lib/checkout/Summary.svelte';
 </script>
 
-<Breadcrumb color="text-gray-600" />
+<!-- <Breadcrumb color="text-gray-600" /> -->
 <h4 class="my-5 text-base font-medium">Contact Information</h4>
 <div class="flex space-x-3 text-xs items-center font-medium">
 	<img src="/assets/img/a.jpg" alt="" class="rounded w-12" />

@@ -1,8 +1,16 @@
 <script>
 	import { slide } from 'svelte/transition';
+	import Item from './Item.svelte';
 
 	export let isShow;
 	export let res;
+	export let rows = [];
+	// export let products = [];
+
+	// console.log(rows, '-----------------------------', products);
+	// const getProduct = (id) => {
+	// 	return products?.filter((row) => row.id === id);
+	// };
 </script>
 
 {#if isShow || isShow == undefined}
@@ -13,20 +21,11 @@
 			: 'lg:block hidden'} w-full lg:w-4/5 border-l bg-zinc-50 lg:pl-10 py-10 lg:pt-14"
 	>
 		<div class="max-w-md mx-auto lg:max-w-sm lg:mr-auto lg:mx-0">
-			<div class="flex justify-between items-center mb-5 text-sm font-medium">
-				<div class="inline-flex space-x-4 items-center">
-					<div class="relative w-fit ">
-						<img src="/assets/img/a.jpg" alt="" class="w-16 rounded-md" />
-						<p
-							class="-top-2 -right-1 text-xs font-bold absolute bg-gray-600 rounded-full flex items-center justify-center h-5 w-5 text-center text-white"
-						>
-							1
-						</p>
-					</div>
-					<p>Es jeruk kayak akan mineral</p>
-				</div>
-				<p>¥ 300</p>
-			</div>
+			<!-- {#if rows} -->
+				<!-- {#each rows as cart} -->
+					<Item />
+				<!-- {/each} -->
+			<!-- {/if} -->
 			<hr />
 			<div class="my-5 flex space-x-3">
 				<input
