@@ -1,5 +1,5 @@
 import axios from "axios";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { restReqeust } from ".";
 import { objectToQueryParam } from "../utils";
 

@@ -16,27 +16,27 @@
 	import Confirm from '../lib/utils/Confirm.svelte';
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
 	import { fetchProducts, products } from '../store/product';
-	import { fetchUsers, users } from '../store/user';
-	
+	import { fetchUsers, getUserByEmail, users } from '../store/user';
+
 	export let email;
-	
+
 	let rows = [];
 	let user = [];
-	
+
 	let showConfirm = false;
-	
+
 	let typeAlert = '';
 	let messageAlert = '';
 	let isShowAlert = false;
 	$: selectedId = 0;
-	
+
 	onMount(async () => await load());
 	async function load() {
 		await fetchCarts();
 		await fetchProducts();
-		await fetchUsers();
-		rows = $carts.rows;
-		user = $users.rows;
+		user = await getUserByEmail(email);
+
+		rows = $carts.rows.filter((item) => item.userId === user.id);
 	}
 
 	const showAlert = (message, type) => {
@@ -58,11 +58,6 @@
 		console.log(selectedId);
 		showAlert('Delete Data Successfully', 'success');
 	};
-	$: {
-		if (user) {
-			user = user.filter((item) => item.email === email);
-		}
-	}
 </script>
 
 <Confirm bind:showConfirm onDelete={handleDelete} />
@@ -70,9 +65,9 @@
 <div class="mt-10">
 	<h1 class="font-bold text-2xl text-amber-900 mb-8">Your cart</h1>
 	{#if rows && user}
-		{#if $carts.count == 0}
+		{#if rows && rows.length > 0}
 			<CartList>
-				{#each rows.filter((item) => item.userId === user.id) as cart}
+				{#each rows as cart}
 					<CartItem
 						{cart}
 						product={getProduct(cart.productId)[0]}
@@ -91,5 +86,7 @@
 				>
 			</div>
 		{/if}
+	{:else}
+		Loading....
 	{/if}
 </div>

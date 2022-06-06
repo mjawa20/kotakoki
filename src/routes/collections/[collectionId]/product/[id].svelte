@@ -16,15 +16,13 @@
 	import { onMount } from 'svelte';
 	import { collections, fetchCollection } from '../../../../store/collection';
 	import { getUserByEmail, users } from '../../../../store/user';
+	import { goto } from '$app/navigation';
 
 	export let id;
 	export let email;
 
 	let isUpload;
 	let show;
-	let isShowAlert;
-	let messageAlert = '';
-	let typeAlert = '';
 
 	onMount(async () => await load());
 
@@ -35,21 +33,13 @@
 		await fetchProduct(id);
 		await fetchCollection(product.collectionId);
 		user = await getUserByEmail(email);
-		console.log(user,"asd");
+		console.log(user, 'asd');
 		console.log(collection);
 	}
 
-	const showAlert = (message, type) => {
-		isShowAlert = true;
-		messageAlert = message;
-		typeAlert = type;
-
-		setTimeout(() => {
-			isShowAlert = false;
-		}, 3000);
-	};
-	console.log(user)
+	console.log(user);
 	const handlePost = async (event) => {
+		console.log('asd');
 		let selectedProduct = event.detail;
 		let newCart = {
 			userId: user.id,
@@ -63,8 +53,8 @@
 		await load();
 
 		isUpload = false;
+		goto('/cart');
 
-		showAlert('Added Data has Successfully', 'success');
 	};
 
 	$: breadcrumb = [

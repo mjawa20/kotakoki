@@ -5,9 +5,15 @@
 	import { onMount } from 'svelte';
 	import * as cookie from 'cookie';
 	let isShow = false;
+
 	export let authenticated;
+	export let email;
+
+	$:cartLength = 0;
+	
 	onMount(async () => {
-		fetchCarts();
+		await fetchCarts();
+		cartLength = $carts.rows.filter((item) => item.email === email).length;
 	});
 
 	$: if (innerWidth > 768) {
@@ -20,7 +26,7 @@
 		location.reload();
 	};
 
-	// $: auth = cookie.parse(event.request.headers.get('cookie') || '');
+	// $: auth = coo kie.parse(event.request.headers.get('cookie') || '');
 </script>
 
 <svelte:window bind:innerWidth />
@@ -45,8 +51,8 @@
 			<a href="/cart" class="mx-3"
 				><i class="fas fa-cart-arrow-down mr-1" />
 				Cart
-				{#if $carts.count}
-					: 2
+				{#if cartLength}
+					: {cartLength}
 				{/if}
 			</a>
 			<label class="relative block">

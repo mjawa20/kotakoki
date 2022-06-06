@@ -11,7 +11,7 @@
 {#if showConfirm}
 	<div
 		transition:fly={{ y: -200, duration: 400 }}
-		class="absolute shadow-2xl bg-white w-screen left-0 top-0 h-screen z-50 max-w-lg sm:w-96 sm:h-fit sm:shadow-md sm:mb-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-28 sm:-translate-y-1/2 backdrop-blur-xl "
+		class="fixed shadow-2xl bg-white w-screen left-0 top-0 h-screen z-50 max-w-lg sm:w-96 sm:h-fit sm:shadow-md sm:mb-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-28 sm:-translate-y-1/2 backdrop-blur-xl "
 	>
 		<div class="border-b flex justify-between font-bold p-5 ">Confirmation</div>
 		<p class="p-5">Are You Sure To Delete this data?</p>

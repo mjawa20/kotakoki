@@ -7,7 +7,7 @@
 </script>
 
 <h1>{$session?.name} {$session?.email}</h1>
-<Nav authenticated={$session?.authenticated} />
+<Nav authenticated={$session?.authenticated} email={session?.email} />
 <div class="mx-auto max-w-5xl  px-7">
 	<Header />
 	<slot />
