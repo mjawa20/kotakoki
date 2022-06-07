@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 
 	import { carts, fetchCarts } from '../store/cart';
-
+	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
 	import { linkWABuilder } from '../utils';
 
@@ -18,6 +18,10 @@
 	async function load() {
 		await fetchCarts({ selectors: 'userId', keyword: $session.id, op: 'eq' });
 		items = [...$carts.rows];
+		if (!items.length) {
+			alert('nothing item to checkout, you will redirect');
+			goto('/cart');
+		}
 	}
 
 	function select(event) {
