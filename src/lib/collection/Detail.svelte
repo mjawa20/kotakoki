@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let product;
-
+	export let isUpload;
 	const dispatch = createEventDispatcher();
 </script>
 
@@ -13,9 +13,22 @@
 	<h2 class="text-sm ">tax include</h2>
 	<div class="my-12 ">
 		<button
-			class="block border border-amber-900 w-3/6 py-2 mb-2"
-			on:click={() => dispatch('addCart', product)}>Add to cart</button
+			disabled={isUpload}
+			class="disabled:bg-slate-400 block border border-amber-900 w-3/6 py-2 mb-2"
+			on:click={() => dispatch('addCart', product)}
 		>
+			{#if isUpload}
+				<div class="flex items-center">
+					<div
+						class="border-dashed animate-spin  w-4 h-4 border-2 rounded-full mr-1"
+						role="status"
+					/>
+					Adding...
+				</div>
+			{:else}
+				Add To Cart
+			{/if}
+		</button>
 		<button class="bg-amber-900 text-white w-3/6 py-2 block">Buy Now</button>
 	</div>
 	<div>

@@ -1,25 +1,23 @@
 <script context="module">
-	export async function load({ params, session }) {
+	export async function load({ params }) {
 		const { id } = params;
 
-		return { props: { id, email: session.email } };
+		return { props: { id } };
 	}
 </script>
 
 <script>
 	import Breadcrumb from '$lib/utils/Breadcrumb.svelte';
 	import Detail from '$lib/collection/Detail.svelte';
-	import Product from '$lib/collection/Product.svelte';
-	import axios from 'axios';
 	import { fetchProduct, products } from '../../../../store/product';
 	import { postCart, carts } from '../../../../store/cart';
 	import { onMount } from 'svelte';
 	import { collections, fetchCollection } from '../../../../store/collection';
 	import { getUserByEmail, users } from '../../../../store/user';
 	import { goto } from '$app/navigation';
+	import { session } from '$app/stores';
 
 	export let id;
-	export let email;
 
 	let isUpload;
 	let show;
@@ -28,26 +26,22 @@
 
 	$: product = $products;
 	$: collection = $collections;
-	$: user = {};
 	async function load() {
 		await fetchProduct(id);
 		await fetchCollection(product.collectionId);
-		user = await getUserByEmail(email);
-		console.log(user, 'asd');
 		console.log(collection);
 	}
 
-	console.log(user);
 	const handlePost = async (event) => {
-		console.log('asd');
+		isUpload = true;
+
 		let selectedProduct = event.detail;
 		let newCart = {
-			userId: user.id,
+			userId: $session.id,
 			productId: selectedProduct.id,
 			quantity: 1,
 			total: 1 * selectedProduct.price
 		};
-		isUpload = true;
 		await postCart(newCart);
 		show = false;
 		await load();
@@ -77,7 +71,7 @@
 				</div>
 			</div>
 			{#if product}
-				<Detail {product} on:addCart={handlePost} />
+				<Detail {isUpload} {product} on:addCart={handlePost} />
 			{/if}
 		</div>
 	{/if}
