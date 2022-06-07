@@ -45,7 +45,6 @@
 </script>
 
 <svelte:window bind:innerWidth />
-<a href="https://wa.me/628889988618?text={message}" target="_blank">test</a>
 <h1 class="font-medium text-2xl my-5 lg:hidden block text-center ">Kotakoki</h1>
 <button on:click={() => (isShow = !isShow)} class="bg-zinc-50  py-5 lg:hidden border-y">
 	<div class="max-w-md mx-auto flex justify-between ">
