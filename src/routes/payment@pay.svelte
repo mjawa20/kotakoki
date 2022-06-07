@@ -7,7 +7,6 @@
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
 
 	import { session } from '$app/stores';
-	import { fetchProducts, products } from '../store/product';
 
 	let isShow = false;
 
@@ -16,7 +15,6 @@
 	onMount(async () => await load());
 
 	async function load() {
-		await fetchProducts();
 		await fetchCarts({ selectors: 'userId', keyword: $session.id, op: 'eq' });
 		items = [...$carts.rows];
 	}
@@ -27,9 +25,27 @@
 	$: innerWidth = 0;
 	$: console.log(items);
 
+	let message = '';
+
+	$: total = items.reduce((a, b) => a + b.total, 0);
+	$: {
+		items.forEach((item, index) => {
+			message +=
+			index +
+			1 +
+			`%0aProduct Id : ${item.product.id}%0a` +
+			`Product name : ${item.product.name}%0a` +
+			`qty : ${item.quantity}%0a` +
+			`subtotal : ￥${item.total}%0a` +
+			`----------------------------%0a`;
+		});
+		message += `%0atotal : ￥${total}`;
+	}
+	$: console.log(message, '11111111111111111');
 </script>
 
 <svelte:window bind:innerWidth />
+<a href="https://wa.me/628889988618?text={message}" target="_blank">test</a>
 <h1 class="font-medium text-2xl my-5 lg:hidden block text-center ">Kotakoki</h1>
 <button on:click={() => (isShow = !isShow)} class="bg-zinc-50  py-5 lg:hidden border-y">
 	<div class="max-w-md mx-auto flex justify-between ">
@@ -41,12 +57,12 @@
 		<p class="font-medium text-lg">¥ 1,100</p>
 	</div>
 </button>
-<Summary {isShow} res={true} {items}/>
+<Summary {isShow} res={true} {items} {total} />
 <div class="w-full bg-white pt-10 lg:pt-14 lg:pr-10 px-5">
 	<div class="max-w-md mx-auto lg:max-w-lg lg:ml-auto lg:mx-0">
 		<h1 class="font-medium text-2xl mb-4 lg:block hidden">Kotakoki</h1>
 		<Checkout />
-		<Shipping />
+		<Shipping {message} />
 	</div>
 </div>
-<Summary res={false} {items}/>
+<Summary res={false} {items} {total} />

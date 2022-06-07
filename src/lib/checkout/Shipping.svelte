@@ -1,6 +1,8 @@
 <script>
 	import Input from '$lib/utils/Input.svelte';
 	import SelectItem from '$lib/utils/SelectItem.svelte';
+
+	export let message = '';
 </script>
 
 <h4 class="my-5 text-base font-medium">Delivery Method</h4>
@@ -20,9 +22,16 @@
 	<Input style="mb-2" placeholder="address2" />
 	<Input style="mb-2" placeholder="phone number" />
 	<div class="flex gap-5 items-center my-5">
-		<button class="w-fit bg-orange-600 px-5 p-2 text-sm text-white rounded"
-			>Proceed to select shipping method</button
-		>
+		{#if message === ''}
+			<button disabled class="bg-slate-400 w-fi px-5 p-2 text-sm text-white rounded"
+				>Proceed Order</button
+			>
+		{:else}
+			<a
+				href="https://wa.me/628889988618?text={message}"
+				class=" w-fit bg-orange-600 px-5 p-2 text-sm text-white rounded">Proceed Order</a
+			>
+		{/if}
 		<p>Return to cart</p>
 	</div>
 	<hr class="mt-10" />

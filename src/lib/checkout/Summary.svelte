@@ -5,10 +5,10 @@
 	import Item from './Item.svelte';
 
 	export let isShow;
+	export let total=0;
 	export let res;
 	export let items = [];
 
-	$: total = items.reduce((a, b) => a + b.total, 0);
 </script>
 
 {#if isShow || isShow == undefined}
