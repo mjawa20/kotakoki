@@ -5,10 +5,9 @@
 	import Item from './Item.svelte';
 
 	export let isShow;
-	export let total=0;
+	export let total = 0;
 	export let res;
 	export let items = [];
-
 </script>
 
 {#if isShow || isShow == undefined}
@@ -19,9 +18,19 @@
 			: 'lg:block hidden'} w-full lg:w-10/12 border-l bg-zinc-50 lg:pl-10 py-10 lg:pt-14"
 	>
 		<div class="max-w-md mx-auto lg:max-w-sm lg:mr-auto lg:mx-0">
-			{#each items as item}
-				<Item {item} />
-			{/each}
+			{#if items.length}
+				{#each items as item}
+					<Item {item} />
+				{/each}
+			{:else}
+				<div class="flex justify-between items-center mb-5 ">
+					<div class="inline-flex space-x-4 items-center">
+						<div class="rounded bg-slate-300 h-16 w-16" />
+						<div class="rounded bg-slate-300 h-5 w-20" />
+					</div>
+					<div class="rounded bg-slate-300 h-5 w-20" />
+				</div>
+			{/if}
 			<hr />
 			<div class="my-5 flex space-x-3">
 				<input

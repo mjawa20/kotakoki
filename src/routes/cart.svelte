@@ -8,7 +8,7 @@
 	import { fetchProducts, products } from '../store/product';
 	import { session } from '$app/stores';
 
-	let items ;
+	let items;
 
 	let showConfirm = false;
 
@@ -68,6 +68,29 @@
 			</div>
 		{/if}
 	{:else}
-		Loading....
+		<div class="border-b flex flex-col md:flex-row justify-between py-8">
+			<div class="flex gap-8 max-w-lg">
+				<div class="border animate-pulse bg-slate-300 w-40 h-40" />
+				<div>
+					<div class="animate-pulse rounded bg-slate-300 h-4 w-32 mb-2" />
+					<div class="animate-pulse rounded bg-slate-300 h-4 w-32" />
+				</div>
+			</div>
+
+			<div
+				class="md:hidden text-right flex gap-16 md:justify-end justify-between items-center text-xs h-fit my-4"
+			>
+				<div class="animate-pulse rounded bg-slate-300 h-4 w-32 mb-2" />
+				<div class="animate-pulse rounded bg-slate-300 h-4 w-32" />
+				<div class="animate-pulse rounded bg-slate-300 h-4 w-32" />
+			</div>
+			<div
+				class=" text-right flex gap-16 md:justify-end justify-between items-center text-sm  font-bold h-fit md:w-96"
+			>
+				<div class="animate-pulse rounded bg-slate-300 h-4 w-32 mb-2" />
+				<div class="animate-pulse rounded bg-slate-300 h-4 w-32" />
+				<div class="animate-pulse rounded bg-slate-300 h-4 w-32" />
+			</div>
+		</div>
 	{/if}
 </div>
