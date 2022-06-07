@@ -1,7 +1,7 @@
 <div class="text-amber-900">
-	<div class="hidden md:flex gap-16 justify-end text-sm  font-bold ">
-		<p>Price</p>
-		<p>Quantity</p>
+	<div class="text-right hidden md:flex gap-20 justify-end text-sm  font-bold ">
+		<p class="-mr-5">Price</p>
+		<p class="pr-14">Quantity</p>
 		<p>Total</p>
 	</div>
 	<hr class="mt-8" />

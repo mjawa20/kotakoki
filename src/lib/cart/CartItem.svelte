@@ -10,6 +10,8 @@
 	$: {
 		if (qtyValue < 0) {
 			qtyValue = 1;
+		}else if(qtyValue > 100){
+			qtyValue = 100;
 		}
 	}
 	$: total = qtyValue * item.product.price;
@@ -24,14 +26,14 @@
 		</div>
 	</div>
 
-	<div class="md:hidden flex gap-16 md:justify-end justify-between items-center text-xs h-fit my-4">
+	<div class="md:hidden text-right flex gap-16 md:justify-end justify-between items-center text-xs h-fit my-4">
 		<p>Price</p>
 		<p>Quantity</p>
 		<p>Total</p>
 	</div>
-	<div class="flex gap-16 md:justify-end justify-between items-center text-sm  font-bold h-fit ">
-		<p>¥ {item.product.price}</p>
-		<input type="text" class="w-14 h-fit border p-2 rounded-sm" bind:value={qtyValue} />
-		<p>¥ {total}</p>
+	<div class=" text-right flex gap-16 md:justify-end justify-between items-center text-sm  font-bold h-fit md:w-96" >
+		<p class="w-full ">¥ {item.product.price}</p>
+		<input type="number" class="text-right w-14 h-fit border p-2 rounded-sm" bind:value={qtyValue} max={100} />
+		<p class="w-full border">¥ {total}</p>
 	</div>
 </div>
