@@ -7,6 +7,7 @@
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
 
 	import { session } from '$app/stores';
+	import { fetchProducts, products } from '../store/product';
 
 	let isShow = false;
 
@@ -15,6 +16,7 @@
 	onMount(async () => await load());
 
 	async function load() {
+		await fetchProducts();
 		await fetchCarts({ selectors: 'userId', keyword: $session.id, op: 'eq' });
 		items = [...$carts.rows];
 	}
@@ -23,7 +25,7 @@
 		isShow = false;
 	}
 	$: innerWidth = 0;
-	$:console.log(items);
+	$: console.log(items);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -38,7 +40,7 @@
 		<p class="font-medium text-lg">¥ 1,100</p>
 	</div>
 </button>
-<Summary {isShow} res={true} {items} />
+<Summary {isShow} res={true} {items} products={$products.rows}/>
 <div class="w-full bg-white pt-10 lg:pt-14 lg:pr-10 px-5">
 	<div class="max-w-md mx-auto lg:max-w-lg lg:ml-auto lg:mx-0">
 		<h1 class="font-medium text-2xl mb-4 lg:block hidden">Kotakoki</h1>
@@ -46,4 +48,4 @@
 		<Shipping />
 	</div>
 </div>
-<Summary {items} />
+<Summary res={false} {items} products={$products.rows} />

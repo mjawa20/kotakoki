@@ -7,8 +7,15 @@
 	export let isShow;
 	export let res;
 	export let items = [];
-	
+	export let products = [];
+
+	const getProduct = (id) => {
+		return products.filter((row) => row.id === id);
+	};
+
+	$: total = items.reduce((a, b) => a + b.total, 0);
 </script>
+
 {#if isShow || isShow == undefined}
 	<div
 		transition:slide
@@ -18,7 +25,7 @@
 	>
 		<div class="max-w-md mx-auto lg:max-w-sm lg:mr-auto lg:mx-0">
 			{#each items as item}
-				<Item />
+				<Item {item} product={getProduct(item.productId)[0]} />
 			{/each}
 			<hr />
 			<div class="my-5 flex space-x-3">
@@ -33,7 +40,7 @@
 			<div class="my-5 text-xs font-medium ">
 				<div class="flex justify-between items-center mb-3">
 					<p>Subtotal</p>
-					<p>¥ 1,100</p>
+					<p>¥ {total}</p>
 				</div>
 				<div class="flex justify-between items-center">
 					<p>Delivery</p>
@@ -46,7 +53,7 @@
 					<p>Total</p>
 					<p class="text-sm font-normal">Includes ¥ 81 tax</p>
 				</div>
-				<p class="text-base">JPY 1,100 ￥ 1,100</p>
+				<p class="text-base">JPY ￥ {total}</p>
 			</div>
 		</div>
 	</div>
