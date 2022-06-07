@@ -7,11 +7,6 @@
 	export let isShow;
 	export let res;
 	export let items = [];
-	export let products = [];
-
-	const getProduct = (id) => {
-		return products.filter((row) => row.id === id);
-	};
 
 	$: total = items.reduce((a, b) => a + b.total, 0);
 </script>
@@ -21,11 +16,11 @@
 		transition:slide
 		class="{res
 			? 'lg:hidden block'
-			: 'lg:block hidden'} w-full lg:w-4/5 border-l bg-zinc-50 lg:pl-10 py-10 lg:pt-14"
+			: 'lg:block hidden'} w-full lg:w-10/12 border-l bg-zinc-50 lg:pl-10 py-10 lg:pt-14"
 	>
 		<div class="max-w-md mx-auto lg:max-w-sm lg:mr-auto lg:mx-0">
 			{#each items as item}
-				<Item {item} product={getProduct(item.productId)[0]} />
+				<Item {item} />
 			{/each}
 			<hr />
 			<div class="my-5 flex space-x-3">

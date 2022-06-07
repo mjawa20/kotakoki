@@ -1,6 +1,5 @@
 <script>
     export let item;
-    export let product;
 </script>
 
 <div class="flex justify-between items-center mb-5 text-sm font-medium">
@@ -13,7 +12,7 @@
                 {item.quantity}
             </p>
         </div>
-        <p>{product.name}</p>
+        <p>{item.product.name}</p>
     </div>
     <p>¥ {item.total}</p>
 </div>

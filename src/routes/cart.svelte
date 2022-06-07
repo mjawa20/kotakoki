@@ -20,10 +20,8 @@
 	onMount(async () => await load());
 	async function load() {
 		await fetchCarts({ selectors: 'userId', keyword: $session.id, op: 'eq' });
-		await fetchProducts();
 
 		items = [...$carts.rows];
-		console.log(items);
 	}
 
 	const showAlert = (message, type) => {
@@ -34,10 +32,6 @@
 		setTimeout(() => {
 			isShowAlert = false;
 		}, 3000);
-	};
-
-	const getProduct = (id) => {
-		return $products.rows.filter((row) => row.id === id);
 	};
 
 	const handleDelete = async () => {
@@ -58,7 +52,6 @@
 				{#each items as item}
 					<CartItem
 						{item}
-						product={getProduct(item.productId)[0]}
 						on:delete={() => {
 							showConfirm = true;
 							selectedId = item.id;

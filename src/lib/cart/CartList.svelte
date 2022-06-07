@@ -16,8 +16,8 @@
 				>Continue shopping</button
 			>
 			<button class="border border-amber-900 rounded-sm font-bold text-sm p-3">Update Cart</button>
-			<button class="bg-amber-900 rounded-sm font-bold text-sm p-3 text-white mt-2"
-				>To purchase procedure</button
+			<a href="/payment" class="bg-amber-900 rounded-sm font-bold text-sm p-3 text-white mt-2"
+				>To purchase procedure</a
 			>
 		</div>
 	</div>
