@@ -1,10 +1,10 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 
-	export let cart;
+	export let item;
 	export let product;
 
-	let qtyValue = cart.quantity;
+	let qtyValue = item.quantity;
 
 	const dispatch = createEventDispatcher();
 

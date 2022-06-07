@@ -23,6 +23,7 @@
 		isShow = false;
 	}
 	$: innerWidth = 0;
+	$:console.log(items);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -45,3 +46,4 @@
 		<Shipping />
 	</div>
 </div>
+<Summary {items} />

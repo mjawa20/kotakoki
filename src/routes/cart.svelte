@@ -1,13 +1,3 @@
-<script context="module">
-	export async function load({ session }) {
-		return {
-			props: {
-				email: session.email
-			}
-		};
-	}
-</script>
-
 <script>
 	import CartItem from '$lib/cart/CartItem.svelte';
 	import CartList from '$lib/cart/CartList.svelte';
@@ -16,12 +6,9 @@
 	import Confirm from '../lib/utils/Confirm.svelte';
 	import { carts, deleteCart, fetchCarts } from '../store/cart';
 	import { fetchProducts, products } from '../store/product';
-	import { fetchUsers, getUserByEmail, users } from '../store/user';
+	import { session } from '$app/stores';
 
-	export let email;
-
-	let rows = [];
-	let user = [];
+	let items ;
 
 	let showConfirm = false;
 
@@ -32,11 +19,11 @@
 
 	onMount(async () => await load());
 	async function load() {
-		await fetchCarts();
+		await fetchCarts({ selectors: 'userId', keyword: $session.id, op: 'eq' });
 		await fetchProducts();
-		user = await getUserByEmail(email);
 
-		rows = $carts.rows.filter((item) => item.userId === user.id);
+		items = [...$carts.rows];
+		console.log(items);
 	}
 
 	const showAlert = (message, type) => {
@@ -48,6 +35,7 @@
 			isShowAlert = false;
 		}, 3000);
 	};
+
 	const getProduct = (id) => {
 		return $products.rows.filter((row) => row.id === id);
 	};
@@ -64,16 +52,16 @@
 <Alert type={typeAlert} show={isShowAlert} message={messageAlert} />
 <div class="mt-10">
 	<h1 class="font-bold text-2xl text-amber-900 mb-8">Your cart</h1>
-	{#if rows && user}
-		{#if rows && rows.length > 0}
+	{#if items}
+		{#if items.length > 0}
 			<CartList>
-				{#each rows as cart}
+				{#each items as item}
 					<CartItem
-						{cart}
-						product={getProduct(cart.productId)[0]}
+						{item}
+						product={getProduct(item.productId)[0]}
 						on:delete={() => {
 							showConfirm = true;
-							selectedId = cart.id;
+							selectedId = item.id;
 						}}
 					/>
 				{/each}

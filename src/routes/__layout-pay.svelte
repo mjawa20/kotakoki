@@ -5,5 +5,4 @@
 
 <div class="min-h-screen flex flex-col lg:flex-row text-zinc-700">
 	<slot />
-	<Summary />
 </div>
