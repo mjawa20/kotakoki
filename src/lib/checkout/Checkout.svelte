@@ -2,6 +2,10 @@
 	import Breadcrumb from '$lib/utils/Breadcrumb.svelte';
 	import Shipping from '$lib/checkout/Shipping.svelte';
 	import Summary from '$lib/checkout/Summary.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	export let selected;
+	const dispatch = createEventDispatcher();
 </script>
 
 <!-- <Breadcrumb color="text-gray-600" /> -->
@@ -17,15 +21,31 @@
 	<input id="default" type="checkbox" class="w-4 h-4" />
 	<p class="ml-2 text-sm">Set this address as the default</p>
 </label>
-<h4 class="my-5 text-base font-medium">Delivery Method</h4>
+<h4 class="my-5 text-base font-medium">
+	Delivery Method
+</h4>
 <div class="flex flex-col text-xs font-medium text-gray-500">
 	<label class="inline-flex items-center border-x border-t p-4">
-		<input type="radio" class="form-radio" name="radio" value="1" checked />
-		<span class="ml-2"><i class="fas fa-truck mr-1" /> Send</span>
+		<input
+			checked={selected === 'delivery'}
+			on:change={(event) => dispatch('select', event.currentTarget.value)}
+			type="radio"
+			class="form-radio"
+			name="radio"
+			value="delivery"
+		/>
+		<span class="ml-2"><i class="fas fa-truck mr-1" /> Delivery</span>
 	</label>
 	<hr />
 	<label class="inline-flex items-center border-x border-b p-4">
-		<input type="radio" class="form-radio" name="radio" value="2" />
-		<span class="ml-2"><i class="fas fa-store mr-1" /> Send</span>
+		<input
+			checked={selected === 'pick-up'}
+			on:change={(event) => dispatch('select', event.currentTarget.value)}
+			type="radio"
+			class="form-radio"
+			name="radio"
+			value="pick-up"
+		/>
+		<span class="ml-2"><i class="fas fa-store mr-1" /> Pick Up</span>
 	</label>
 </div>

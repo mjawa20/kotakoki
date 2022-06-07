@@ -4,12 +4,13 @@
 	import Summary from '$lib/checkout/Summary.svelte';
 	import { onMount } from 'svelte';
 
-	import { carts, deleteCart, fetchCarts } from '../store/cart';
+	import { carts, fetchCarts } from '../store/cart';
 
 	import { session } from '$app/stores';
+	import { linkWABuilder } from '../utils';
 
 	let isShow = false;
-
+	let selected = 'pick-up';
 	let items = [];
 
 	onMount(async () => await load());
@@ -19,29 +20,25 @@
 		items = [...$carts.rows];
 	}
 
+	function select(event) {
+		selected = event.detail;
+	}
+
 	$: if (innerWidth > 1024) {
 		isShow = false;
 	}
 	$: innerWidth = 0;
-	$: console.log(items);
 
-	let message = '';
-
+	let linkWa = '';
+	let numberWa = '628889988618';
+	let address = '';
 	$: total = items.reduce((a, b) => a + b.total, 0);
 	$: {
-		items.forEach((item, index) => {
-			message +=
-			index +
-			1 +
-			`%0aProduct Id : ${item.product.id}%0a` +
-			`Product name : ${item.product.name}%0a` +
-			`qty : ${item.quantity}%0a` +
-			`subtotal : ￥${item.total}%0a` +
-			`----------------------------%0a`;
-		});
-		message += `%0atotal : ￥${total}`;
+		if (items.length) {
+			linkWa = linkWABuilder(items, total, numberWa, selected, address);
+		}
 	}
-	$: console.log(message, '11111111111111111');
+	$: console.log(linkWa, '11111111111111111');
 </script>
 
 <svelte:window bind:innerWidth />
@@ -53,15 +50,15 @@
 			Order Summary / coupon input
 			<i class="fas fa-angle-down align-middle" />
 		</p>
-		<p class="font-medium text-lg">¥ 1,100</p>
+		<p class="font-medium text-lg">¥ {total}</p>
 	</div>
 </button>
 <Summary {isShow} res={true} {items} {total} />
 <div class="w-full bg-white pt-10 lg:pt-14 lg:pr-10 px-5">
 	<div class="max-w-md mx-auto lg:max-w-lg lg:ml-auto lg:mx-0">
 		<h1 class="font-medium text-2xl mb-4 lg:block hidden">Kotakoki</h1>
-		<Checkout />
-		<Shipping {message} />
+		<Checkout on:select={select} {selected} />
+		<Shipping {linkWa} {selected} />
 	</div>
 </div>
 <Summary res={false} {items} {total} />

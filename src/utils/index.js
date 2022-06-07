@@ -38,7 +38,7 @@ export const clearData = (data, excludes = []) => {
         clearData(d)
       })
     } else {
-      if (data[key] === null) data[key] = ""  
+      if (data[key] === null) data[key] = ""
       switch (typeof data[key]) {
         case 'object':
           clearData(data[key])
@@ -93,4 +93,24 @@ export const sortProduct = (data, dir, key) => {
     return sortString(data, dir, key);
   }
   return sortNumber(data, dir, key)
+}
+
+export const linkWABuilder = (items, total, numberWA, deliveryMethod, address) => {
+  let message = '';
+  if (address === '') {
+    address = "At Jl pejagalan nomer 45 43144, Jakarta Pusat"
+  }
+  items.forEach((item, index) => {
+    message +=
+      index +
+      1 +
+      `%0aProduct Id : ${item.product.id}%0a` +
+      `Product name : ${item.product.name}%0a` +
+      `qty : ${item.quantity}%0a` +
+      `subtotal : ￥${item.total}%0a` +
+      `----------------------------%0a`;
+  });
+  message += `%0atotal : ￥${total}`;
+  message += `%0aDelivery Method : ${deliveryMethod}%0a${address}`;
+  return `https://wa.me/${numberWA}?text=${'```' + message + '```'}`;
 }
