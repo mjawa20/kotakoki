@@ -7,6 +7,8 @@ import imageModel from './models/image';
 import carouselModel from './models/carousel';
 import cartModel from './models/cart';
 import userModel from './models/user';
+import orderModel from './models/order';
+import orderItemModel from './models/orderItem';
 
 const { host, port, username, password, database, dialect } = config.development;
 
@@ -23,6 +25,8 @@ imageModel(db);
 carouselModel(db);
 cartModel(db);
 userModel(db);
+orderModel(db);
+orderItemModel(db);
 
 Object.keys(db.models).forEach((modelName) => {
 	if (db.models[modelName].associate) {

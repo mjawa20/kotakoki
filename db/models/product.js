@@ -45,10 +45,10 @@ export default (sequelize) => {
 		}
 	);
 
-  Product.beforeValidate(async (product) => {
-    if (product.id) return
-    product.id = uid()
-  })
+	Product.beforeValidate(async (product) => {
+		if (product.id) return
+		product.id = uid()
+	})
 
 	Product.associate = function (models) {
 		Product.hasMany(models.image, {
@@ -56,7 +56,7 @@ export default (sequelize) => {
 			foreignKey: 'productId',
 			hooks: true,
 			onDelete: 'CASCADE',
-      
+
 		});
 		Product.belongsTo(models.collection)
 		Product.belongsTo(models.category)
