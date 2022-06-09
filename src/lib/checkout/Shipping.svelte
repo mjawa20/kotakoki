@@ -1,9 +1,12 @@
 <script>
 	import Input from '$lib/utils/Input.svelte';
 	import SelectItem from '$lib/utils/SelectItem.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let linkWa = '';
+	export let isOrder;
 	export let selected;
+	const dispatch = createEventDispatcher();
 </script>
 
 <h4 class="my-5 text-base font-medium">
@@ -45,9 +48,21 @@
 			<button disabled class="bg-slate-400 w-fi px-5 p-2 text-sm text-white rounded"
 				>Proceed Order</button
 			>
+		{:else if isOrder}
+			<button disabled class="bg-slate-400 w-fi px-5 p-2 text-sm text-white rounded"
+				><div class="flex items-center">
+					<div
+						class="border-dashed animate-spin  w-4 h-4 border-2 rounded-full mr-1"
+						role="status"
+					/>
+					prepare ordering...
+				</div>
+			</button>
 		{:else}
-			<a href={linkWa} class=" w-fit bg-orange-600 px-5 p-2 text-sm text-white rounded"
-				>Proceed Order</a
+			<a
+				href={linkWa}
+				class=" w-fit bg-orange-600 px-5 p-2 text-sm text-white rounded"
+				on:click={() => dispatch('order')}>Proceed Order</a
 			>
 		{/if}
 		<p>Return to cart</p>

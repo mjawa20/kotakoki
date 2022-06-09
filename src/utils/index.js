@@ -114,3 +114,17 @@ export const linkWABuilder = (items, total, numberWA, deliveryMethod, address) =
   message += `%0aDelivery Method : ${deliveryMethod}%0a${address}`;
   return `https://wa.me/${numberWA}?text=${'```' + message + '```'}`;
 }
+
+export const filterCart = (items,orderId) => {
+  let newItems = [];
+  const includes = ['productId', 'quantity', 'total'];
+  items.forEach((item) => {
+    const asArray = Object.entries(item);
+    const filtered = asArray.filter(([key, value]) => includes.includes(key)).reduce((accum, [k, v]) => {
+      accum[k] = v;
+      return accum;
+    }, {});;
+    newItems.push(Object.assign(filtered,{orderId: orderId}));
+  })
+  return newItems;
+}

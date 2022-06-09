@@ -5,13 +5,18 @@
 	import { onMount } from 'svelte';
 
 	import { carts, fetchCarts } from '../store/cart';
+	import { postOrder } from '../store/order';
+	import { postOrderItem } from '../store/orderItem';
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
-	import { linkWABuilder } from '../utils';
+	import { filterCart, linkWABuilder } from '../utils';
+	import { uid } from 'uid';
 
 	let isShow = false;
 	let selected = 'pick-up';
 	let items = [];
+
+	let isOrder = false;
 
 	onMount(async () => await load());
 
@@ -23,11 +28,23 @@
 			goto('/cart');
 		}
 	}
-
+	
 	function select(event) {
 		selected = event.detail;
 	}
+	
+	const handleOrder = async () => {
+		isOrder = true;
+		let newOrder = {
+			userId: $session.id,
+			code: uid()
+		};
+		let res = await postOrder(newOrder);
+		await postOrderItem(filterCart(items,res.id));
 
+		isOrder = false;
+	};	
+	
 	$: if (innerWidth > 1024) {
 		isShow = false;
 	}
@@ -42,7 +59,6 @@
 			linkWa = linkWABuilder(items, total, numberWa, selected, address);
 		}
 	}
-	$: console.log(linkWa, '11111111111111111');
 </script>
 
 <svelte:window bind:innerWidth />
@@ -62,7 +78,7 @@
 	<div class="max-w-md mx-auto lg:max-w-lg lg:ml-auto lg:mx-0">
 		<h1 class="font-medium text-2xl mb-4 lg:block hidden">Kotakoki</h1>
 		<Checkout on:select={select} {selected} />
-		<Shipping {linkWa} {selected} />
+		<Shipping {linkWa} {selected} on:order={handleOrder} {isOrder} />
 	</div>
 </div>
 <Summary res={false} {items} {total} />

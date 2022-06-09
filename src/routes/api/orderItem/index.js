@@ -13,7 +13,7 @@ export async function get({ url }) {
 export async function post({ request }) {
 	try {
 		const orderItem = await request.json();
-		await db.models.orderItem.create(orderItem);
+		await db.models.orderItem.bulkCreate(orderItem);
 		return responseBuilder(200, 'orderItem has been created', orderItem);
 	} catch (error) {
 		return responseBuilder(400, error);

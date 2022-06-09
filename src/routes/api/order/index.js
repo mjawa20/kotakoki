@@ -13,8 +13,8 @@ export async function get({ url }) {
 export async function post({ request }) {
 	try {
 		const order = await request.json();
-		await db.models.order.create(order);
-		return responseBuilder(200, 'order has been created', order);
+		let res = await db.models.order.create(order);
+		return responseBuilder(200, 'order has been created', res);
 	} catch (error) {
 		return responseBuilder(400, error);
 	}
