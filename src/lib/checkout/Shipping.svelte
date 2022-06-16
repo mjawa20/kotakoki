@@ -1,12 +1,55 @@
 <script>
 	import Input from '$lib/utils/Input.svelte';
 	import SelectItem from '$lib/utils/SelectItem.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import {
+		fetchCities,
+		fetchProvinces,
+		provinces,
+		cities,
+		fetchDistricts,
+		districts,
+		fetchSubDistricts,
+		subDistricts
+	} from '../../store/location';
 
 	export let linkWa = '';
 	export let isOrder;
 	export let selected;
 	const dispatch = createEventDispatcher();
+
+	onMount(async () => {
+		await fetchProvinces();
+	});
+
+	 let addressShipping = {
+		firstName: '',
+		surName: '',
+		province: null,
+		kota: null,
+		kecamatan: null,
+		kelurahan: null,
+		postalCode: '',
+		detail: '',
+		phone: ''
+	};
+
+	const getcities = async () => await fetchCities(addressShipping.province);
+	const getdistricts = async () => await fetchDistricts(addressShipping.kota);
+	const getsubDistricts = async () => await fetchSubDistricts(addressShipping.kecamatan);
+
+	$: {
+		if (addressShipping.province) {
+			getcities();
+		}
+		if (addressShipping.kota) {
+			getdistricts();
+		}
+		if (addressShipping.kecamatan) {
+			getsubDistricts();
+		}
+	}
+	$: console.log(addressShipping);
 </script>
 
 <h4 class="my-5 text-base font-medium">
@@ -14,20 +57,45 @@
 </h4>
 <div class="flex flex-col text-xs font-medium text-gray-500">
 	{#if selected === 'delivery'}
-		<SelectItem option="User a New Address" />
-		<SelectItem option="country / region" />
+		<SelectItem title="User a New Address" options="[]" />
 		<div class="flex space-x-3 items-center ">
-			<Input style="mb-2" placeholder="First name" />
-			<Input style="mb-2" placeholder="Surname" />
+			<Input name="" style="mb-2" placeholder="First name" bind:value={addressShipping.firstName} />
+			<Input name="" style="mb-2" placeholder="Surname" bind:value={addressShipping.surName} />
 		</div>
 		<div class="flex space-x-3 items-center">
-			<Input style="mb-2" placeholder="Postal Code" />
-			<SelectItem option="Prefectures" />
+			<SelectItem
+				name=""
+				title="Province"
+				options={$provinces}
+				bind:value={addressShipping.province}
+			/>
+			<SelectItem
+				name=""
+				disabled={!addressShipping.province}
+				title="Kota/Kab"
+				options={$cities}
+				bind:value={addressShipping.kota}
+			/>
 		</div>
-		<Input style="mb-2" placeholder="municipilities" />
-		<Input style="mb-2" placeholder="address" />
-		<Input style="mb-2" placeholder="address2" />
-		<Input style="mb-2" placeholder="phone number" />
+		<div class="flex space-x-3 items-center">
+			<SelectItem
+				disabled={!addressShipping.kota}
+				title="Kecamatan"
+				name=""
+				options={$districts}
+				bind:value={addressShipping.kecamatan}
+			/>
+			<SelectItem
+				name=""
+				disabled={!addressShipping.kecamatan}
+				title="Kelurahan"
+				options={$subDistricts}
+				bind:value={addressShipping.kelurahan}
+			/>
+		</div>
+		<Input name="" style="mb-2" placeholder="Postal Code" value={addressShipping.postalCode} />
+		<Input name="" style="mb-2" placeholder="Detail address" value={addressShipping.detail} />
+		<Input name="" style="mb-2" placeholder="phone number" value={addressShipping.phone} />
 	{:else}
 		<div class="border inline-flex justify-between w-full font-medium text-gray-500 p-3">
 			<div class="inline-flex">
@@ -62,7 +130,7 @@
 			<a
 				href={linkWa}
 				class=" w-fit bg-orange-600 px-5 p-2 text-sm text-white rounded"
-				on:click={() => dispatch('order')}>Proceed Order</a
+				on:click={() => dispatch('order', addressShipping)}>Proceed Order</a
 			>
 		{/if}
 		<p>Return to cart</p>

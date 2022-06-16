@@ -16,6 +16,9 @@
 	let selected = 'pick-up';
 	let items = [];
 
+	let linkWa = '';
+	let numberWa = '628889988618';
+	let addressShipping = '';
 	let isOrder = false;
 
 	onMount(async () => await load());
@@ -28,35 +31,26 @@
 			goto('/cart');
 		}
 	}
-	
+
 	function select(event) {
 		selected = event.detail;
 	}
-	
-	const handleOrder = async () => {
-		isOrder = true;
-		let newOrder = {
-			userId: $session.id,
-			code: uid()
-		};
-		let res = await postOrder(newOrder);
-		await postOrderItem(filterCart(items,res.id));
 
-		isOrder = false;
-	};	
+	const handleOrder = async (event) => {
+		console.log(event.detail);
 	
+	};
+
 	$: if (innerWidth > 1024) {
 		isShow = false;
 	}
 	$: innerWidth = 0;
 
-	let linkWa = '';
-	let numberWa = '628889988618';
-	let address = '';
 	$: total = items.reduce((a, b) => a + b.total, 0);
+
 	$: {
 		if (items.length) {
-			linkWa = linkWABuilder(items, total, numberWa, selected, address);
+			linkWa = linkWABuilder(items, total, numberWa, selected, addressShipping);
 		}
 	}
 </script>
@@ -77,7 +71,7 @@
 <div class="w-full bg-white pt-10 lg:pt-14 lg:pr-10 px-5">
 	<div class="max-w-md mx-auto lg:max-w-lg lg:ml-auto lg:mx-0">
 		<h1 class="font-medium text-2xl mb-4 lg:block hidden">Kotakoki</h1>
-		<Checkout on:select={select} {selected} />
+		<Checkout on:select={select} bind:selected />
 		<Shipping {linkWa} {selected} on:order={handleOrder} {isOrder} />
 	</div>
 </div>
